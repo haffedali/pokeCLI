@@ -22,15 +22,15 @@ let pokemonDex = {
         name: "Venusaur",
         moveSet: ["Sludgebomb", "Leechseed", "Gigadrain","Solarbeam", "Sleeppowder"]
     },
-    "Pideot": {
+    "Pideot": {//add movesets
         num: 18,
         types: ["Normal", "Flying"],
         baseStats: {hp: 83, atk: 80, def: 75, spa: 70, spd: 70, spe: 101},
         name: "Pideot"
     },
-    "Nidoking": {
+    "Nidoking": {//add movesets
         num: 34,
-        types: ["Ground", "Poisin"],
+        types: ["Ground", "Poison"],
         baseStats: {hp: 81, atk: 102, def: 77, spa: 85, spd: 75, spe: 85},
         name: "Nidoking"
     },

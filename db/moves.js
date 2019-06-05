@@ -4,7 +4,7 @@
 
 
 /**@type {{[k: string]: MoveData}} */
-let moveList = {
+const moveList = {
     "Flamethrower": {
         num: 1,
         accuracy: 100,
