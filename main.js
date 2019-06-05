@@ -39,6 +39,7 @@ inquirer.prompt([{
         const yourMon = new Pokemon(name, ans.moves)
         //From here, we will choose a supporting team
         //After the supporting team inquiry, we will create a new Field() and start the game with it's loop() method
+        
 
     })
 })
