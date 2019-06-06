@@ -1,9 +1,9 @@
 const inquirer = require('inquirer')
-const db = require("./db")
-const classes = require("./classes")
-const pokemon = db.pokemon;
-const moveList = db.moves;
-const Pokemon = classes.pokemon
+const {pokemon, moveList} = require("./db")//data
+const {Pokemon, Field} = require("./classes")//classes
+// const pokemon = db.pokemon;
+// const moveList = db.moves;
+// const Pokemon = classes.pokemon
 
 var test;
 var flag = false
@@ -40,7 +40,7 @@ inquirer.prompt([{
         //From here, we will choose a supporting team
         //After the supporting team inquiry, we will create a new Field() and start the game with it's loop() method
         
-
+        let Field = new Field(yourMon, oppMon)
     })
 })
 

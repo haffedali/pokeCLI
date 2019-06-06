@@ -16,8 +16,11 @@ I propose we create a class constructor, in order, for each of the following ele
 1. the Pokemon
 2. its moves
 3. the full team
+4. the "Field"
 from here we can store the raw stats in JSON in the data folder, then building the, based on the classes. allowing the easy addition of new teams. 
 
 
 ### the game 
 the game logic shpuld remain shallow. calling methods that we've prototyped to the classes, based on inquirers prompts/responses. 
+
+
