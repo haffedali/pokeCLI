@@ -22,19 +22,19 @@ let pokemonDex = {
         name: "Venusaur",
         moveSet: ["Razor Leaf", "Swords Dance" ,"Body Slam", "Sleeppowder"]
     },
-    "Pideot": {//add movesets
+    "Pidgeot": {//add movesets
         num: 18,
         types: ["Normal", "Flying"],
         baseStats: {hp: 83, atk: 80, def: 75, spa: 70, spd: 70, spe: 101},
-        name: "Pideot",
+        name: "Pidgeot",
         moveSet: ["Double Edge", "Hyper Beam", "Agility", "Mirror Move"]
     },
-    "Nidoking": {//add movesets
-        num: 34,
-        types: ["Ground", "Poison"],
-        baseStats: {hp: 81, atk: 102, def: 77, spa: 85, spd: 75, spe: 85},
-        name: "Nidoking"
-    },
+    // "Nidoking": {//add movesets
+    //     num: 34,
+    //     types: ["Ground", "Poison"],
+    //     baseStats: {hp: 81, atk: 102, def: 77, spa: 85, spd: 75, spe: 85},
+    //     name: "Nidoking"
+    // },
     "Clefable": {
         num: 36,
         types: ["Normal"],
@@ -61,21 +61,21 @@ let pokemonDex = {
         types: ["Water"],
         baseStats: {hp: 130, atk: 65, def: 60, spa: 110, spd: 110, spe: 65},
         name: "Vaporeon",
-        moveSet: ["Surf", "Blizzard", "Rest", "Mimic"]//fix moves
+        moveSet: ["Surf", "Blizzard", "Rest", "Mimic"]
     },
     "Golem": {
         num: 76,
         types: ["Rock", "Ground"],
 		baseStats: {hp: 80, atk: 120, def: 130, spa: 55, spd: 65, spe: 45},
         name: "Golem",
-        moveSet: ["Body Slam", "Earthquake", "Rock Slide", "Explosion"]//fix moves
+        moveSet: ["Body Slam", "Earthquake", "Rock Slide", "Explosion"]
     },
     "Machamp": {
         num: 68,
         types: ["Fighting"],
 		baseStats: {hp: 90, atk: 130, def: 80, spa: 65, spd: 65, spe: 55},
         name: "Machamp",
-        moveSet: ["Body Slam", "Earthquake", "Rock Throw", "Submission"]//fix moves
+        moveSet: ["Body Slam", "Earthquake", "Rock Throw", "Submission"]
     },
 }
 

@@ -1,12 +1,7 @@
 const inquirer = require('inquirer')
-const { pokemon, moveList } = require("./db")//data
-const { Pokemon, Field, Team } = require("./classes")//classes
-// const pokemon = db.pokemon;
-// const moveList = db.moves;
-// const Pokemon = classes.pokemon
+// const { pokemon, moveList } = require("./db")//data
+const { Field, Team } = require("./classes")//classes
 
-var test;
-var flag = false
 // INQUIRE START HERE, ASK TO CHOOSE POKEMON
 
 inquirer.prompt([{
@@ -20,6 +15,7 @@ inquirer.prompt([{
             |        CHOOSE A STARTER        |
             |                                |
             |=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+|
+            
     `,
     choices: ['Charizard', 'Blastoise', 'Venusaur']
 }]).then(ans => {
@@ -43,19 +39,12 @@ inquirer.prompt([{
     }
     //run build for both team objects
     oppTeam.build()
+    // console.log("oppTeam",oppTeam.team) test
     yourTeam.build()
+    // console.log("your team",yourTeam.team) test
 
     //create the field and  start the loop
     let field = new Field(yourTeam, oppTeam)
     field.fieldLoop()
 
 })
-
-
-
-
-
-
-// console.log(myFirstPokemon)
-// myFirstPokemon.printStats()
-// let cleffa = new Pokemon("Clefable", )

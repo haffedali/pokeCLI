@@ -22,15 +22,69 @@ module.exports = class Field {
         5) switch
 
     */
-    attackAction(){
+    fieldDisplay() {
+        console.log(
+            `    _____________________________________________
 
+                                    | ${this.activeOpp.name}
+                                    | HP: ${this.activeOpp.stats.hp}
+                    
+    | ${this.activeMon.name}
+    | HP:${this.activeMon.stats.hp}     
+    _____________________________________________
+`
+        )
     }
 
-    switchMon(){
+    attackAction() {
+        /*loop throiugh the moves to generate choices,
+          once the player chooses the move it will store it, and then select the opponetnts move,
+          then it resolve the coices
+        */
+        inquirer.prompt([
+            {
+                name: "attack",
+                message: "CHOOSE ATTACK",
+                type: "rawlist",
+                choices: this.activeMon.moves.map(mv => mv)
+            }
+        ]).then(({ attack }) => {
+            console.log(attack)
+            //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
+            this.activeMon.useAttack(attack, this.activeOpp)
+            //check death
+            if (this.activeOpp.stats.hp <= 0) {
 
+                console.log(`${this.activeOpp.name} Has Fainted`)
+                // this.opponent.switchMon()//hasnt been coded yet
+                
+                this.activeOpp = this.opponent.team[1]
+                
+                console.log(`your Opponent sends out ${this.opponent.activeOpp.name}`)//this will go in switch mon
+
+                return this.fieldLoop()//remove this when switch mon is finished
+            }
+            
+            this.activeOpp.useAttack("megapunch", this.activeMon)
+            //check death
+            
+            if (this.activeMon.stats.hp <= 0) {
+                console.log(`${this.activeMon.name} Has Fainted!`)
+                return this.switchMon()
+            }
+            this.fieldLoop()
+
+        })
+    }
+
+
+    switchMon() {
+        //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
     }
 
     fieldLoop() {
+        //display Current mons
+        this.fieldDisplay()
         inquirer.prompt([
             {
                 name: "action",
@@ -49,11 +103,11 @@ module.exports = class Field {
                 case "forfeit":
                 default:
                     console.log(`
-                            |~~~~~~~~~~~~~~~~~~~~~~~|
-                        ~~~~| THANK YOU FOR PLAYING |~~~~
-                            |~~~~~~~~~~~~~~~~~~~~~~~|
+                |~~~~~~~~~~~~~~~~~~~~~~~|
+            ~~~~| THANK YOU FOR PLAYING |~~~~
+                |~~~~~~~~~~~~~~~~~~~~~~~|
                     `)
-                    process.end()
+                    process.exit()
                     break;
             }
         })
