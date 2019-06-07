@@ -3,13 +3,13 @@ const { moveList, pokemon } = require("../db")
 // const pokemon = db.pokemon
 // string,string,obj,arr
 class Pokemon {
-    constructor(name, moves) {
+    constructor(name) {
         this.name = name
         this.type = pokemon[name].types
         this.stats = pokemon[name].baseStats
-        // this.moveList = pokemon[name].moveList 
-        this.moves = moves;
+        this.moveList = pokemon[name].moveList 
     }
+
 
     printMoves() {
         for (let i = 0; i < this.moves.length; i++) {

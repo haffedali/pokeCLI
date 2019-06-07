@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/haffedali/pokeCLI/issues"
   },
-  "homepage": "https://github.com/haffedali/pokeCLI#readme"
+  "homepage": "https://github.com/haffedali/pokeCLI#readme",
+  "dependencies": {
+    "inquirer": "^6.3.1"
+  }
 }

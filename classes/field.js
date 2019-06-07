@@ -1,6 +1,7 @@
+const inquirer = require("inquirer")
 //this will be the class that holds all game actions
-module.exports = class Field{
-    constructor(user, opponent){
+module.exports = class Field {
+    constructor(user, opponent) {
         this.user = user;
         this.opponent = opponent;
         this.isActive = true;
@@ -13,7 +14,7 @@ module.exports = class Field{
         1) Field loop
         2) Action prompt
             -will iquire:
-                forfeit(), switch(), attack() 
+                forfeit(x), switchMon(), attack() 
         3) Forfeit
         4) Main Attack Action  < discuss these  
         4.1) User Attack Calc ( actMon, actOpp )
@@ -21,4 +22,41 @@ module.exports = class Field{
         5) switch
 
     */
+    attackAction(){
+
+    }
+
+    switchMon(){
+
+    }
+
+    fieldLoop() {
+        inquirer.prompt([
+            {
+                name: "action",
+                type: "rawlist",
+                message: "| SELECT AN ACTION |",
+                choices: ["ATTACK", "SWITCH", "FORFEIT"]
+            }
+        ]).then(({ action }) => {
+            switch (action.toLowerCase()) {
+                case "attack":
+                    this.attackAction();
+                    break;
+                case "switch":
+                    this.switchMon();
+                    break;
+                case "forfeit":
+                default:
+                    console.log(`
+                            |~~~~~~~~~~~~~~~~~~~~~~~|
+                        ~~~~| THANK YOU FOR PLAYING |~~~~
+                            |~~~~~~~~~~~~~~~~~~~~~~~|
+                    `)
+                    process.end()
+                    break;
+            }
+        })
+    }
+
 }
