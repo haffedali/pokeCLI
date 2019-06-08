@@ -6,6 +6,7 @@ module.exports = class Field {
         this.opponent = opponent;
         this.isActive = true;
         this.activeMon = this.user.team[0]//grab the front mon
+        this.activeIndex = this.user.team.indexOf(this.activeMon)
         this.activeOpp = this.opponent.team[0]//grab opp starter
     }
     //here we'll ad the methods of game logic. 
@@ -26,23 +27,32 @@ module.exports = class Field {
     //got to high to code anything too complex so i made it look pretty-ish
     fieldDisplay() {
         //styling stuff
-        let blankSpaceGen = (str = "", offset = 0) =>  ` `.repeat(offset - str.length)
-        let oppName = this.activeOpp.name + blankSpaceGen(this.activeOpp.name, 11),
-            actName = this.activeMon.name + blankSpaceGen(this.activeMon.name, 11),
-            oppHp = JSON.stringify(this.activeOpp.stats.hp) + blankSpaceGen(JSON.stringify(this.activeOpp.stats.hp), 8),
-            actHp = JSON.stringify(this.activeMon.stats.hp) + blankSpaceGen(JSON.stringify(this.activeMon.stats.hp), 8),
-            actRM = blankSpaceGen("",32)
+        //way to generte empty space after dynamic variables     
+        let blankSpaceGen = (str = "", offset = 0) => `${str}${` `.repeat(offset - str.length)}`
+
+        let display = [
+            blankSpaceGen(this.activeOpp.name, 11),
+            blankSpaceGen(this.activeMon.name, 11),
+            blankSpaceGen(this.activeMon.name, 12),
+            blankSpaceGen(this.user.team[1].name, 12),
+            blankSpaceGen(this.user.team[2].name, 12),
+            blankSpaceGen(JSON.stringify(this.activeOpp.stats.hp), 8),
+            blankSpaceGen(JSON.stringify(this.activeMon.stats.hp), 8),
+            blankSpaceGen("", 32)
+        ]
+
+
         console.log(
             `  
-     _____________________________________________
-    |                                | ${oppName}|
-    |                                | HP:${oppHp}|
-    |                                |____________|
-    |                                             |
-    |____________                                 |
-    | ${actName}|${actRM}|
-    | HP:${actHp}|${actRM}|
-    |____________|________________________________|
+    ____________________________________________________________
+   | Roster      |                                | ${display[0]}|
+   | _________   |                                | HP:${display[5]}|
+   | ${display[2]}|                                |____________|
+   | ${display[3]}|                                             |
+   | ${display[4]}|____________                                 |
+   |             | ${display[1]}|${display[7]}|
+   |             | HP:${display[6]}|${display[7]}|
+   |_____________|____________|________________________________|
             `
         )
     }
@@ -62,6 +72,7 @@ module.exports = class Field {
         ]).then(({ attack }) => {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
+            let oppAttack = "megapunch"
             this.activeMon.useAttack(attack, this.activeOpp)
             console.log(`${this.activeMon.name} used ${attack}!`)
             //check death
@@ -78,8 +89,8 @@ module.exports = class Field {
                 return this.fieldLoop()//remove this when switch mon is finished
             }
 
-            this.activeOpp.useAttack("megapunch", this.activeMon)
-            console.log(`${this.activeOpp.name} used ${attack}!`)
+            this.activeOpp.useAttack(oppAttack, this.activeMon)
+            console.log(`${this.activeOpp.name} used ${oppAttack}!`)
             //check death
 
             if (this.activeMon.stats.hp <= 0) {
@@ -94,14 +105,17 @@ module.exports = class Field {
 
     switchMon() {
         //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
-        inquirer([
+        inquirer.prompt([
             {
                 name: "select",
                 type: "rawlist",
                 message: "SELECT A MON",
-                
+                choices: this.user.team.map(mon => mon.name)
             }
-        ])
+        ]).then(({select})=>{
+            
+
+        })
     }
 
     fieldLoop() {

@@ -2,8 +2,10 @@
 const { pokemon } = require("../db")
 const Pokemon = require("./pokemon")
 module.exports = class Team {
-    constructor(starter) {
+    constructor(starter, second, third) {
         this.starter = starter;
+        this.second = second;
+        this.third = third;
         this.team = [];
     }
     build() {

@@ -21,7 +21,7 @@ inquirer.prompt([{
     choices: ['Charizard', 'Blastoise', 'Venusaur']
 }]).then(ans => {
     //grab the name
-    let name = ans.leadn
+    let name = ans.lead
     //genrate a team using the team class
     let yourTeam = new Team(name)
     //initiallize the oppteam
