@@ -11,28 +11,36 @@ module.exports = class Field {
     //here we'll ad the methods of game logic. 
     /*methods:
 
-        1) Field loop
+        1) Field loop [X]
         2) Action prompt
             -will iquire:
-                forfeit(x), switchMon(), attack() 
-        3) Forfeit
+                forfeit(x), switchMon(), attack(X) 
+        3) Forfeit [X]
         4) Main Attack Action  < discuss these  
         4.1) User Attack Calc ( actMon, actOpp )
         4.2) Opp Attack Calc  ( actMon, actOpp )
-        5) switch
+        5) switchMon
 
     */
     fieldDisplay() {
+        let blankSpaceGen = (str = "", offset = 0) =>  ` `.repeat(offset - str.length)
+        let oppName = this.activeOpp.name + blankSpaceGen(this.activeOpp.name, 11),
+            oppHp = JSON.stringify(this.activeOpp.stats.hp) + blankSpaceGen(JSON.stringify(this.activeOpp.stats.hp), 8),
+            actName = this.activeMon.name + blankSpaceGen(this.activeMon.name, 11),
+            actHp = JSON.stringify(this.activeMon.stats.hp) + blankSpaceGen(JSON.stringify(this.activeMon.stats.hp), 8),
+            actRM = blankSpaceGen("",32)
         console.log(
-            `    _____________________________________________
-
-                                    | ${this.activeOpp.name}
-                                    | HP: ${this.activeOpp.stats.hp}
-                    
-    | ${this.activeMon.name}
-    | HP:${this.activeMon.stats.hp}     
-    _____________________________________________
-`
+            `  
+     _____________________________________________
+    |                                | ${oppName}|
+    |                                | HP:${oppHp}|
+    |                                |____________|
+    |                                             |
+    |____________                                 |
+    | ${actName}|${actRM}|
+    | HP:${actHp}|${actRM}|
+    |____________|________________________________|
+            `
         )
     }
 
@@ -57,17 +65,17 @@ module.exports = class Field {
 
                 console.log(`${this.activeOpp.name} Has Fainted`)
                 // this.opponent.switchMon()//hasnt been coded yet
-                
+
                 this.activeOpp = this.opponent.team[1]
-                
+
                 console.log(`your Opponent sends out ${this.opponent.activeOpp.name}`)//this will go in switch mon
 
                 return this.fieldLoop()//remove this when switch mon is finished
             }
-            
+
             this.activeOpp.useAttack("megapunch", this.activeMon)
             //check death
-            
+
             if (this.activeMon.stats.hp <= 0) {
                 console.log(`${this.activeMon.name} Has Fainted!`)
                 return this.switchMon()

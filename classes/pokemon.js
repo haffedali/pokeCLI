@@ -28,7 +28,7 @@ class Pokemon {
     useAttack(attackName, target){//must be a string References
         //will insert thick calculations later, this is just Proof of Concept 
         let dmg = moves[attackName].basePower * 0.15//<shitty calc
-        target.takeDamage(dmg) 
+        target.takeDamage(Math.floor(dmg)) 
     }
 
 }
