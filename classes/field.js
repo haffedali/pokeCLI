@@ -6,7 +6,7 @@ module.exports = class Field {
         this.opponent = opponent;
         this.isActive = true;
         this.activeMon = this.user.team[0]//grab the front mon
-        this.activeIndex = this.user.team.indexOf(this.activeMon)
+        this.activeIn = this.user.team.indexOf(this.activeMon)
         this.activeOpp = this.opponent.team[0]//grab opp starter
     }
     //here we'll ad the methods of game logic. 
@@ -113,7 +113,7 @@ module.exports = class Field {
                 choices: this.user.team.map(mon => mon.name)
             }
         ]).then(({select})=>{
-            
+
 
         })
     }
