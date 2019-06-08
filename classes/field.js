@@ -22,11 +22,14 @@ module.exports = class Field {
         5) switchMon
 
     */
+
+    //got to high to code anything too complex so i made it look pretty-ish
     fieldDisplay() {
+        //styling stuff
         let blankSpaceGen = (str = "", offset = 0) =>  ` `.repeat(offset - str.length)
         let oppName = this.activeOpp.name + blankSpaceGen(this.activeOpp.name, 11),
-            oppHp = JSON.stringify(this.activeOpp.stats.hp) + blankSpaceGen(JSON.stringify(this.activeOpp.stats.hp), 8),
             actName = this.activeMon.name + blankSpaceGen(this.activeMon.name, 11),
+            oppHp = JSON.stringify(this.activeOpp.stats.hp) + blankSpaceGen(JSON.stringify(this.activeOpp.stats.hp), 8),
             actHp = JSON.stringify(this.activeMon.stats.hp) + blankSpaceGen(JSON.stringify(this.activeMon.stats.hp), 8),
             actRM = blankSpaceGen("",32)
         console.log(
@@ -60,7 +63,9 @@ module.exports = class Field {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
             this.activeMon.useAttack(attack, this.activeOpp)
+            console.log(`${this.activeMon.name} used ${attack}!`)
             //check death
+            console.log()
             if (this.activeOpp.stats.hp <= 0) {
 
                 console.log(`${this.activeOpp.name} Has Fainted`)
@@ -74,6 +79,7 @@ module.exports = class Field {
             }
 
             this.activeOpp.useAttack("megapunch", this.activeMon)
+            console.log(`${this.activeOpp.name} used ${attack}!`)
             //check death
 
             if (this.activeMon.stats.hp <= 0) {
@@ -88,6 +94,14 @@ module.exports = class Field {
 
     switchMon() {
         //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
+        inquirer([
+            {
+                name: "select",
+                type: "rawlist",
+                message: "SELECT A MON",
+                
+            }
+        ])
     }
 
     fieldLoop() {

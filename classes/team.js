@@ -11,16 +11,16 @@ module.exports = class Team {
         this.team[0] = new Pokemon(starter)
         switch (starter) {
             case "Charizard":
-                this.team[1] = new Pokemon(pokemon["Jolteon"].name);
-                this.team[2] = new Pokemon(pokemon["Golem"].name);
+                this.team[1] = new Pokemon("Jolteon");
+                this.team[2] = new Pokemon("Golem");
                 break;
             case "Blastoise":
-                this.team[1] = new Pokemon(pokemon["Flareon"].name);
-                this.team[2] = new Pokemon(pokemon["Pidgeot"].name);
+                this.team[1] = new Pokemon("Flareon");
+                this.team[2] = new Pokemon("Pidgeot");
                 break;
             case "Venusaur":
-                this.team[1] = new Pokemon(pokemon["Vaporeon"].name);
-                this.team[2] = new Pokemon(pokemon["Machamp"].name);
+                this.team[1] = new Pokemon("Vaporeon");
+                this.team[2] = new Pokemon("Machamp");
                 break;
         }
     }

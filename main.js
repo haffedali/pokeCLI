@@ -8,19 +8,20 @@ inquirer.prompt([{
     type: 'list',
     name: 'lead',
     message: `
-            |=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+|
-            |                                |
-            |     WELCOME TO CMD STADIUM!    |
-            |                                |
-            |        CHOOSE A STARTER        |
-            |                                |
-            |=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+|
-            
+               
+             /|=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+|
+            ||+                                +
+            +||    WELCOME TO CMD STADIUM!     |
+            ||+                                +
+            +||        CHOOSE A STARTER        |
+            ||+                                +
+            +||=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+|
+            |/(/)/)/(/)/)/(/)/)/(/)/)/(/)/)/(/)/
     `,
     choices: ['Charizard', 'Blastoise', 'Venusaur']
 }]).then(ans => {
     //grab the name
-    var name = ans.lead
+    let name = ans.leadn
     //genrate a team using the team class
     let yourTeam = new Team(name)
     //initiallize the oppteam
