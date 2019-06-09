@@ -6,4 +6,5 @@ module.exports = class Field{
     }
     //here we'll ad the methods of game logic. 
 
+
 }
