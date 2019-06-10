@@ -4,7 +4,7 @@ const {Pokemon, Field} = require("./classes")//classes
 // const pokemon = db.pokemon;
 // const moveList = db.moves;
 // const Pokemon = classes.pokemon
-
+// console.log(Field)
 var test;
 var flag = false
 // INQUIRE START HERE, ASK TO CHOOSE POKEMON
@@ -37,10 +37,13 @@ inquirer.prompt([{
         validate: validateFourMoves
     }]).then(ans => {
         const yourMon = new Pokemon(name, ans.moves)
+        const oppMon = new Pokemon("Blastoise", ["Hydropump", "Protect", "Irondefense","Megakick"])
         //From here, we will choose a supporting team
         //After the supporting team inquiry, we will create a new Field() and start the game with it's loop() method
+
         
-        let Field = new Field(yourMon, oppMon)
+        let gameField = new Field(yourMon, oppMon)
+        gameField.loop()
     })
 })
 

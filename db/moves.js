@@ -478,7 +478,7 @@ const moveList = {
 		zMovePower: 160,
 		contestType: "Tough",
     },
-    "megakick": {
+    "Megakick": {
 		num: 25,
 		accuracy: 75,
 		basePower: 120,
@@ -495,7 +495,7 @@ const moveList = {
 		zMovePower: 190,
 		contestType: "Cool",
     },
-    "irondefense": {
+    "Irondefense": {
 		num: 334,
 		accuracy: true,
 		basePower: 0,
