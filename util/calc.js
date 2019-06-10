@@ -17,10 +17,10 @@ function calc(mon1, mon2, move1, move2){
     } else {
         damageToOpp = (((100/5+2)*mon1.stats.atk*moveList[move1].basePower)/mon2.stats.def)
     }
-    if (move1.category === "Special"){
-        damageToUser = (((100/5+2)*mon2.stats.spa*moveList[move1].basePower)/mon1.stats.spd)
+    if (move2.category === "Special"){
+        damageToUser = (((100/5+2)*mon2.stats.spa*moveList[move2].basePower)/mon1.stats.spd)
     } else {
-        damageToUser = (((100/5+2)*mon2.stats.atk*moveList[move1].basePower)/mon1.stats.def)
+        damageToUser = (((100/5+2)*mon2.stats.atk*moveList[move2].basePower)/mon1.stats.def)
     }
 
     damageToUser = damageToUser/50

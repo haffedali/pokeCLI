@@ -44,7 +44,7 @@ const moveList = {
         num: 4,
         accuracy: 80,
         basePower: 110,
-        categroy: 'Special',
+        category: 'Special',
         name: "Hydro Pump",
         pp: 5,
         priority: 0,
