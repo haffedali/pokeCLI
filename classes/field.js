@@ -2,12 +2,13 @@ const inquirer = require("inquirer")
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {
-        this.user = user;
-        this.opponent = opponent;
-        this.isActive = true;
+        this.user = user;//you
+        this.opponent = opponent;//them
+        this.isActive = true;//battle state
         this.activeMon = this.user.team[0]//grab the front mon
-        this.activeIn = this.user.team.indexOf(this.activeMon)
-        this.activeOpp = this.opponent.team[0]//grab opp starter
+        this.activeIn = this.user.team.indexOf(this.activeMon)// used to store the index of current mon to reinsert it later.
+        this.activeOpp = this.opponent.team[0];//grab opp starter
+        this.isrunningTurn = false; //used to control flow
     }
     //here we'll ad the methods of game logic. 
     /*methods:
@@ -33,7 +34,7 @@ module.exports = class Field {
         let display = [
             blankSpaceGen(this.activeOpp.name, 11),
             blankSpaceGen(this.activeMon.name, 11),
-            blankSpaceGen(this.activeMon.name, 12),
+            blankSpaceGen(this.user.team[0].name, 12),
             blankSpaceGen(this.user.team[1].name, 12),
             blankSpaceGen(this.user.team[2].name, 12),
             blankSpaceGen(JSON.stringify(this.activeOpp.stats.hp), 8),
@@ -57,6 +58,22 @@ module.exports = class Field {
         )
     }
 
+
+    turnAction(actor, target, action){
+        actor.useAttack(action, target)
+        console.log(`${actor} used ${action}!`)
+    }
+
+    actionCheck(actor, target, action, cb){
+        if(!this.isrunningTurn) return;
+        if(actor.stats.hp <= 0 ) {
+            console.log(`${actor.name} is unable to battle!`)
+            if(actor === this.activeMon) return this.switchMon();
+            if(actor === this.activeOpp) return this.oppSwicth();//<need to define this action
+        }
+        cb(actor, target, action)
+    }
+    
     attackAction() {
         /*loop throiugh the moves to generate choices,
           once the player chooses the move it will store it, and then select the opponetnts move,
@@ -72,30 +89,14 @@ module.exports = class Field {
         ]).then(({ attack }) => {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
+            //this.calcOppAction() <need to figure this out
             let oppAttack = "megapunch"
-            this.activeMon.useAttack(attack, this.activeOpp)
-            console.log(`${this.activeMon.name} used ${attack}!`)
-            //check death
-            console.log()
-            if (this.activeOpp.stats.hp <= 0) {
-
-                console.log(`${this.activeOpp.name} Has Fainted`)
-                // this.opponent.switchMon()//hasnt been coded yet
-
-                this.activeOpp = this.opponent.team[1]
-
-                console.log(`your Opponent sends out ${this.opponent.activeOpp.name}`)//this will go in switch mon
-
-                return this.fieldLoop()//remove this when switch mon is finished
-            }
-
-            this.activeOpp.useAttack(oppAttack, this.activeMon)
-            console.log(`${this.activeOpp.name} used ${oppAttack}!`)
-            //check death
-
-            if (this.activeMon.stats.hp <= 0) {
-                console.log(`${this.activeMon.name} Has Fainted!`)
-                return this.switchMon()
+            if(this.activeMon.stats.speed > this.activeOpp.stats.speed){
+                actionCheck(this.activeMon, this.activeOpp, attack, this.turnAction)
+                actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
+            }else{
+                actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
+                actionCheck(this.activeMon, this.activeOpp, attack, this.turnAction)
             }
             this.fieldLoop()
 
@@ -103,18 +104,37 @@ module.exports = class Field {
     }
 
 
-    switchMon() {
+    switchMon() {///MEMORY LEAK DONT USE TILL ITS FIXED
+
         //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
         inquirer.prompt([
             {
                 name: "select",
                 type: "rawlist",
                 message: "SELECT A MON",
-                choices: this.user.team.map(mon => mon.name)
+                choices: [...this.user.team.map(mon => mon.name), "RETURN"]
             }
-        ]).then(({select})=>{
-
-
+        ]).then(({ select }) => {
+            if (select === this.activeMon.name) {
+                console.log("This pokemon is already out!")
+                this.switchMon()
+            }
+            if (select === "RETURN") {
+                this.fieldLoop()
+            }
+            else {
+                for (let mon of this.user.team) {
+                    if (mon.name === select) {
+                        this.user.team[this.activeIn] = { ...this.activeMon }
+                        this.activeMon = mon
+                        if(this.isrunningTurn){
+                            //this.calcOppAction()
+                            actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
+                        }
+                        this.fieldLoop()//will need to check battle state
+                    }
+                }
+            }
         })
     }
 
@@ -125,24 +145,32 @@ module.exports = class Field {
             {
                 name: "action",
                 type: "rawlist",
-                message: "| SELECT AN ACTION |",
+                message: "|0>- SELECT AN ACTION -<0|",
                 choices: ["ATTACK", "SWITCH", "FORFEIT"]
             }
         ]).then(({ action }) => {
             switch (action.toLowerCase()) {
+                
                 case "attack":
+                    this.isrunningTurn = true;
                     this.attackAction();
                     break;
+
                 case "switch":
                     this.switchMon();
                     break;
+
                 case "forfeit":
-                default:
+                default: 23
                     console.log(`
-                |~~~~~~~~~~~~~~~~~~~~~~~|
-            ~~~~| THANK YOU FOR PLAYING |~~~~
-                |~~~~~~~~~~~~~~~~~~~~~~~|
-                    `)
+                   _______________________   +
+                 /[                       ]  |~+ + ~+ ~
+                ||[                       ]  |~ (^_^) +~
+                |+[ THANK YOU FOR PLAYING!]  |~+ + ~+ ~
+                ||[                       ]  |
+                |+[_______________________]  |
+                |/(/)(/(/)(/(/)/(/)(/(/)(/  [=]     
+                `)
                     process.exit()
                     break;
             }

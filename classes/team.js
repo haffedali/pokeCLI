@@ -9,20 +9,21 @@ module.exports = class Team {
         this.team = [];
     }
     build() {
+        let bTeam = (backup, last) => {
+            this.team[1] = new Pokemon(backup);
+            this.team[2] = new Pokemon(last)
+        }
         let starter = this.starter;
         this.team[0] = new Pokemon(starter)
         switch (starter) {
             case "Charizard":
-                this.team[1] = new Pokemon("Jolteon");
-                this.team[2] = new Pokemon("Golem");
+                bTeam("Jolteon","Golem")
                 break;
             case "Blastoise":
-                this.team[1] = new Pokemon("Flareon");
-                this.team[2] = new Pokemon("Pidgeot");
+                bTeam("Flareon", "Pidgeot")
                 break;
             case "Venusaur":
-                this.team[1] = new Pokemon("Vaporeon");
-                this.team[2] = new Pokemon("Machamp");
+                bTeam("Vaporeon", "Machamp")
                 break;
         }
     }
