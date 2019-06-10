@@ -37,7 +37,7 @@ inquirer.prompt([{
         validate: validateFourMoves
     }]).then(ans => {
         const yourMon = new Pokemon(name, ans.moves)
-        const oppMon = new Pokemon("Blastoise", ["Hydropump", "Protect", "Irondefense","Megakick"])
+        const oppMon = new Pokemon("Venusaur", ["Gigadrain", "Protect", "Irondefense","Megakick"])
         //From here, we will choose a supporting team
         //After the supporting team inquiry, we will create a new Field() and start the game with it's loop() method
 

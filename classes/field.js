@@ -24,8 +24,8 @@ module.exports = class Field{
     */
 
     loop() {
-        console.log("Hello trainer!")
-        console.log("Today you are facing off against HoffBot and his trusty " + this.opponent.name + "!")
+        // console.log("Hello trainer!")
+        // console.log("Today you are facing off against HoffBot and his trusty " + this.opponent.name + "!")
 
         if (this.isActive){
             inquirer.prompt([{
@@ -34,16 +34,18 @@ module.exports = class Field{
                 message: 'Let the battle begin!',
                 choices: this.user.moves
             }]).then(ans =>{
-                let damage = damageCalc(this.user, this.opponent, ans.move, "chicken")
+
+                //Need the AI Opp to pick a move here and replace 'chicken'
+                let damage = damageCalc(this.user, this.opponent, ans.move, "Gigadrain")
                 let damageOpp = damage[0]
                 let damageUser = damage[1]
                 this.opponent.health -= damageOpp
                 this.user.health -= damageUser
-                
+
                 console.log(`Your ${this.user.name} has ${this.user.health} health remaining!`)
                 console.log(`HoffBot's ${this.opponent.name} has ${this.opponent.health} remaining!`)
 
-                if (this.opponent.health > 0){
+                if (this.opponent.health > 0 && this.user.health > 0){
                     this.loop()
                 }
                 else {

@@ -8,6 +8,7 @@ function calc(mon1, mon2, move1, move2){
     let stabOpp,stabUser,arbitraryNum,moveTypeOpp,moveTypeUser,damageToOpp,damageToUser
     let typeModUser = 1
     let typeModOpp = 1
+
     moveTypeUser = moveList[move1].type
     moveTypeOpp = moveList[move2].type
 
@@ -17,10 +18,10 @@ function calc(mon1, mon2, move1, move2){
     } else {
         damageToOpp = (((100/5+2)*mon1.stats.atk*moveList[move1].basePower)/mon2.stats.def)
     }
-    if (move1.category === "Special"){
-        damageToUser = (((100/5+2)*mon2.stats.spa*moveList[move1].basePower)/mon1.stats.spd)
+    if (move2.category === "Special"){
+        damageToUser = (((100/5+2)*mon2.stats.spa*moveList[move2].basePower)/mon1.stats.spd)
     } else {
-        damageToUser = (((100/5+2)*mon2.stats.atk*moveList[move1].basePower)/mon1.stats.def)
+        damageToUser = (((100/5+2)*mon2.stats.atk*moveList[move2].basePower)/mon1.stats.def)
     }
 
     damageToUser = damageToUser/50
@@ -47,26 +48,28 @@ function calc(mon1, mon2, move1, move2){
     // Next is type modifier
     // Loop through opponent pokemons types, and add the corresponding modifier
     for (let i=0;i<mon2.type.length;i++){
-        if (typeMatrix[typeDict[moveTypeUser],[mon2.type[i]]] === 0){
+        if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === 0){
             // 0 is neutral, therefore do nothing to the modifier
         }
-        else if (typeMatrix[typeDict[moveTypeUser],[mon2.type[i]]] === 1){
+        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === 1){
             typeModUser *= 2
+            console.log("Fire is super effective")
         }
-        else if (typeMatrix[typeDict[moveTypeUser],[mon2.type[i]]] === -1){
+        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === -1){
             typeModUser *= .5
         }
     }
 
     for (let i=0;i<mon1.type.length;i++){
-        if (typeMatrix[typeDict[moveTypeOpp],[mon2.type[i]]] === 0){
+        if (typeMatrix[typeDict[moveTypeOpp]][typeDict[[mon1.type[i]]]] === 0){
             // 0 is neutral, therefore do nothing to the modifier
         }
-        else if (typeMatrix[typeDict[moveTypeOpp],[mon2.type[i]]] === 1){
+        else if (typeMatrix[typeDict[moveTypeOpp]][typeDict[[mon1.type[i]]]] === 1){
             typeModOpp *= 2
         }
-        else if (typeMatrix[typeDict[moveTypeOpp],[mon2.type[i]]] === -1){
+        else if (typeMatrix[typeDict[moveTypeOpp]][typeDict[[mon1.type[i]]]] === -1){
             typeModOpp *= .5
+            console.log("Grass is weak")
         }
     }
     // Making use of the typeMod here
@@ -80,17 +83,32 @@ function calc(mon1, mon2, move1, move2){
     damageToOpp = (damageToOpp * arbitraryNum1) / 255
     damageToUser = (damageToUser*arbitraryNum2) / 255
     
+
+
+    console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
+    console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
     return [Math.floor(damageToOpp),Math.floor(damageToUser)]   
 }
 
-let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
-let charizard = new Pokemon("Charizard", moves)
-let blastoise = new Pokemon("Blastoise", moves)
 
 
 
-let test = calc(charizard,blastoise,"Flamethrower","Hydropump")
-console.log(test)
+
+
+
+// TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE
+
+
+// let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
+// let charizard = new Pokemon("Charizard", moves)
+// let venusaur = new Pokemon("Venusaur", moves)
+
+
+
+// let test = calc(charizard,venusaur,"Flamethrower","Gigadrain")
+// // console.log(test)
+
+// console.log(test)
 
 
 
