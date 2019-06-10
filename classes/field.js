@@ -9,7 +9,6 @@ module.exports = class Field{
     }
     //here we'll ad the methods of game logic. 
     /*methods:
-
         1) Field loop
         2) Action prompt
             -will iquire:
@@ -19,6 +18,5 @@ module.exports = class Field{
         4.1) User Attack Calc ( actMon, actOpp )
         4.2) Opp Attack Calc  ( actMon, actOpp )
         5) switch
-
     */
 }
