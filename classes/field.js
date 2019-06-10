@@ -35,7 +35,11 @@ module.exports = class Field{
                 choices: this.user.moves
             }]).then(ans =>{
                 let damage = damageCalc(this.user, this.opponent, ans.move, "chicken")
-                this.opponent.health -= damage
+                let damageOpp = damage[0]
+                let damageUser = damage[1]
+                this.opponent.health -= damageOpp
+                this.user.health -= damageUser
+                
                 console.log(`Your ${this.user.name} has ${this.user.health} health remaining!`)
                 console.log(`HoffBot's ${this.opponent.name} has ${this.opponent.health} remaining!`)
 
