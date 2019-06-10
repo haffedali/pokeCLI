@@ -1,6 +1,6 @@
 /*
-normal,fire,water,grass,electric,ice,fighting,poision,ground,flying,psychic
-bug,rock,ghost,dragon,dark,steel
+normal,fire,water,grass,electric,ice,fighting,poision,ground,flying,psychic,bug,rock,ghost,dragon,dark,steel
+
 
 
 // 1: Super effective
@@ -27,6 +27,7 @@ const typeMatrix =
     ,[0,0,0,0,0,0,-1,0,0,0,1,0,0,1,0,-1,-1]
     ,[0,-1,-1,0,-1,1,0,0,0,0,0,0,1,0,0,0,-1]]
 
+    // console.log(typeMatrix[1][3])
 
 
 module.exports = typeMatrix
