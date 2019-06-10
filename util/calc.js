@@ -5,46 +5,82 @@ const typeDict = require("../util/typeDict")
 
 function calc(mon1, mon2, move1, move2){
     //initializing important variables
-    let stab,arbitraryNum,moveType
-    let typeMod = 1
-    moveType = moveList[move1].type
+    let stabOpp,stabUser,arbitraryNum,moveTypeOpp,moveTypeUser,damageToOpp,damageToUser
+    let typeModUser = 1
+    let typeModOpp = 1
+    moveTypeUser = moveList[move1].type
+    moveTypeOpp = moveList[move2].type
 
     // Damage calc pre modifiers (ie. stab, type effectiveness)
-    let damage = (((100/5+2)*mon1.stats.spa*moveList[move1].basePower)/mon2.stats.spd)
-    damage = damage/50
-    damage += 2
-
-    //STAB goes here, either 1.5 or 1, for this test we will use 1.5
-    if (moveType== mon1.type[0] || moveType== mon1.type[1]){
-        stab = 1.5
-    } else{
-        stab = 1
+    if (move1.category === "Special"){
+        damageToOpp = (((100/5+2)*mon1.stats.spa*moveList[move1].basePower)/mon2.stats.spd)
+    } else {
+        damageToOpp = (((100/5+2)*mon1.stats.atk*moveList[move1].basePower)/mon2.stats.def)
+    }
+    if (move1.category === "Special"){
+        damageToUser = (((100/5+2)*mon2.stats.spa*moveList[move1].basePower)/mon1.stats.spd)
+    } else {
+        damageToUser = (((100/5+2)*mon2.stats.atk*moveList[move1].basePower)/mon1.stats.def)
     }
 
-    
-    damage = damage * stab;
+    damageToUser = damageToUser/50
+    damageToUser += 2
+    damageToOpp = damageToOpp/50
+    damageToOpp += 2
+
+    //STAB goes here, either 1.5 or 1, for this test we will use 1.5
+    if (moveTypeUser== mon1.type[0] || moveTypeUser== mon1.type[1]){
+        stabUser = 1.5
+    } else{
+        stabUser = 1
+    }
+
+    if (moveTypeOpp== mon2.type[0] || moveTypeOpp== mon2.type[1]){
+        stabOpp = 1.5
+    } else{
+        stabOpp = 1
+    }
+
+    damageToUser =  damageToUser * stabOpp
+    damageToOpp = damageToOpp * stabUser;
 
     // Next is type modifier
     // Loop through opponent pokemons types, and add the corresponding modifier
     for (let i=0;i<mon2.type.length;i++){
-        if (typeMatrix[typeDict[moveType],[mon2.type[i]]] === 0){
+        if (typeMatrix[typeDict[moveTypeUser],[mon2.type[i]]] === 0){
             // 0 is neutral, therefore do nothing to the modifier
         }
-        else if (typeMatrix[typeDict[moveType],[mon2.type[i]]] === 1){
-            typeMod *= 2
+        else if (typeMatrix[typeDict[moveTypeUser],[mon2.type[i]]] === 1){
+            typeModUser *= 2
         }
-        else if (typeMatrix[typeDict[moveType],[mon2.type[i]]] === -1){
-            typeMod *= .5
+        else if (typeMatrix[typeDict[moveTypeUser],[mon2.type[i]]] === -1){
+            typeModUser *= .5
+        }
+    }
+
+    for (let i=0;i<mon1.type.length;i++){
+        if (typeMatrix[typeDict[moveTypeOpp],[mon2.type[i]]] === 0){
+            // 0 is neutral, therefore do nothing to the modifier
+        }
+        else if (typeMatrix[typeDict[moveTypeOpp],[mon2.type[i]]] === 1){
+            typeModOpp *= 2
+        }
+        else if (typeMatrix[typeDict[moveTypeOpp],[mon2.type[i]]] === -1){
+            typeModOpp *= .5
         }
     }
     // Making use of the typeMod here
-    damage = damage * typeMod
+    damageToOpp = damageToOpp * typeModUser
+    damageToUser = damageToUser * typeModOpp  
+
 
     // Lastly we create an arbitrary number for the final calc step Now we generate a random number between 217 and 255
-    arbitraryNum = (Math.random() * (255 - 217)) + 217
-    damage = (damage * arbitraryNum) / 255
+    arbitraryNum1 = (Math.random() * (255 - 217)) + 217
+    arbitraryNum2 = (Math.random() * (255 - 217)) + 217
+    damageToOpp = (damageToOpp * arbitraryNum1) / 255
+    damageToUser = (damageToUser*arbitraryNum2) / 255
     
-    return Math.floor(damage)   
+    return [Math.floor(damageToOpp),Math.floor(damageToUser)]   
 }
 
 let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
@@ -53,7 +89,7 @@ let blastoise = new Pokemon("Blastoise", moves)
 
 
 
-let test = calc(charizard,blastoise,"Flamethrower","Hyrdopump")
+let test = calc(charizard,blastoise,"Flamethrower","Hydropump")
 console.log(test)
 
 
