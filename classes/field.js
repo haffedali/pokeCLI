@@ -123,10 +123,10 @@ module.exports = class Field {
                 this.fieldLoop()
             }
             else {
-                for (let mon of this.user.team) {
+                this.user.team.forEach(mon => {//<<<< this is all fuckered up, if you can think of a better solution id love to here it
                     if (mon.name === select) {
                         this.user.team[this.activeIn] = { ...this.activeMon }
-                        this.activeMon = mon
+                        this.activeMon = {...mon}
                         if(this.isrunningTurn){
                             //this.calcOppAction()
                             let oppAttack = "megapunch"
@@ -134,7 +134,7 @@ module.exports = class Field {
                         }
                         this.fieldLoop()//will need to check battle state
                     }
-                }
+                })
             }
         })
     }
