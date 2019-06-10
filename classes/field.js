@@ -65,7 +65,7 @@ module.exports = class Field {
     }
 
     actionCheck(actor, target, action, cb){
-        if(!this.isrunningTurn) return;
+        if(!this.isrunningTurn) throw 'uh oh! this shouldnt be possible!';
         if(actor.stats.hp <= 0 ) {
             console.log(`${actor.name} is unable to battle!`)
             if(actor === this.activeMon) return this.switchMon();
@@ -129,6 +129,7 @@ module.exports = class Field {
                         this.activeMon = mon
                         if(this.isrunningTurn){
                             //this.calcOppAction()
+                            let oppAttack = "megapunch"
                             actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
                         }
                         this.fieldLoop()//will need to check battle state
@@ -161,7 +162,7 @@ module.exports = class Field {
                     break;
 
                 case "forfeit":
-                default: 23
+                default: 
                     console.log(`
                    _______________________   +
                  /[                       ]  |~+ + ~+ ~
