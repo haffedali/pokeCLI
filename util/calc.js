@@ -13,6 +13,7 @@ function calc(mon1, mon2, move1, move2){
     moveTypeOpp = moveList[move2].type
 
     // Damage calc pre modifiers (ie. stab, type effectiveness)
+    // These four if statements cover getting a basic damage for a special for physical attack
     if (move1.category === "Special"){
         damageToOpp = (((100/5+2)*mon1.stats.spa*moveList[move1].basePower)/mon2.stats.spd)
     } else {
@@ -24,12 +25,13 @@ function calc(mon1, mon2, move1, move2){
         damageToUser = (((100/5+2)*mon2.stats.atk*moveList[move2].basePower)/mon1.stats.def)
     }
 
+    // Here I am just followig their math
     damageToUser = damageToUser/50
     damageToUser += 2
     damageToOpp = damageToOpp/50
     damageToOpp += 2
 
-    //STAB goes here, either 1.5 or 1, for this test we will use 1.5
+    // This is a STAB check, if it is stab,then the stab modifier goes to 1.5 instead of one
     if (moveTypeUser== mon1.type[0] || moveTypeUser== mon1.type[1]){
         stabUser = 1.5
     } else{
@@ -42,6 +44,7 @@ function calc(mon1, mon2, move1, move2){
         stabOpp = 1
     }
 
+    // Here we apply the damage modifier
     damageToUser =  damageToUser * stabOpp
     damageToOpp = damageToOpp * stabUser;
 
@@ -53,7 +56,6 @@ function calc(mon1, mon2, move1, move2){
         }
         else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === 1){
             typeModUser *= 2
-            console.log("Fire is super effective")
         }
         else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === -1){
             typeModUser *= .5
@@ -69,7 +71,6 @@ function calc(mon1, mon2, move1, move2){
         }
         else if (typeMatrix[typeDict[moveTypeOpp]][typeDict[[mon1.type[i]]]] === -1){
             typeModOpp *= .5
-            console.log("Grass is weak")
         }
     }
     // Making use of the typeMod here
@@ -83,10 +84,7 @@ function calc(mon1, mon2, move1, move2){
     damageToOpp = (damageToOpp * arbitraryNum1) / 255
     damageToUser = (damageToUser*arbitraryNum2) / 255
     
-
-
-    console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
-    console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
+    // And boom! This function will return a damage value for each pokemons attack `[move1,move2]`
     return [Math.floor(damageToOpp),Math.floor(damageToUser)]   
 }
 
