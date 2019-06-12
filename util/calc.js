@@ -85,8 +85,8 @@ function calc(mon1, mon2, move1, move2){
     
 
 
-    console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
-    console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
+    // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
+    // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
     return [Math.floor(damageToOpp),Math.floor(damageToUser)]   
 }
 
