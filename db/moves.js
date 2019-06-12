@@ -515,7 +515,16 @@ const moveList = {
 		type: "Steel",
 		zMoveEffect: 'clearnegativeboost',
 		contestType: "Tough",
-	}
+	},
+	"Fire Blast": {
+		basePower: 110,
+		desc: "Has a 30% chance to burn the target.",
+		shortDesc: "30% chance to burn the target.",
+		secondary: {
+			chance: 30,
+			status: 'brn',
+		},
+	},
     
     
 }

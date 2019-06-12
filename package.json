@@ -4,7 +4,7 @@
   "description": "Play and learn competitive pokemon from the comfort of your command line!",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "play": "clear && node main"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/haffedali/pokeCLI/issues"
   },
-  "homepage": "https://github.com/haffedali/pokeCLI#readme"
+  "homepage": "https://github.com/haffedali/pokeCLI#readme",
+  "dependencies": {
+    "inquirer": "^6.3.1"
+  }
 }

@@ -1,4 +1,5 @@
 module.exports = {
     Pokemon: require("./pokemon"),
-    Field: require("./field") 
+    Field: require("./field"),
+    Team: require("./team")
 }
