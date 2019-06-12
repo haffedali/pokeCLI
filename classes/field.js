@@ -60,7 +60,7 @@ module.exports = class Field {
 
 
     turnAction(actor, target, action){
-        actor.useAttack(action, target)
+        actor.useAttack(action, target)//plug in haffed code here
         console.log(`${actor} used ${action}!`)
     }
 
@@ -84,14 +84,14 @@ module.exports = class Field {
                 name: "attack",
                 message: "CHOOSE ATTACK",
                 type: "rawlist",
-                choices: this.activeMon.moves.map(mv => mv)
+                choices: this.activeMon.moves
             }
         ]).then(({ attack }) => {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
             //this.calcOppAction() <need to figure this out
-            let oppAttack = "megapunch"
-            if(this.activeMon.stats.speed > this.activeOpp.stats.speed){
+            let oppAttack = "megapunch"//haffeds damage calc already checks both, so figure that out
+            if(this.activeMon.stats.speed > this.activeOpp.stats.speed){ // lets move this to calc
                 actionCheck(this.activeMon, this.activeOpp, attack, this.turnAction)
                 actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
             }else{
@@ -176,6 +176,39 @@ module.exports = class Field {
                     break;
             }
         })
+    }
+
+    
+    loop() {
+        // console.log("Hello trainer!")
+        // console.log("Today you are facing off against HoffBot and his trusty " + this.opponent.name + "!")
+
+        if (this.isActive){
+            inquirer.prompt([{
+                type: 'list',
+                name: 'move',
+                message: 'Let the battle begin!',
+                choices: this.user.moves
+            }]).then(ans =>{
+
+                //Need the AI Opp to pick a move here and replace 'chicken'
+                let damage = damageCalc(this.user, this.opponent, ans.move, "Gigadrain")
+                let damageOpp = damage[0]
+                let damageUser = damage[1]
+                this.opponent.health -= damageOpp
+                this.user.health -= damageUser
+
+                console.log(`Your ${this.user.name} has ${this.user.health} health remaining!`)
+                console.log(`HoffBot's ${this.opponent.name} has ${this.opponent.health} remaining!`)
+
+                if (this.opponent.health > 0 && this.user.health > 0){
+                    this.loop()
+                }
+                else {
+                    console.log("GREAT JOB")
+                }
+            })
+        }
     }
 
 }
