@@ -87,7 +87,7 @@ module.exports = class Field {
             {
                 name: "attack",
                 message: "CHOOSE ATTACK",
-                type: "rawlist",
+                type: "list",
                 choices: this.activeMon.moves
             }
         ]).then(({ attack }) => {
@@ -153,7 +153,7 @@ module.exports = class Field {
                 name: "action",
                 type: "rawlist",
                 message: "|0>- SELECT AN ACTION -<0|",
-                choices: ["ATTACK", "SWITCH", "FORFEIT"]
+                choices: ["ATTACK", "SWITCH", "FORFEIT","TEST"]
             }
         ]).then(({ action }) => {
             switch (action.toLowerCase()) {
@@ -166,6 +166,9 @@ module.exports = class Field {
                 case "switch":
                     this.switchMon();
                     break;
+                
+                case "test":
+                    console.log(this.user)
 
                 case "forfeit":
                 default: 
