@@ -85,6 +85,10 @@ function calc(mon1, mon2, move1, move2){
     damageToUser = (damageToUser*arbitraryNum2) / 255
     
     // And boom! This function will return a damage value for each pokemons attack `[move1,move2]`
+
+
+    // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
+    // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
     return [Math.floor(damageToOpp),Math.floor(damageToUser)]   
 }
 
