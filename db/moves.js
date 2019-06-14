@@ -461,7 +461,7 @@ const moveList = {
 		zMovePower: 100,
 		contestType: "Cool",
     },
-    "megapunch": {
+    "Megapunch": {
 		num: 5,
 		accuracy: 85,
 		basePower: 80,
@@ -524,7 +524,29 @@ const moveList = {
 			chance: 30,
 			status: 'brn',
 		},
-	},
+		"Thunderbolt": {
+			num: 85,
+			accuracy: 100,
+			basePower: 90,
+			category: "Special",
+			desc: "Has a 10% chance to paralyze the target.",
+			shortDesc: "10% chance to paralyze the target.",
+			id: "thunderbolt",
+			isViable: true,
+			name: "Thunderbolt",
+			pp: 15,
+			priority: 0,
+			flags: {protect: 1, mirror: 1},
+			secondary: {
+				chance: 10,
+				status: 'par',
+			},
+			target: "normal",
+			type: "Electric",
+			zMovePower: 175,
+			contestType: "Cool",
+		},
+	}
     
     
 }

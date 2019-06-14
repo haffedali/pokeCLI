@@ -50,14 +50,14 @@ function calc(mon1, mon2, move1, move2){
 
     // Next is type modifier
     // Loop through opponent pokemons types, and add the corresponding modifier
-    for (let i=0;i<mon2.type.length;i++){
-        if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === 0){
+    for (let j=0;j<mon2.type.length;j++){
+        if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 0){
             // 0 is neutral, therefore do nothing to the modifier
         }
-        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === 1){
+        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 1){
             typeModUser *= 2
         }
-        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[i]]] === -1){
+        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === -1){
             typeModUser *= .5
         }
     }

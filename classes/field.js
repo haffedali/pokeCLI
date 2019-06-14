@@ -1,4 +1,6 @@
 const inquirer = require("inquirer")
+const damageCalc = require("../util/calc")
+const fakeAi = require("../util/decision")
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {
@@ -37,8 +39,8 @@ module.exports = class Field {
             blankSpaceGen(this.user.team[0].name, 12),
             blankSpaceGen(this.user.team[1].name, 12),
             blankSpaceGen(this.user.team[2].name, 12),
-            blankSpaceGen(JSON.stringify(this.activeOpp.stats.hp), 8),
-            blankSpaceGen(JSON.stringify(this.activeMon.stats.hp), 8),
+            blankSpaceGen(JSON.stringify(this.activeOpp.health), 8),
+            blankSpaceGen(JSON.stringify(this.activeMon.health), 8),
             blankSpaceGen("", 32)
         ]
 
@@ -61,7 +63,7 @@ module.exports = class Field {
 
     turnAction(target, damage){
         target.takeDamage(damage)//plug in haffed code here
-        console.log(`${target} took ${damage} points of damage!`)
+        console.log(`${target.name} took ${damage} points of damage!`)
     }
 
     actionCheck(actor, target, damage){
@@ -74,7 +76,7 @@ module.exports = class Field {
             if(actor === this.activeMon) return this.switchMon();
             if(actor === this.activeOpp) return this.oppSwitch();//<need to define this action
         }
-        turnAction(target, damage)
+        this.turnAction(target, damage)
     }
     
     attackAction() {
@@ -93,16 +95,16 @@ module.exports = class Field {
         ]).then(({ attack }) => {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
-
+            fakeAi(this.activeMon, this.activeOpp);
             let oppAttack = "megapunch"
-            let damage = damageCalc(this.user, this.opponent, attack, oppAttack)
+            let damage = damageCalc(this.activeMon, this.activeOpp, attack, oppAttack)
             
             if(this.activeMon.stats.speed > this.activeOpp.stats.speed){ // lets move this to calc
-                actionCheck(this.activeMon, this.activeOpp, damage[0])
-                actionCheck(this.activeOpp, this.activeMon, damage[1])
+                this.actionCheck(this.activeOpp, this.activeMon, damage[1])
+                this.actionCheck(this.activeMon, this.activeOpp, damage[0])
             }else{
-                actionCheck(this.activeOpp, this.activeMon, damage[1])
-                actionCheck(this.activeMon, this.activeOpp, damage[0])
+                this.actionCheck(this.activeOpp, this.activeMon, damage[1])
+                this.actionCheck(this.activeMon, this.activeOpp, damage[0])
             }
             this.fieldLoop()
 
