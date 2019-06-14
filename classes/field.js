@@ -59,23 +59,27 @@ module.exports = class Field {
     }
 
 
-    turnAction(actor, target, action){
-        actor.useAttack(action, target)//plug in haffed code here
-        console.log(`${actor} used ${action}!`)
+    turnAction(target, damage){
+        target.takeDamage(damage)//plug in haffed code here
+        console.log(`${target} took ${damage} points of damage!`)
     }
 
-    actionCheck(actor, target, action, cb){
+    actionCheck(actor, target, damage){
         if(!this.isrunningTurn) throw 'uh oh! this shouldnt be possible!';
+        //need to check status, if par, add miss chance, if burn, divide in half if froze/sleep skip turn
+        
         if(actor.stats.hp <= 0 ) {
+            this.isrunningTurn = false
             console.log(`${actor.name} is unable to battle!`)
             if(actor === this.activeMon) return this.switchMon();
-            if(actor === this.activeOpp) return this.oppSwicth();//<need to define this action
+            if(actor === this.activeOpp) return this.oppSwitch();//<need to define this action
         }
-        cb(actor, target, action)
+        turnAction(target, damage)
     }
     
     attackAction() {
-        /*loop throiugh the moves to generate choices,
+        /*
+          loop throiugh the moves to generate choices,
           once the player chooses the move it will store it, and then select the opponetnts move,
           then it resolve the coices
         */
@@ -89,14 +93,16 @@ module.exports = class Field {
         ]).then(({ attack }) => {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
-            //this.calcOppAction() <need to figure this out
-            let oppAttack = "megapunch"//haffeds damage calc already checks both, so figure that out
+
+            let oppAttack = "megapunch"
+            let damage = damageCalc(this.user, this.opponent, attack, oppAttack)
+            
             if(this.activeMon.stats.speed > this.activeOpp.stats.speed){ // lets move this to calc
-                actionCheck(this.activeMon, this.activeOpp, attack, this.turnAction)
-                actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
+                actionCheck(this.activeMon, this.activeOpp, damage[0])
+                actionCheck(this.activeOpp, this.activeMon, damage[1])
             }else{
-                actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
-                actionCheck(this.activeMon, this.activeOpp, attack, this.turnAction)
+                actionCheck(this.activeOpp, this.activeMon, damage[1])
+                actionCheck(this.activeMon, this.activeOpp, damage[0])
             }
             this.fieldLoop()
 
@@ -123,14 +129,14 @@ module.exports = class Field {
                 this.fieldLoop()
             }
             else {
-                this.user.team.forEach(mon => {//<<<< this is all fuckered up, if you can think of a better solution id love to here it
+                this.user.team.forEach(mon => {
                     if (mon.name === select) {
                         this.user.team[this.activeIn] = { ...this.activeMon }
                         this.activeMon = {...mon}
                         if(this.isrunningTurn){
                             //this.calcOppAction()
                             let oppAttack = "megapunch"
-                            actionCheck(this.activeOpp, this.activeMon, oppAttack, this.turnAction)
+                            actionCheck(this.activeOpp, this.activeMon, oppAttack)
                         }
                         this.fieldLoop()//will need to check battle state
                     }
@@ -171,7 +177,7 @@ module.exports = class Field {
                 ||[                       ]  |
                 |+[_______________________]  |
                 |/(/)(/(/)(/(/)/(/)(/(/)(/  [=]     
-                `)
+                    `)
                     process.exit()
                     break;
             }
@@ -179,36 +185,36 @@ module.exports = class Field {
     }
 
     
-    loop() {
-        // console.log("Hello trainer!")
-        // console.log("Today you are facing off against HoffBot and his trusty " + this.opponent.name + "!")
+    // loop() {
+    //     // console.log("Hello trainer!")
+    //     // console.log("Today you are facing off against HoffBot and his trusty " + this.opponent.name + "!")
 
-        if (this.isActive){
-            inquirer.prompt([{
-                type: 'list',
-                name: 'move',
-                message: 'Let the battle begin!',
-                choices: this.user.moves
-            }]).then(ans =>{
+    //     if (this.isActive){
+    //         inquirer.prompt([{
+    //             type: 'list',
+    //             name: 'move',
+    //             message: 'Let the battle begin!',
+    //             choices: this.user.moves
+    //         }]).then(ans =>{
 
-                //Need the AI Opp to pick a move here and replace 'chicken'
-                let damage = damageCalc(this.user, this.opponent, ans.move, "Gigadrain")
-                let damageOpp = damage[0]
-                let damageUser = damage[1]
-                this.opponent.health -= damageOpp
-                this.user.health -= damageUser
+    //             //Need the AI Opp to pick a move here and replace 'chicken'
+    //             let damage = damageCalc(this.user, this.opponent, ans.move, "Gigadrain")
+    //             let damageOpp = damage[0]
+    //             let damageUser = damage[1]
+    //             this.opponent.health -= damageOpp
+    //             this.user.health -= damageUser
 
-                console.log(`Your ${this.user.name} has ${this.user.health} health remaining!`)
-                console.log(`HoffBot's ${this.opponent.name} has ${this.opponent.health} remaining!`)
+    //             console.log(`Your ${this.user.name} has ${this.user.health} health remaining!`)
+    //             console.log(`HoffBot's ${this.opponent.name} has ${this.opponent.health} remaining!`)
 
-                if (this.opponent.health > 0 && this.user.health > 0){
-                    this.loop()
-                }
-                else {
-                    console.log("GREAT JOB")
-                }
-            })
-        }
-    }
+    //             if (this.opponent.health > 0 && this.user.health > 0){
+    //                 this.loop()
+    //             }
+    //             else {
+    //                 console.log("GREAT JOB")
+    //             }
+    //         })
+    //     }
+    // }
 
 }
