@@ -13,7 +13,7 @@ class Pokemon {
         // this.moves = moves;
         //JUST A BLOCK FOR THE HEALTH CALC, DONT WANT IT GETTING TOO MESSY
         //For now, assuming perfect IV, max level, and decent EV's
-        this.health = (((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110
+        this.health = Math.floor((((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110)
     }
 
     takeDamage(damage, status = null){//must be a number, generrated form
