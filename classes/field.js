@@ -95,8 +95,7 @@ module.exports = class Field {
         ]).then(({ attack }) => {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
-            fakeAi(this.activeMon, this.activeOpp);
-            let oppAttack = "megapunch"
+            let oppAttack = fakeAi(this.activeMon, this.activeOpp);
             let damage = damageCalc(this.activeMon, this.activeOpp, attack, oppAttack)
             
             if(this.activeMon.stats.speed > this.activeOpp.stats.speed){ // lets move this to calc
