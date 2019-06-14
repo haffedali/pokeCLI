@@ -62,6 +62,7 @@ module.exports = class Field {
 
 
     turnAction(target, damage){
+        console.log("HOW THE FUCK DOES THIS WORK")
         target.takeDamage(damage)//plug in haffed code here
         console.log(`${target.name} took ${damage} points of damage!`)
     }
@@ -70,13 +71,16 @@ module.exports = class Field {
         if(!this.isrunningTurn) throw 'uh oh! this shouldnt be possible!';
         //need to check status, if par, add miss chance, if burn, divide in half if froze/sleep skip turn
         
-        if(actor.stats.hp <= 0 ) {
+        if(actor.health <= 0 ) {
             this.isrunningTurn = false
             console.log(`${actor.name} is unable to battle!`)
             if(actor === this.activeMon) return this.switchMon();
             if(actor === this.activeOpp) return this.oppSwitch();//<need to define this action
+        }else{
+            this.turnAction(target, damage)
         }
-        this.turnAction(target, damage)
+        // Was firing off on switches
+        // this.turnAction(target, damage)
     }
     
     attackAction() {
@@ -95,8 +99,7 @@ module.exports = class Field {
         ]).then(({ attack }) => {
             console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
-            fakeAi(this.activeMon, this.activeOpp);
-            let oppAttack = "megapunch"
+            let oppAttack = fakeAi(this.activeMon, this.activeOpp);
             let damage = damageCalc(this.activeMon, this.activeOpp, attack, oppAttack)
             
             if(this.activeMon.stats.speed > this.activeOpp.stats.speed){ // lets move this to calc
@@ -113,14 +116,20 @@ module.exports = class Field {
 
 
     switchMon() {///MEMORY LEAK DONT USE TILL ITS FIXED
-
+        let team = [];
+        for (let i=0;i<this.user.team.length;i++){
+            if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
+                team.push(this.user.team[i])
+            }
+        }
         //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
         inquirer.prompt([
             {
                 name: "select",
                 type: "rawlist",
                 message: "SELECT A MON",
-                choices: [...this.user.team.map(mon => mon.name), "RETURN"]
+                choices: team
+                // choices: [...this.user.team.map(mon => mon.name), "RETURN"]
             }
         ]).then(({ select }) => {
             if (select === this.activeMon.name) {
@@ -131,18 +140,29 @@ module.exports = class Field {
                 this.fieldLoop()
             }
             else {
-                this.user.team.forEach(mon => {
-                    if (mon.name === select) {
-                        this.user.team[this.activeIn] = { ...this.activeMon }
-                        this.activeMon = {...mon}
-                        if(this.isrunningTurn){
-                            //this.calcOppAction()
-                            let oppAttack = "megapunch"
-                            actionCheck(this.activeOpp, this.activeMon, oppAttack)
-                        }
-                        this.fieldLoop()//will need to check battle state
+                let choice = 0
+                for (let i=0;i<this.user.team.length;i++){
+                    if (this.user.team[i].name === select){
+                        choice = i
                     }
-                })
+                }
+                
+                this.activeMon = this.user.team[choice];
+                this.fieldLoop()//will need to check battle state
+                console.log("debugheremyman")
+                // this.user.team.forEach(mon => {
+                //     if (mon.name === select) {
+                //         this.user.team[this.activeIn] = { ...this.activeMon }
+                //         this.activeMon = {...mon}
+                //         if(this.isrunningTurn){
+                //             console.log("turnrunning")
+                //             //this.calcOppAction()
+                //             // let oppAttack = "megapunch"
+                //             // actionCheck(this.activeOpp, this.activeMon, oppAttack)
+                //         }
+                //         this.fieldLoop()//will need to check battle state
+                //     }
+                // })
             }
         })
     }
@@ -170,7 +190,7 @@ module.exports = class Field {
                     break;
                 
                 case "test":
-                    console.log(this.user)
+                    console.log(this.user.team[2])
 
                 case "forfeit":
                 default: 

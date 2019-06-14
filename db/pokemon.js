@@ -68,7 +68,7 @@ let pokemonDex = {
         types: ["Rock", "Ground"],
 		baseStats: {hp: 80, atk: 120, def: 130, spa: 55, spd: 65, spe: 45},
         name: "Golem",
-        moveSet: ["Body Slam", "Earthquake", "Rock Slide", "Explosion"]
+        moveSet: ["Megapunch", "Flamethrower", "Rockslide", "Explosion"]
     },
     "Machamp": {
         num: 68,
