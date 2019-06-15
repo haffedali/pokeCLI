@@ -3,6 +3,10 @@ const typeMatrix = require("../util/typeMatrix")
 const typeDict = require("../util/typeDict")
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0e3e30fdf66c61fe1aba026df82af5e27bc7e964
 function decide(mon1, mon2){
     let viability = 0;
     let selection = {}
@@ -30,10 +34,12 @@ function decide(mon1, mon2){
     }
 
     function selectionCheck(options){
-        let top = 0
-        let result = 0;
+        let top = -5
+        let result = "";
         for (let x in options){
-            if (moveList[x].basePower > top){
+            console.log(options[x])
+            if (options[x] > top){
+                top = options[x];
                 result = x;
             }
         }
@@ -55,7 +61,7 @@ function decide(mon1, mon2){
     }
 
     
-    // console.log(selection)
+    
     finalChoice = selectionCheck(selection)
     // console.log(finalChoice)
     return finalChoice
