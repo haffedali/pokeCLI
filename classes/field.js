@@ -101,13 +101,9 @@ module.exports = class Field {
             let oppAttack = fakeAi(this.activeMon, this.activeOpp);
             let damage = damageCalc(this.activeMon, this.activeOpp, attack, oppAttack)
             
-            if(this.activeMon.stats.speed > this.activeOpp.stats.speed){ // lets move this to calc
-                this.actionCheck(this.activeOpp, this.activeMon, damage[1])
-                this.actionCheck(this.activeMon, this.activeOpp, damage[0])
-            }else{
-                this.actionCheck(this.activeOpp, this.activeMon, damage[1])
-                this.actionCheck(this.activeMon, this.activeOpp, damage[0])
-            }
+            this.turnAction(this.activeMon, damage[1])
+            this.turnAction(this.activeOpp, damage[0])
+
             this.fieldLoop()
 
         })
@@ -147,21 +143,9 @@ module.exports = class Field {
                 }
                 
                 this.activeMon = this.user.team[choice];
-                this.fieldLoop()//will need to check battle state
-                
-                // this.user.team.forEach(mon => {
-                //     if (mon.name === select) {
-                //         this.user.team[this.activeIn] = { ...this.activeMon }
-                //         this.activeMon = {...mon}
-                //         if(this.isrunningTurn){
-                //             console.log("turnrunning")
-                //             //this.calcOppAction()
-                //             // let oppAttack = "megapunch"
-                //             // actionCheck(this.activeOpp, this.activeMon, oppAttack)
-                //         }
-                //         this.fieldLoop()//will need to check battle state
-                //     }
-                // })
+
+                //Conditional before fieldLoop to check if we need to execute and attack/damage
+                this.fieldLoop()
             }
         })
     }
@@ -178,6 +162,8 @@ module.exports = class Field {
         }else{
             console.log("loser")
         }
+
+        //Conditional before fieldLoop to check if we need to execute and attack/damage
         this.fieldLoop()
         
     }

@@ -61,7 +61,7 @@ let pokemonDex = {
         types: ["Water"],
         baseStats: {hp: 130, atk: 65, def: 60, spa: 110, spd: 110, spe: 65},
         name: "Vaporeon",
-        moveSet: ["Surf", "Blizzard", "Rest", "Mimic"]
+        moveSet: ["Surf", "Airslash", "Icebeam", "Sludgebomb"]
     },
     "Golem": {
         num: 76,
