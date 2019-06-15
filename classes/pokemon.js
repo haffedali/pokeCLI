@@ -18,7 +18,7 @@ class Pokemon {
         this.status = status
         this.health -= damage
     }
-
+    
 
 
 }

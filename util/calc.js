@@ -1,7 +1,7 @@
 const moveList = require("../db/moves")
 const Pokemon = require("../classes/pokemon")
-const typeMatrix = require("../util/typeMatrix")
-const typeDict = require("../util/typeDict")
+const typeMatrix = require("./typeMatrix")
+const typeDict = require("./typeDict")
 
 function calc(mon1, mon2, move1, move2){
     //initializing important variables

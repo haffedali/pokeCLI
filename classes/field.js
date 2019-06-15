@@ -1,6 +1,5 @@
 const inquirer = require("inquirer")
-const damageCalc = require("../util/newCalc")
-const fakeAi = require("../util/decision")
+const { fakeAi, damageCalc } = require("../util")
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {
@@ -16,15 +15,15 @@ module.exports = class Field {
     /*methods:
 
         1) Field loop [X]
-        2) Action prompt
+        2) Action prompt[X]
             -will iquire:
-                forfeit(x), switchMon(), attack(X) 
+                forfeit(x), switchMon(X), attack(X) 
         3) Forfeit [X]
         4) Main Attack Action  < discuss these  
         4.1) User Attack Calc ( actMon, actOpp )
         4.2) Opp Attack Calc  ( actMon, actOpp )
-        5) switchMon
-
+        5) switchMon[x]
+        6) status
     */
 
     //got to high to code anything too complex so i made it look pretty-ish
@@ -127,7 +126,7 @@ module.exports = class Field {
                 name: "select",
                 type: "rawlist",
                 message: "SELECT A MON",
-                choices: team
+                choices: [...team, "RETURN"]
                 // choices: [...this.user.team.map(mon => mon.name), "RETURN"]
             }
         ]).then(({ select }) => {
@@ -208,7 +207,7 @@ module.exports = class Field {
                     ||[                       ]  |
                     |+[_______________________]  |
                     |/(/)(/(/)(/(/)/(/)(/(/)(/  [=]     
-                        `)
+                                    `)
                         process.exit()
                         break;
                 }
