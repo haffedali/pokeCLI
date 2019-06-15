@@ -1,5 +1,5 @@
 const inquirer = require("inquirer")
-const damageCalc = require("../util/calc")
+const damageCalc = require("../util/newCalc")
 const fakeAi = require("../util/decision")
 //this will be the class that holds all game actions
 module.exports = class Field {
@@ -62,6 +62,8 @@ module.exports = class Field {
 
 
     turnAction(target, damage){
+        //Status check here, if status apply like so
+        // status(this.status, damage) //return damage       0 if sleep, .5 if burn
         target.takeDamage(damage)//plug in haffed code here
         console.log(`${target.name} took ${damage} points of damage!`)
     }
@@ -96,13 +98,15 @@ module.exports = class Field {
                 choices: this.activeMon.moves
             }
         ]).then(({ attack }) => {
-            console.log(attack)
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
             let oppAttack = fakeAi(this.activeMon, this.activeOpp);
-            let damage = damageCalc(this.activeMon, this.activeOpp, attack, oppAttack)
+
+            let damage1 = damageCalc(this.activeMon, this.activeOpp, attack)
+            let damage2 = damageCalc(this.activeOpp,this.activeMon, oppAttack)
             
-            this.turnAction(this.activeMon, damage[1])
-            this.turnAction(this.activeOpp, damage[0])
+
+            this.turnAction(this.activeOpp, damage1)
+            this.turnAction(this.activeMon, damage2)
 
             this.fieldLoop()
 
