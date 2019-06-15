@@ -1,10 +1,5 @@
 const inquirer = require("inquirer")
-<<<<<<< HEAD
 const { fakeAi, damageCalc } = require("../util")
-=======
-const damageCalc = require("../util/newCalc")
-const fakeAi = require("../util/decision")
->>>>>>> 0e3e30fdf66c61fe1aba026df82af5e27bc7e964
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {

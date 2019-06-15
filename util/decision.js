@@ -3,10 +3,6 @@ const typeMatrix = require("../util/typeMatrix")
 const typeDict = require("../util/typeDict")
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0e3e30fdf66c61fe1aba026df82af5e27bc7e964
 function decide(mon1, mon2){
     let viability = 0;
     let selection = {}
