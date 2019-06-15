@@ -115,7 +115,7 @@ module.exports = class Field {
     }
 
 
-    switchMon() {///MEMORY LEAK DONT USE TILL ITS FIXED
+    switchMon() {
         let team = [];
         for (let i=0;i<this.user.team.length;i++){
             if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
@@ -128,7 +128,7 @@ module.exports = class Field {
                 name: "select",
                 type: "rawlist",
                 message: "SELECT A MON",
-                choices: team
+                choices: [...team, "RETURN"]
                 // choices: [...this.user.team.map(mon => mon.name), "RETURN"]
             }
         ]).then(({ select }) => {

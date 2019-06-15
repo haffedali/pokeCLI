@@ -3,31 +3,6 @@ const typeMatrix = require("../util/typeMatrix")
 const typeDict = require("../util/typeDict")
 
 
-function selectionCheck(options){
-    let top = 0
-    let result = 0;
-    for (let x in options){
-        if (moveList[x].basePower > top){
-            result = x;
-        }
-    }
-    return result
-    // console.log(options)
-    // if (options.length > 1) {
-    //     let top = 0
-    //     for (let i=0;i<options.length;i++){
-    //         // console.log(moveList[options[i]].basePower);
-    //         if (moveList[options[i]].basePower > top){
-    //             top = moveList[options[i]].basePower
-    //         }else{
-
-    //             options = options.splice(i,1)
-    //         }
-    //     }
-    // }
-    // return options
-}
-
 function decide(mon1, mon2){
     let viability = 0;
     let selection = {}
