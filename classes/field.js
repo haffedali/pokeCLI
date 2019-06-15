@@ -46,29 +46,28 @@ module.exports = class Field {
 
 
         console.log(
-            `  
-    ____________________________________________________________
-   | Roster      |                                | ${display[0]}|
-   | _________   |                                | HP:${display[5]}|
-   | ${display[2]}|                                |____________|
-   | ${display[3]}|                                             |
-   | ${display[4]}|____________                                 |
-   |             | ${display[1]}|${display[7]}|
-   |             | HP:${display[6]}|${display[7]}|
-   |_____________|____________|________________________________|
-            `
-        )
+                     `  
+             ____________________________________________________________
+            | Roster      |                                | ${display[0]}|
+            | _________   |                                | HP:${display[5]}|
+            | ${display[2]}|                                |____________|
+            | ${display[3]}|                                             |
+            | ${display[4]}|____________                                 |
+            |             | ${display[1]}|${display[7]}|
+            |             | HP:${display[6]}|${display[7]}|
+            |_____________|____________|________________________________|
+                     `
+                 )
     }
 
 
     turnAction(target, damage){
-        console.log("HOW THE FUCK DOES THIS WORK")
         target.takeDamage(damage)//plug in haffed code here
         console.log(`${target.name} took ${damage} points of damage!`)
     }
 
     actionCheck(actor, target, damage){
-        if(!this.isrunningTurn) throw 'uh oh! this shouldnt be possible!';
+        // if(!this.isrunningTurn) throw 'uh oh! this shouldnt be possible!';
         //need to check status, if par, add miss chance, if burn, divide in half if froze/sleep skip turn
         
         if(actor.health <= 0 ) {
@@ -115,7 +114,7 @@ module.exports = class Field {
     }
 
 
-    switchMon() {///MEMORY LEAK DONT USE TILL ITS FIXED
+    switchMon() {
         let team = [];
         for (let i=0;i<this.user.team.length;i++){
             if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
@@ -149,7 +148,7 @@ module.exports = class Field {
                 
                 this.activeMon = this.user.team[choice];
                 this.fieldLoop()//will need to check battle state
-                console.log("debugheremyman")
+                
                 // this.user.team.forEach(mon => {
                 //     if (mon.name === select) {
                 //         this.user.team[this.activeIn] = { ...this.activeMon }
@@ -167,46 +166,68 @@ module.exports = class Field {
         })
     }
 
+    oppSwitch(){
+        let team = []
+        for (let i=0;i<this.opponent.team.length;i++){
+            if (this.opponent.team[i].health > 0 && this.opponent.team[i] !== this.activeOpp){
+                team.push(this.opponent.team[i])
+            }
+        }
+        if (team[0]){
+            this.activeOpp = team[0]
+        }else{
+            console.log("loser")
+        }
+        this.fieldLoop()
+        
+    }
+
     fieldLoop() {
         //display Current mons
         this.fieldDisplay()
-        inquirer.prompt([
-            {
-                name: "action",
-                type: "rawlist",
-                message: "|0>- SELECT AN ACTION -<0|",
-                choices: ["ATTACK", "SWITCH", "FORFEIT","TEST"]
-            }
-        ]).then(({ action }) => {
-            switch (action.toLowerCase()) {
-                
-                case "attack":
-                    this.isrunningTurn = true;
-                    this.attackAction();
-                    break;
-
-                case "switch":
-                    this.switchMon();
-                    break;
-                
-                case "test":
-                    console.log(this.user.team[2])
-
-                case "forfeit":
-                default: 
-                    console.log(`
-                   _______________________   +
-                 /[                       ]  |~+ + ~+ ~
-                ||[                       ]  |~ (^_^) +~
-                |+[ THANK YOU FOR PLAYING!]  |~+ + ~+ ~
-                ||[                       ]  |
-                |+[_______________________]  |
-                |/(/)(/(/)(/(/)/(/)(/(/)(/  [=]     
-                    `)
-                    process.exit()
-                    break;
-            }
-        })
+        if (this.activeMon.health > 0 && this.activeOpp.health > 0){
+            inquirer.prompt([
+                {
+                    name: "action",
+                    type: "rawlist",
+                    message: "|0>- SELECT AN ACTION -<0|",
+                    choices: ["ATTACK", "SWITCH", "FORFEIT","TEST"]
+                }
+            ]).then(({ action }) => {
+                switch (action.toLowerCase()) {
+                    
+                    case "attack":
+                        this.isrunningTurn = true;
+                        this.attackAction();
+                        break;
+    
+                    case "switch":
+                        this.switchMon();
+                        break;
+                    
+                    case "test":
+                        console.log(this.user.team[2])
+    
+                    case "forfeit":
+                    default: 
+                        console.log(`
+                       _______________________   +
+                     /[                       ]  |~+ + ~+ ~
+                    ||[                       ]  |~ (^_^) +~
+                    |+[ THANK YOU FOR PLAYING!]  |~+ + ~+ ~
+                    ||[                       ]  |
+                    |+[_______________________]  |
+                    |/(/)(/(/)(/(/)/(/)(/(/)(/  [=]     
+                        `)
+                        process.exit()
+                        break;
+                }
+            })
+        }else if (this.activeMon.health <= 0){
+            this.switchMon()
+        }else if (this.activeOpp.health <= 0){
+            this.oppSwitch()
+        }
     }
 
     
