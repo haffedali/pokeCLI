@@ -1,7 +1,5 @@
 const { moves, pokemon } = require("../db")
-// const moveList = db.moves
-// const pokemon = db.pokemon
-// string,string,obj,arr
+
 class Pokemon {
     constructor(name) {
         this.name = name
@@ -20,6 +18,8 @@ class Pokemon {
         this.status = status
         this.health -= damage
     }
+
+
 
 }
 

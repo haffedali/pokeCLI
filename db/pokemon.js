@@ -20,14 +20,14 @@ let pokemonDex = {
         types: ["Grass", "Poison"],
         baseStats: {hp: 80, atk: 82, def: 83, spa: 100, spd: 100, spe: 80},
         name: "Venusaur",
-        moveSet: ["Razor Leaf", "Swords Dance" ,"Body Slam", "Sleeppowder"]
+        moveSet: ["Gigadrain", "Airslash" ,"Superpower", "Surf"]
     },
     "Pidgeot": {//add movesets
         num: 18,
         types: ["Normal", "Flying"],
         baseStats: {hp: 83, atk: 80, def: 75, spa: 70, spd: 70, spe: 101},
         name: "Pidgeot",
-        moveSet: ["Double Edge", "Hyper Beam", "Agility", "Mirror Move"]
+        moveSet: ["Aerialace", "Hyper Beam", "Agility", "Mirror Move"]
     },
     // "Nidoking": {//add movesets
     //     num: 34,
@@ -61,7 +61,7 @@ let pokemonDex = {
         types: ["Water"],
         baseStats: {hp: 130, atk: 65, def: 60, spa: 110, spd: 110, spe: 65},
         name: "Vaporeon",
-        moveSet: ["Surf", "Blizzard", "Rest", "Mimic"]
+        moveSet: ["Surf", "Airslash", "Icebeam", "Sludgebomb"]
     },
     "Golem": {
         num: 76,
