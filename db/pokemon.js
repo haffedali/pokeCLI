@@ -6,14 +6,14 @@ let pokemonDex = {
         types: ["Fire", "Flying"],
         baseStats: {hp: 78, atk: 84, def: 78, spa: 85, spd: 85, spe: 100},
         name: "Charizard",
-        moveSet: ["Fire Blast", "Earthquake","Swords Dance", "Hyper Beam"]
+        moveSet: ["Flamethrower", "Earthquake","Roost", "Airslash"]
     },
     "Blastoise": {
         num: 9,
         types: ["Water"],
         baseStats: {hp: 79, atk: 83, def: 100, spa: 85, spd: 85, spe: 78},
         name: "Blastoise",
-        moveSet: ["Blizzard", "Body Slam", "Surf", "Mimic"]
+        moveSet: ["Icebeam", "Megapunch", "Surf", "Hydropump"]
     },
     "Venusaur": {
         num: 3,
@@ -47,7 +47,7 @@ let pokemonDex = {
         types: ["Electric"],
         baseStats: {hp: 65, atk: 65, def: 60, spa: 110, spd: 110, spe: 130},
         name: "Jolteon",
-        moveSet: ["Thinderbolt", "Thunder Wave", "Pin Missile", "Body Slam"]
+        moveSet: ["Thunderbolt", "Thunder Wave", "Pin Missile", "Body Slam"]
     },
     "Flareon": {
         num: 136,
@@ -68,7 +68,7 @@ let pokemonDex = {
         types: ["Rock", "Ground"],
 		baseStats: {hp: 80, atk: 120, def: 130, spa: 55, spd: 65, spe: 45},
         name: "Golem",
-        moveSet: ["Body Slam", "Earthquake", "Rock Slide", "Explosion"]
+        moveSet: ["Megapunch", "Flamethrower", "Rockslide", "Explosion"]
     },
     "Machamp": {
         num: 68,
