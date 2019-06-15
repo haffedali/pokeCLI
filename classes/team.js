@@ -1,5 +1,4 @@
 //create a class that takes in 3 mon as an argument and builds an array based on that
-const { pokemon } = require("../db")
 const Pokemon = require("./pokemon")
 module.exports = class Team {
     constructor(starter, second, third) {

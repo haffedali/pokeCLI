@@ -1,7 +1,13 @@
 module.exports= {
-    calc: require("./calc"),
-    decision: require("./decision"),
+    
+    damageCalc: require("./calc"),
+    
+    fakeAi: require("./decision"),
+    
     status:require("./status"),
+    
     typeDict:require("./typeDict"),
+    
     typeMatrix: require("./typeMatrix"),
+
 }
