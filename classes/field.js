@@ -79,8 +79,6 @@ module.exports = class Field {
         }else{
             this.turnAction(target, damage)
         }
-        // Was firing off on switches
-        // this.turnAction(target, damage)
     }
     
     attackAction() {
@@ -97,7 +95,6 @@ module.exports = class Field {
                 choices: this.activeMon.moves
             }
         ]).then(({ attack }) => {
-            //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
             let oppAttack = fakeAi(this.activeMon, this.activeOpp);
 
             let damage1 = damageCalc(this.activeMon, this.activeOpp, attack)
@@ -218,38 +215,4 @@ module.exports = class Field {
             this.oppSwitch()
         }
     }
-
-    
-    // loop() {
-    //     // console.log("Hello trainer!")
-    //     // console.log("Today you are facing off against HoffBot and his trusty " + this.opponent.name + "!")
-
-    //     if (this.isActive){
-    //         inquirer.prompt([{
-    //             type: 'list',
-    //             name: 'move',
-    //             message: 'Let the battle begin!',
-    //             choices: this.user.moves
-    //         }]).then(ans =>{
-
-    //             //Need the AI Opp to pick a move here and replace 'chicken'
-    //             let damage = damageCalc(this.user, this.opponent, ans.move, "Gigadrain")
-    //             let damageOpp = damage[0]
-    //             let damageUser = damage[1]
-    //             this.opponent.health -= damageOpp
-    //             this.user.health -= damageUser
-
-    //             console.log(`Your ${this.user.name} has ${this.user.health} health remaining!`)
-    //             console.log(`HoffBot's ${this.opponent.name} has ${this.opponent.health} remaining!`)
-
-    //             if (this.opponent.health > 0 && this.user.health > 0){
-    //                 this.loop()
-    //             }
-    //             else {
-    //                 console.log("GREAT JOB")
-    //             }
-    //         })
-    //     }
-    // }
-
 }

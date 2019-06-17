@@ -14,7 +14,11 @@ const moveList = {
         pp: 15,
         priority: 0,
         type: "Fire",
-        target: "normal"
+				target: "normal",
+				effect: {
+					"burn": 10
+				}
+				
     },
     "Gigadrain": {
         num: 2,
