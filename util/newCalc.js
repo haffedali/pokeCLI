@@ -5,9 +5,8 @@ const typeDict = require("../util/typeDict")
 
 function calc(mon1, mon2, move1){
     //initializing important variables
-    let stabOpp,stabUser,arbitraryNum,moveTypeOpp,moveTypeUser,damageToOpp,damageToUser
+    let stabUser,moveTypeUser,damageToOpp
     let typeModUser = 1
-    let typeModOpp = 1
 
     moveTypeUser = moveList[move1].type
 
@@ -60,13 +59,29 @@ function calc(mon1, mon2, move1){
 
     damageToOpp = (damageToOpp * arbitraryNum1) / 255
 
+    let status = statusHelper(moveList[move1])
+
     
 
 
 
     // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
     // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
-    return Math.floor(damageToOpp) 
+    return [Math.floor(damageToOpp),status]
+    
+    
+    function statusHelper(move){
+        if (move.effect) {
+            for (let x in move.effect){
+                let chance = move.effect[x]
+                if (Math.random() * 100 < chance){
+                    return x
+                }else{
+                    return null
+                }
+            }
+        }
+    }
 }
 
 
@@ -78,14 +93,15 @@ function calc(mon1, mon2, move1){
 // TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE
 
 
-// let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
-// let charizard = new Pokemon("Charizard", moves)
-// let venusaur = new Pokemon("Venusaur", moves)
+let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
+let charizard = new Pokemon("Charizard", moves)
+let venusaur = new Pokemon("Venusaur", moves)
 
 
 
-// let test = calc(charizard,venusaur,"Flamethrower","Gigadrain")
-// // console.log(test)
+let test = calc(charizard,venusaur,"Flamethrower","Gigadrain")
+console.log(test)
+
 
 // console.log(test)
 
