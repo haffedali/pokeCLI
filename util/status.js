@@ -1,8 +1,9 @@
 //here ill put status calculations
 const statusEffect = {
     "burn": function(mon){
-        console.log("BURN")
-        return "burn damage"
+        let ticDamage = Math.floor(mon/16)
+        console.log("BURN for " + ticDamage + " damage")
+        return ticDamage
     },
     "paralyze": function(mon){
         console.log("PARA")
@@ -11,6 +12,10 @@ const statusEffect = {
     "sleep": function(mon){
         console.log("sleep")
         return "mon is asleep it can't move"
+    },
+    "poison": function(mon){
+        console.log("poison")
+        return "mon is poisoned"
     }
 }
 

@@ -23,11 +23,12 @@ class Pokemon {
         this.status = status
     }
 
+    // statusEffect is a helper function for ticStatus; it returns amount of damage the tic results in
     ticStatus(){
         if (this.status){
-            console.log("hmm")
-            console.log(this.status)
-            statusEffect[this.status]()
+            let ticDamage = statusEffect[this.status](this.health)
+            this.health -= ticDamage;
+
             // let tic = this.activeMon.status
         }
     }
