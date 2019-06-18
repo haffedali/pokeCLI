@@ -1,4 +1,5 @@
 const { moves, pokemon } = require("../db")
+const {statusEffect} = require("../util")
 
 class Pokemon {
     constructor(name) {
@@ -14,8 +15,7 @@ class Pokemon {
         this.health = Math.floor((((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110)
     }
 
-    takeDamage(damage, status = null){//must be a number, generrated form
-        this.status = status
+    takeDamage(damage){//must be a number, generrated form
         this.health -= damage
     }
 
@@ -25,15 +25,9 @@ class Pokemon {
 
     ticStatus(){
         if (this.status){
-            for (let [effect, ticCheck] of Object.entries(this.status)){
-                switch (effect){
-                    case "burn":
-                        console.log(ticCheck)
-                        effect()
-                    break;
-                    default:;
-                }
-            }
+            console.log("hmm")
+            console.log(this.status)
+            statusEffect[this.status]()
             // let tic = this.activeMon.status
         }
     }

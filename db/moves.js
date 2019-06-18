@@ -432,7 +432,7 @@ const moveList = {
 			status: 'frz',
 		},
 		effect: {
-			"burn": 10
+			"burn": 100
 		},
 		target: "normal",
 		type: "Ice",

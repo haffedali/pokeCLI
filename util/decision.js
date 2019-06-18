@@ -33,7 +33,6 @@ function decide(mon1, mon2){
         let top = -5
         let result = "";
         for (let x in options){
-            console.log(options[x])
             if (options[x] > top){
                 top = options[x];
                 result = x;

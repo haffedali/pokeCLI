@@ -4,7 +4,7 @@ module.exports= {
     
     fakeAi: require("./decision"),
     
-    status:require("./status"),
+    statusEffect:require("./status"),
     
     typeDict:require("./typeDict"),
     

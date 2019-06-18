@@ -1,5 +1,5 @@
 const inquirer = require("inquirer")
-const { fakeAi, damageCalc, status } = require("../util")
+const { fakeAi, damageCalc} = require("../util")
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {
@@ -65,7 +65,6 @@ module.exports = class Field {
         // status(this.status, damage) //return damage       0 if sleep, .5 if burn
         target.takeDamage(damage)//plug in haffed code here
         target.applyStatus(status)
-        this.turnEnd()
         console.log(`${target.name} took ${damage} points of damage!`)
     }
 
@@ -120,16 +119,17 @@ module.exports = class Field {
             let damage2 = attackResult2[0]
 
             if (attackResult1[1] !== null) {
-                status1 = attackResult[1]
+                status1 = attackResult1[1]
             }
             if (attackResult2[1] !== null){
                 status2 =  attackResult2[1]
             }
 
-            this.turnAction(this.activeOpp, damage1, status)
-            this.turnAction(this.activeMon, damage2, status)
+            this.turnAction(this.activeOpp, damage1, status1)
+            this.turnAction(this.activeMon, damage2, status2)
 
-            this.fieldLoop()
+            setTimeout(() => this.turnEnd(), 3000)
+            setTimeout(() => this.fieldLoop(),6000)
 
         })
     }
