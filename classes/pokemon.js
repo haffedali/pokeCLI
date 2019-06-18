@@ -18,8 +18,25 @@ class Pokemon {
         this.status = status
         this.health -= damage
     }
-    
 
+    applyStatus(status){
+        this.status = status
+    }
+
+    ticStatus(){
+        if (this.activeMon.status){
+            for (let [effect, ticCheck] of Object.entries(this.activeMon.status)){
+                switch (effect){
+                    case "burn":
+                        console.log(ticCheck)
+                        effect()
+                    break;
+                    default:;
+                }
+            }
+            // let tic = this.activeMon.status
+        }
+    }
 
 }
 

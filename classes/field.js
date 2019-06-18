@@ -1,5 +1,5 @@
 const inquirer = require("inquirer")
-const { fakeAi, damageCalc } = require("../util")
+const { fakeAi, damageCalc, status } = require("../util")
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {
@@ -60,11 +60,20 @@ module.exports = class Field {
     }
 
 
-    turnAction(target, damage){
+    turnAction(target, damage, status){
         //Status check here, if status apply like so
         // status(this.status, damage) //return damage       0 if sleep, .5 if burn
         target.takeDamage(damage)//plug in haffed code here
+        target.applyStatus(status)
+        this.turnEnd()
         console.log(`${target.name} took ${damage} points of damage!`)
+    }
+
+    // Turn end checks for poison, burn, and leech seed tics by running a Pokemon method
+    turnEnd(){
+        // pokemon.applyStatus()
+        this.activeMon.ticStatus();
+        this.activeOpp.ticStatus();
     }
 
     actionCheck(actor, target, damage){
@@ -87,7 +96,8 @@ module.exports = class Field {
         /*
           loop throiugh the moves to generate choices,
           once the player chooses the move it will store it, and then select the opponetnts move,
-          then it resolve the coices
+          then it 
+           the coices
         */
         inquirer.prompt([
             {
@@ -100,12 +110,24 @@ module.exports = class Field {
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
             let oppAttack = fakeAi(this.activeMon, this.activeOpp);
 
-            let damage1 = damageCalc(this.activeMon, this.activeOpp, attack)
-            let damage2 = damageCalc(this.activeOpp,this.activeMon, oppAttack)
-            
+            //ALL THIS IS CURRENTLY USED IN TEST; abstract to turnPhase() or something like that
 
-            this.turnAction(this.activeOpp, damage1)
-            this.turnAction(this.activeMon, damage2)
+            let status1,status2;
+            let attackResult1 = damageCalc(this.activeMon, this.activeOpp, attack)
+            let attackResult2 = damageCalc(this.activeOpp,this.activeMon, oppAttack)
+
+            let damage1 =  attackResult1[0]
+            let damage2 = attackResult2[0]
+
+            if (attackResult1[1] !== null) {
+                status1 = attackResult[1]
+            }
+            if (attackResult2[1] !== null){
+                status2 =  attackResult2[1]
+            }
+
+            this.turnAction(this.activeOpp, damage1, status)
+            this.turnAction(this.activeMon, damage2, status)
 
             this.fieldLoop()
 
@@ -171,6 +193,15 @@ module.exports = class Field {
         
     }
 
+    speedCheck(){
+        if (this.activeMon.baseStats.spe > this.activeOpp.baseStats.spe){
+            return [0,1]
+        }else if (this.activeMon.baseStats.spe > this.activeOpp.baseStats.spe){
+            return [0,0]
+        }else {
+            return [1,0]
+        }
+    }
     fieldLoop() {
         //display Current mons
         this.fieldDisplay()
@@ -218,38 +249,4 @@ module.exports = class Field {
             this.oppSwitch()
         }
     }
-
-    
-    // loop() {
-    //     // console.log("Hello trainer!")
-    //     // console.log("Today you are facing off against HoffBot and his trusty " + this.opponent.name + "!")
-
-    //     if (this.isActive){
-    //         inquirer.prompt([{
-    //             type: 'list',
-    //             name: 'move',
-    //             message: 'Let the battle begin!',
-    //             choices: this.user.moves
-    //         }]).then(ans =>{
-
-    //             //Need the AI Opp to pick a move here and replace 'chicken'
-    //             let damage = damageCalc(this.user, this.opponent, ans.move, "Gigadrain")
-    //             let damageOpp = damage[0]
-    //             let damageUser = damage[1]
-    //             this.opponent.health -= damageOpp
-    //             this.user.health -= damageUser
-
-    //             console.log(`Your ${this.user.name} has ${this.user.health} health remaining!`)
-    //             console.log(`HoffBot's ${this.opponent.name} has ${this.opponent.health} remaining!`)
-
-    //             if (this.opponent.health > 0 && this.user.health > 0){
-    //                 this.loop()
-    //             }
-    //             else {
-    //                 console.log("GREAT JOB")
-    //             }
-    //         })
-    //     }
-    // }
-
 }

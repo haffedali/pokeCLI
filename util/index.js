@@ -1,6 +1,6 @@
 module.exports= {
     
-    damageCalc: require("./calc"),
+    damageCalc: require("./newCalc"),
     
     fakeAi: require("./decision"),
     
@@ -9,5 +9,7 @@ module.exports= {
     typeDict:require("./typeDict"),
     
     typeMatrix: require("./typeMatrix"),
+
+    status: require("./status")
 
 }
