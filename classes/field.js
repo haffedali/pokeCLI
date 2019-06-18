@@ -84,7 +84,7 @@ module.exports = class Field {
             this.isrunningTurn = false
             console.log(`${actor.name} is unable to battle!`)
             if(actor === this.activeMon) return this.switchMon();
-            if(actor === this.activeOpp) return this.oppSwitch();//<need to define this action
+            if(actor === this.activeOpp) return this.oppSwitch();
         }else{
             this.turnAction(target, damage)
         }
