@@ -433,7 +433,7 @@ const moveList = {
 		},
 		effect: {
 			"burn": 10
-		}
+		},
 		target: "normal",
 		type: "Ice",
 		zMovePower: 175,

@@ -24,8 +24,8 @@ class Pokemon {
     }
 
     ticStatus(){
-        if (this.activeMon.status){
-            for (let [effect, ticCheck] of Object.entries(this.activeMon.status)){
+        if (this.status){
+            for (let [effect, ticCheck] of Object.entries(this.status)){
                 switch (effect){
                     case "burn":
                         console.log(ticCheck)

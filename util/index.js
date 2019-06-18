@@ -10,6 +10,4 @@ module.exports= {
     
     typeMatrix: require("./typeMatrix"),
 
-    status: require("./status")
-
 }
