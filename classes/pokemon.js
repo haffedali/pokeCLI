@@ -19,17 +19,50 @@ class Pokemon {
         this.health -= damage
     }
 
+    
+    // Apply and RemoveStatus() are closely tied together. I don't really like the way it is functioning, I feel like it could get bloated
+    // BUT it is simple and fast... for now we leave this logic here
+    // Once I have time, will abstract this logic to the statusEffect object
+    // "burn" will have two functions; tic and apply
     applyStatus(status){
         this.status = status
+        switch (status){
+            case "burn":
+                this.stats.atk = Math.floor(this.stats.atk/2)
+                break;
+            case "paralyze":
+                this.stats.spe = Math.floor(this.stats.spe/2)
+                break;
+            default:
+                break;
+        }
+    }
+
+    removeStatus(status){
+        this.status = null;
+        switch (status){
+            case "burn":
+                this.stats.atk = pokemon[this.name].baseStats[atk]
+                break;
+            case "paralyze":
+                this.stats.spe = pokemon[this.name].baseStats[spe]
+                break;
+            default:
+                break;
+        }
     }
 
     // statusEffect is a helper function for ticStatus; it returns amount of damage the tic results in
     ticStatus(){
-        if (this.status){
+        if (this.status === "burn" || this.status === "poison" || this.status === "poison2"){
             let ticDamage = statusEffect[this.status](this.health)
             this.health -= ticDamage;
+        }
+    }
 
-            // let tic = this.activeMon.status
+    checkStatus(){
+        if (this.status === "paralyze" || this.status === "sleep" || this.status === "freeze"){
+            let result = statusEffect[this.status]()
         }
     }
 

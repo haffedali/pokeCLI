@@ -1,13 +1,20 @@
 //here ill put status calculations
+// FUTURE NOTE burn will have mutiple functions; apply() and tic()
+
 const statusEffect = {
-    "burn": function(mon){
-        let ticDamage = Math.floor(mon/16)
+    "burn": function(monHp){
+        let ticDamage = Math.floor(monHp/16)
         console.log("BURN for " + ticDamage + " damage")
         return ticDamage
     },
     "paralyze": function(mon){
-        console.log("PARA")
-        return `mon is paralyzed, it can't move`
+        let chance = Math.floor(Math.random() * 3);
+        let match = Math.floor(Math.random() * 3);
+        if (match === chance) {
+            return "procced"
+        }else{
+            return "passed"
+        }
     },
     "sleep": function(mon){
         console.log("sleep")
