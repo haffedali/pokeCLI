@@ -55,7 +55,7 @@ class Pokemon {
     // statusEffect is a helper function for ticStatus; it returns amount of damage the tic results in
     ticStatus(){
         if (this.status === "burn" || this.status === "poison" || this.status === "poison2"){
-            let ticDamage = statusEffect[this.status](this.health)
+            let ticDamage = statusEffect[this.status["active"]](this)
             this.health -= ticDamage;
         }
     }
@@ -65,7 +65,6 @@ class Pokemon {
             let result = statusEffect[this.status]()
         }
     }
-
 }
 
 module.exports = Pokemon

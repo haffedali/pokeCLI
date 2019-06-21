@@ -226,7 +226,7 @@ module.exports = class Field {
                         break;
                     
                     case "test":
-                        console.log(this.user.team[2])
+                        this.activeMon.test();
     
                     case "forfeit":
                     default: 
