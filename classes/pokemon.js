@@ -26,8 +26,9 @@ class Pokemon {
     // "burn" will have two functions; tic and apply
     applyStatus(status){
         // console.log(status)
-        if (!this.status){
+        if (this.status === null && status !== undefined){
             this.status = status
+            console.log(this.name + " was " + status + "ed!")
             switch (status){
                 case "burn":
                     this.stats.atk = statusEffect[this.status].apply(this)
@@ -66,7 +67,6 @@ class Pokemon {
 
     // checkStatus() checks for preventative statuses and runs a check for passing or failing (these types of statuses prevents your from using a move your turn)
     checkStatus(){
-        console.log(this.status)
         if (this.status === "paralyze" || this.status === "sleep" || this.status === "freeze"){
             return statusEffect[this.status].active(this)
 

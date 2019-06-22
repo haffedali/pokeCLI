@@ -75,7 +75,6 @@ function calc(mon1, mon2, move1){
             for (let x in move.effect){
                 let chance = move.effect[x]
                 if (Math.random() * 100 < chance){
-                    console.log("target was " + x + "ed!")
                     return x
                 }else{
                     return null

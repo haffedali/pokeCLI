@@ -20,7 +20,7 @@ let pokemonDex = {
         types: ["Grass", "Poison"],
         baseStats: {hp: 80, atk: 82, def: 83, spa: 100, spd: 100, spe: 80},
         name: "Venusaur",
-        moveSet: ["Gigadrain", "Airslash" ,"Superpower", "Surf"]
+        moveSet: ["Megapunch", "Megapunch" ,"Megapunch", "Megapunch"]
     },
     "Pidgeot": {//add movesets
         num: 18,

@@ -76,8 +76,9 @@ module.exports = class Field {
 
         if (result[2] === true){
             targetMon.takeDamage(result[0])
-            
-            targetMon.applyStatus(result[1])
+            if(targetMon.status === null && result[1] !== undefined){
+                targetMon.applyStatus(result[1])
+            }
         }
     }
 

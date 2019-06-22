@@ -11,7 +11,7 @@ const statusEffect = {
             return ticDamage
         },
         apply(mon){
-            let attackLoss = Math.floor(mon.stats.atk)
+            let attackLoss = Math.floor(mon.stats.atk/2)
             let attack = mon.stats.atk - attackLoss
             return attack
         }
