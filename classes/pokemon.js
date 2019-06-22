@@ -28,10 +28,10 @@ class Pokemon {
         this.status = status
         switch (status){
             case "burn":
-                this.stats.atk = Math.floor(this.stats.atk/2)
+                this.stats.atk = statusEffect[this.status].apply()
                 break;
             case "paralyze":
-                this.stats.spe = Math.floor(this.stats.spe/2)
+                this.stats.spe = statusEffect[this.status].apply()
                 break;
             default:
                 break;
@@ -42,27 +42,31 @@ class Pokemon {
         this.status = null;
         switch (status){
             case "burn":
-                this.stats.atk = pokemon[this.name].baseStats[atk]
+                this.stats.atk = this.stats.atk*2
                 break;
             case "paralyze":
-                this.stats.spe = pokemon[this.name].baseStats[spe]
+                this.stats.spe = this.stats.spe*2
                 break;
             default:
                 break;
         }
     }
 
-    // statusEffect is a helper function for ticStatus; it returns amount of damage the tic results in
+    // ticStatus() checks for damagins statuses and runs the damage (these types of statuses damage your pokemon at the end of the turn)
     ticStatus(){
         if (this.status === "burn" || this.status === "poison" || this.status === "poison2"){
-            let ticDamage = statusEffect[this.status["active"]](this)
+            let ticDamage = statusEffect[this.status].active(this)
             this.health -= ticDamage;
         }
     }
 
+    // checkStatus() checks for preventative statuses and runs a check for passing or failing (these types of statuses prevents your from using a move your turn)
     checkStatus(){
         if (this.status === "paralyze" || this.status === "sleep" || this.status === "freeze"){
-            let result = statusEffect[this.status]()
+            return statusEffect[this.status].active()
+
+        }else{
+            return "pass"
         }
     }
 }

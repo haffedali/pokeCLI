@@ -76,9 +76,10 @@ module.exports = class Field {
     }
 
     actionCheck(actor, target, damage){
-        // if(!this.isrunningTurn) throw 'uh oh! this shouldnt be possible!';
         //need to check status, if par, add miss chance, if burn, divide in half if froze/sleep skip turn
-        
+        if (actor.checkStatus() === "pass"){
+            this.turnAction(target, damage)
+        }
         if(actor.health <= 0 ) {
             this.isrunningTurn = false
             console.log(`${actor.name} is unable to battle!`)

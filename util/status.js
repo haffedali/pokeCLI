@@ -6,20 +6,21 @@ const statusEffect = {
     "burn": 
     {
         active(mon){
-            let ticDamage = Math.floor(mon.health/16)
-            console.log("BURN for " + ticDamage + " damage")
+            let ticDamage = Math.floor(mon.baseStats.hp/16)
+            console.log("BURN scorched "+ mon.name + " for " + ticDamage + " damage")
             return ticDamage
         },
         apply(mon){
             let attackLoss = Math.floor(mon.baseStats.atk)
-            mon.baseStats.atk -= attackLoss
-            mon.status = "burn"
-            return mon
+            let attack = mon.baseStats.atk - attackLoss
+            return attack
         }
     },
     "paralyze":
     {
-        "active": function(mon){
+        // On actives like paralyze, return a string communication whether or not the pokemon
+        // is moving this turn ("pass" || "fail")
+        active(mon){
             let chance = Math.floor(Math.random() * 3);
             let match = Math.floor(Math.random() * 3);
             if (match === chance) {
@@ -29,25 +30,40 @@ const statusEffect = {
             }
         },
 
-        "apply": function(mon){
+
+        apply(mon){
             let speedLoss = Math.floor(mon.baseStats.spe);
         }
     },
+
+    // Sleep and freeze will have an active() and remove(); active calling remove on a 'fail'
     "sleep":
     {
-        "active": function(){
+        active(){
 
         },
-        "apply": function(){
+        apply(){
 
         }
     },
     "freeze":
     {
-        "active": function(){
+        active(){
 
         },
-        "apply": function(){
+        apply(){
+            
+        }
+    },
+    "poison":
+    {
+        active(mon){
+            let ticDamage = Math.floor(mon.baseStats.hp/16)
+            console.log("Poison eroded " + mon.name+ " for "+ ticDamage + " damage")
+            return ticDamage
+        },
+
+        apply(){
 
         }
     }
