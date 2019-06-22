@@ -41,7 +41,7 @@ function decide(mon1, mon2){
     
     
     finalChoice = selectionCheck(selection)
-    // console.log(finalChoice)
+
     return finalChoice
 }
 

@@ -6,13 +6,13 @@ const statusEffect = {
     "burn": 
     {
         active(mon){
-            let ticDamage = Math.floor(mon.baseStats.hp/16)
-            console.log("BURN scorched "+ mon.name + " for " + ticDamage + " damage")
+            let ticDamage = Math.floor(mon.stats.hp/16)
+            console.log(mon.name + "'s " + "burn scorched for " + ticDamage + " damage")
             return ticDamage
         },
         apply(mon){
-            let attackLoss = Math.floor(mon.baseStats.atk)
-            let attack = mon.baseStats.atk - attackLoss
+            let attackLoss = Math.floor(mon.stats.atk)
+            let attack = mon.stats.atk - attackLoss
             return attack
         }
     },
@@ -23,16 +23,21 @@ const statusEffect = {
         active(mon){
             let chance = Math.floor(Math.random() * 3);
             let match = Math.floor(Math.random() * 3);
+            // let chance = 1;
+            // let match = 1;
             if (match === chance) {
-                return "fail"
+                console.log(mon.name + " is paralyzed and couldn't move!")
+                return false
             }else{
-                return "pass"
+                return true
             }
         },
 
 
         apply(mon){
-            let speedLoss = Math.floor(mon.baseStats.spe);
+            let speedLoss = Math.floor(mon.stats.spe);
+            let speed = mon.stats.spe - speedLoss
+            return speed
         }
     },
 
@@ -52,7 +57,7 @@ const statusEffect = {
 
         },
         apply(){
-            
+
         }
     },
     "poison":

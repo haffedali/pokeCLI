@@ -60,12 +60,25 @@ module.exports = class Field {
     }
 
 
-    turnAction(target, damage, status){
-        //Status check here, if status apply like so
-        // status(this.status, damage) //return damage       0 if sleep, .5 if burn
-        target.takeDamage(damage)//plug in haffed code here
-        target.applyStatus(status)
-        console.log(`${target.name} took ${damage} points of damage!`)
+    //Applies damage and status
+    turnAction(actingMon, targetMon, attack){
+        // result is equal to the result of damageCalc() coupled checStatus()
+        let result = () => {
+            let success = actingMon.checkStatus()
+            let attackResult = damageCalc(actingMon, targetMon, attack)
+            let damage = attackResult[0]
+            let status = attackResult[1]
+
+            return [damage,status,success]
+        }
+
+        result = result()
+
+        if (result[2] === true){
+            targetMon.takeDamage(result[0])
+            
+            targetMon.applyStatus(result[1])
+        }
     }
 
     // Turn end checks for poison, burn, and leech seed tics by running a Pokemon method
@@ -75,23 +88,8 @@ module.exports = class Field {
         this.activeOpp.ticStatus();
     }
 
-    actionCheck(actor, target, damage){
-        //need to check status, if par, add miss chance, if burn, divide in half if froze/sleep skip turn
-        if (actor.checkStatus() === "pass"){
-            this.turnAction(target, damage)
-        }
-        if(actor.health <= 0 ) {
-            this.isrunningTurn = false
-            console.log(`${actor.name} is unable to battle!`)
-            if(actor === this.activeMon) return this.switchMon();
-            if(actor === this.activeOpp) return this.oppSwitch();
-        }else{
-            this.turnAction(target, damage)
-        }
-        // Was firing off on switches
-        // this.turnAction(target, damage)
-    }
-    
+
+    // Grabs the user attack and generate opponent's attack
     attackAction() {
         /*
           loop throiugh the moves to generate choices,
@@ -109,33 +107,26 @@ module.exports = class Field {
         ]).then(({ attack }) => {
             //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
             let oppAttack = fakeAi(this.activeMon, this.activeOpp);
+            let sequence = this.speedCheck()
 
-            //ALL THIS IS CURRENTLY USED IN TEST; abstract to turnPhase() or something like that
 
-            let status1,status2;
-            let attackResult1 = damageCalc(this.activeMon, this.activeOpp, attack)
-            let attackResult2 = damageCalc(this.activeOpp,this.activeMon, oppAttack)
-
-            let damage1 =  attackResult1[0]
-            let damage2 = attackResult2[0]
-
-            if (attackResult1[1] !== null) {
-                status1 = attackResult1[1]
-            }
-            if (attackResult2[1] !== null){
-                status2 =  attackResult2[1]
+            //the sequence array is BLOATED, just need a 1 and a 0 really
+            for (let i=0;i<sequence.length;i++){
+                if (sequence[i] === "activeMon"){
+                    this.turnAction(this.activeMon,this.activeOpp,attack)
+                }else{
+                    this.turnAction(this.activeOpp, this.activeMon, oppAttack)
+                }
             }
 
-            this.turnAction(this.activeOpp, damage1, status1)
-            this.turnAction(this.activeMon, damage2, status2)
-
-            setTimeout(() => this.turnEnd(), 3000)
-            setTimeout(() => this.fieldLoop(),6000)
+            // Hacky way to give time for turnActions before ending the turn and starting a new one
+            setTimeout(() => this.turnEnd(), 2000)
+            setTimeout(() => this.fieldLoop(),3000)
 
         })
     }
 
-
+    // User's switch method
     switchMon() {
         let team = [];
         for (let i=0;i<this.user.team.length;i++){
@@ -176,6 +167,7 @@ module.exports = class Field {
         })
     }
 
+    // Opp switch method (fires when their mon's faint)
     oppSwitch(){
         let team = []
         for (let i=0;i<this.opponent.team.length;i++){
@@ -194,15 +186,18 @@ module.exports = class Field {
         
     }
 
+    // Returns sequenced turn order (firstMon, secondMon)
     speedCheck(){
-        if (this.activeMon.baseStats.spe > this.activeOpp.baseStats.spe){
-            return [0,1]
-        }else if (this.activeMon.baseStats.spe > this.activeOpp.baseStats.spe){
-            return [0,0]
+        if (this.activeMon.stats.spe > this.activeOpp.stats.spe){
+            return ["activeMon","activeOpp"]
+        }else if (this.activeMon.stats.spe === this.activeOpp.stats.spe){
+            return "tie"
         }else {
-            return [1,0]
+            return ["activeOpp","activeMon"]
         }
     }
+
+    // The main game loop
     fieldLoop() {
         //display Current mons
         this.fieldDisplay()
