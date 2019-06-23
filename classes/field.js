@@ -74,7 +74,8 @@ module.exports = class Field {
 
         result = result()
 
-        if (result[2] === true){
+        if (result[2] === true && actingMon.health > 0){
+            console.log(targetMon.name + " has taken " + result[0] + "damage from " + attack + "!")
             targetMon.takeDamage(result[0])
             if(targetMon.status === null && result[1] !== undefined){
                 targetMon.applyStatus(result[1])
@@ -135,6 +136,7 @@ module.exports = class Field {
                 team.push(this.user.team[i])
             }
         }
+        
         //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
         inquirer.prompt([
             {
@@ -201,6 +203,13 @@ module.exports = class Field {
     // The main game loop
     fieldLoop() {
         //display Current mons
+
+        // Check for wining/losing -- hard coded in so i can show a friend the game
+        if (this.opponent.team[0].health < 0 && this.opponent.team[1].health < 0 && this.opponent.team[2].health < 0){
+            this.gameOver()
+        }else{
+
+        
         this.fieldDisplay()
         if (this.activeMon.health > 0 && this.activeOpp.health > 0){
             inquirer.prompt([
@@ -245,5 +254,10 @@ module.exports = class Field {
         }else if (this.activeOpp.health <= 0){
             this.oppSwitch()
         }
+    }
+    }
+
+    gameOver(){
+        console.log("GAME OVER TURN THIS SHIT OFF")
     }
 }

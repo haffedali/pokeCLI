@@ -35,7 +35,7 @@ const statusEffect = {
 
 
         apply(mon){
-            let speedLoss = Math.floor(mon.stats.spe);
+            let speedLoss = Math.floor(mon.stats.spe/2);
             let speed = mon.stats.spe - speedLoss
             return speed
         }
@@ -45,7 +45,13 @@ const statusEffect = {
     "sleep":
     {
         active(){
-
+            let chance = Math.floor(Math.random() * 3);
+            let match = Math.floor(Math.random() * 3);
+            if (chance === match){
+                return true
+            }else{
+                return false
+            }
         },
         apply(){
 

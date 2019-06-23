@@ -409,6 +409,9 @@ const moveList = {
 			chance: 30,
 			status: 'psn',
 		},
+		effect: {
+			"poison":20
+		},
 		target: "normal",
 		type: "Poison",
 		zMovePower: 175,

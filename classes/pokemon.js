@@ -17,6 +17,9 @@ class Pokemon {
 
     takeDamage(damage){//must be a number, generrated form
         this.health -= damage
+        if (this.health <= 0){
+            console.log(this.name + " has fainted!")
+        }
     }
 
     
@@ -66,8 +69,12 @@ class Pokemon {
     }
 
     // checkStatus() checks for preventative statuses and runs a check for passing or failing (these types of statuses prevents your from using a move your turn)
-    checkStatus(){
+    checkStatus(){  
+        // This if statement is meant to check to see if the selected pokemon has a status that
+        // would leave it unable to execute the move it's trainer instructed it do
         if (this.status === "paralyze" || this.status === "sleep" || this.status === "freeze"){
+            
+            // returns the result of a helper function (statusEffect()) -- true or false
             return statusEffect[this.status].active(this)
 
         }else{
