@@ -107,7 +107,6 @@ module.exports = class Field {
                 choices: this.activeMon.moves
             }
         ]).then(({ attack }) => {
-            //this is where it gets a little murky, we'll have to use a calculation that returnns an attack order? for now its hardcoded for testing
             let oppAttack = fakeAi(this.activeMon, this.activeOpp);
             let sequence = this.speedCheck()
 
