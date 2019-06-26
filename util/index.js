@@ -1,10 +1,10 @@
 module.exports= {
     
-    damageCalc: require("./calc"),
+    damageCalc: require("./newCalc"),
     
     fakeAi: require("./decision"),
     
-    status:require("./status"),
+    statusEffect:require("./status"),
     
     typeDict:require("./typeDict"),
     

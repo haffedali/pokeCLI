@@ -413,6 +413,9 @@ const moveList = {
 			chance: 30,
 			status: 'psn',
 		},
+		effect: {
+			"poison":20
+		},
 		target: "normal",
 		type: "Poison",
 		zMovePower: 175,
@@ -434,6 +437,9 @@ const moveList = {
 		secondary: {
 			chance: 10,
 			status: 'frz',
+		},
+		effect: {
+			"burn": 100
 		},
 		target: "normal",
 		type: "Ice",

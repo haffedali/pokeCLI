@@ -1,5 +1,5 @@
 const inquirer = require("inquirer")
-const { fakeAi, damageCalc } = require("../util")
+const { fakeAi, damageCalc} = require("../util")
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {
@@ -60,32 +60,44 @@ module.exports = class Field {
     }
 
 
-    turnAction(target, damage){
-        //Status check here, if status apply like so
-        // status(this.status, damage) //return damage       0 if sleep, .5 if burn
-        target.takeDamage(damage)//plug in haffed code here
-        console.log(`${target.name} took ${damage} points of damage!`)
-    }
+    //Applies damage and status
+    turnAction(actingMon, targetMon, attack){
+        // result is equal to the result of damageCalc() coupled checStatus()
+        let result = () => {
+            let success = actingMon.checkStatus()
+            let attackResult = damageCalc(actingMon, targetMon, attack)
+            let damage = attackResult[0]
+            let status = attackResult[1]
 
-    actionCheck(actor, target, damage){
-        // if(!this.isrunningTurn) throw 'uh oh! this shouldnt be possible!';
-        //need to check status, if par, add miss chance, if burn, divide in half if froze/sleep skip turn
-        
-        if(actor.health <= 0 ) {
-            this.isrunningTurn = false
-            console.log(`${actor.name} is unable to battle!`)
-            if(actor === this.activeMon) return this.switchMon();
-            if(actor === this.activeOpp) return this.oppSwitch();//<need to define this action
-        }else{
-            this.turnAction(target, damage)
+            return [damage,status,success]
+        }
+
+        result = result()
+
+        if (result[2] === true && actingMon.health > 0){
+            console.log(targetMon.name + " has taken " + result[0] + "damage from " + attack + "!")
+            targetMon.takeDamage(result[0])
+            if(targetMon.status === null && result[1] !== undefined){
+                targetMon.applyStatus(result[1])
+            }
         }
     }
-    
+
+    // Turn end checks for poison, burn, and leech seed tics by running a Pokemon method
+    turnEnd(){
+        // pokemon.applyStatus()
+        this.activeMon.ticStatus();
+        this.activeOpp.ticStatus();
+    }
+
+
+    // Grabs the user attack and generate opponent's attack
     attackAction() {
         /*
           loop throiugh the moves to generate choices,
           once the player chooses the move it will store it, and then select the opponetnts move,
-          then it resolve the coices
+          then it 
+           the coices
         */
         inquirer.prompt([
             {
@@ -96,20 +108,26 @@ module.exports = class Field {
             }
         ]).then(({ attack }) => {
             let oppAttack = fakeAi(this.activeMon, this.activeOpp);
+            let sequence = this.speedCheck()
 
-            let damage1 = damageCalc(this.activeMon, this.activeOpp, attack)
-            let damage2 = damageCalc(this.activeOpp,this.activeMon, oppAttack)
-            
 
-            this.turnAction(this.activeOpp, damage1)
-            this.turnAction(this.activeMon, damage2)
+            //the sequence array is BLOATED, just need a 1 and a 0 really
+            for (let i=0;i<sequence.length;i++){
+                if (sequence[i] === "activeMon"){
+                    this.turnAction(this.activeMon,this.activeOpp,attack)
+                }else{
+                    this.turnAction(this.activeOpp, this.activeMon, oppAttack)
+                }
+            }
 
-            this.fieldLoop()
+            // Hacky way to give time for turnActions before ending the turn and starting a new one
+            setTimeout(() => this.turnEnd(), 2000)
+            setTimeout(() => this.fieldLoop(),3000)
 
         })
     }
 
-
+    // User's switch method
     switchMon() {
         let team = [];
         for (let i=0;i<this.user.team.length;i++){
@@ -117,6 +135,7 @@ module.exports = class Field {
                 team.push(this.user.team[i])
             }
         }
+        
         //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
         inquirer.prompt([
             {
@@ -150,6 +169,7 @@ module.exports = class Field {
         })
     }
 
+    // Opp switch method (fires when their mon's faint)
     oppSwitch(){
         let team = []
         for (let i=0;i<this.opponent.team.length;i++){
@@ -168,8 +188,27 @@ module.exports = class Field {
         
     }
 
+    // Returns sequenced turn order (firstMon, secondMon)
+    speedCheck(){
+        if (this.activeMon.stats.spe > this.activeOpp.stats.spe){
+            return ["activeMon","activeOpp"]
+        }else if (this.activeMon.stats.spe === this.activeOpp.stats.spe){
+            return "tie"
+        }else {
+            return ["activeOpp","activeMon"]
+        }
+    }
+
+    // The main game loop
     fieldLoop() {
         //display Current mons
+
+        // Check for wining/losing -- hard coded in so i can show a friend the game
+        if (this.opponent.team[0].health < 0 && this.opponent.team[1].health < 0 && this.opponent.team[2].health < 0){
+            this.gameOver()
+        }else{
+
+        
         this.fieldDisplay()
         if (this.activeMon.health > 0 && this.activeOpp.health > 0){
             inquirer.prompt([
@@ -192,7 +231,7 @@ module.exports = class Field {
                         break;
                     
                     case "test":
-                        console.log(this.user.team[2])
+                        this.activeMon.test();
     
                     case "forfeit":
                     default: 
@@ -214,5 +253,10 @@ module.exports = class Field {
         }else if (this.activeOpp.health <= 0){
             this.oppSwitch()
         }
+    }
+    }
+
+    gameOver(){
+        console.log("GAME OVER TURN THIS SHIT OFF")
     }
 }

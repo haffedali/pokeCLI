@@ -1,4 +1,4 @@
-modue.exports = class Status {
+module.exports = class Status {
     constructor(status) {
         this.status = status;
         this.remainingTurns = null;

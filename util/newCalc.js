@@ -93,14 +93,14 @@ function calc(mon1, mon2, move1){
 // TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE
 
 
-let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
-let charizard = new Pokemon("Charizard", moves)
-let venusaur = new Pokemon("Venusaur", moves)
+// let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
+// let charizard = new Pokemon("Charizard", moves)
+// let venusaur = new Pokemon("Venusaur", moves)
 
 
 
-let test = calc(charizard,venusaur,"Flamethrower","Gigadrain")
-console.log(test)
+// let test = calc(charizard,venusaur,"Flamethrower","Gigadrain")
+// console.log(test)
 
 
 // console.log(test)
