@@ -6,14 +6,14 @@ const statusEffect = {
     "burn": 
     {
         active(mon){
-            let ticDamage = Math.floor(mon.stats.hp/16)
+            let ticDamage = Math.floor(mon.stats.hp/16);
             console.log(mon.name + "'s " + "burn scorched for " + ticDamage + " damage")
-            return ticDamage
+            return ticDamage;
         },
         apply(mon){
-            let attackLoss = Math.floor(mon.stats.atk/2)
-            let attack = mon.stats.atk - attackLoss
-            return attack
+            let attackLoss = Math.floor(mon.stats.atk/2);
+            let attack = mon.stats.atk - attackLoss;
+            return attack;
         }
     },
     "paralyze":
@@ -23,21 +23,19 @@ const statusEffect = {
         active(mon){
             let chance = Math.floor(Math.random() * 3);
             let match = Math.floor(Math.random() * 3);
-            // let chance = 1;
-            // let match = 1;
             if (match === chance) {
                 console.log(mon.name + " is paralyzed and couldn't move!")
-                return false
+                return false;
             }else{
-                return true
+                return true;
             }
         },
 
 
         apply(mon){
             let speedLoss = Math.floor(mon.stats.spe/2);
-            let speed = mon.stats.spe - speedLoss
-            return speed
+            let speed = mon.stats.spe - speedLoss;
+            return speed;
         }
     },
 
@@ -45,12 +43,16 @@ const statusEffect = {
     "sleep":
     {
         active(){
+            
             let chance = Math.floor(Math.random() * 3);
             let match = Math.floor(Math.random() * 3);
-            if (chance === match){
-                return true
+            if (mon.statusCount > 3){
+                return true;
+            }
+            else if (chance === match){
+                return true;
             }else{
-                return false
+                return false;
             }
         },
         apply(){
@@ -60,7 +62,16 @@ const statusEffect = {
     "freeze":
     {
         active(){
-
+            let chance = Math.floor(Math.random() * 5);
+            let match = Math.floor(Math.random() * 5);
+            if (mon.statusCount > 5){
+                return true;
+            }
+            else if (chance === match){
+                return true;
+            }else{
+                return false;
+            }
         },
         apply(){
 
@@ -69,13 +80,21 @@ const statusEffect = {
     "poison":
     {
         active(mon){
-            let ticDamage = Math.floor(mon.baseStats.hp/16)
-            console.log("Poison eroded " + mon.name+ " for "+ ticDamage + " damage")
-            return ticDamage
+            let ticDamage = Math.floor(mon.baseStats.hp/16);
+            console.log("Poison eroded " + mon.name+ " for "+ ticDamage + " damage");
+            return ticDamage;
         },
 
         apply(){
 
+        }
+    },
+    "poison2":
+    {
+        active(mon){
+            let ticDamage = (mon.statusCount + 1) * Math.floor(mon.baseStats.hp/16);
+            console.log("Poison eroded " + mon.name+ " for "+ ticDamage + " damage");
+            return ticDamage;
         }
     }
 }

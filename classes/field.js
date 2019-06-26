@@ -75,11 +75,14 @@ module.exports = class Field {
         result = result()
 
         if (result[2] === true && actingMon.health > 0){
-            console.log(targetMon.name + " has taken " + result[0] + "damage from " + attack + "!")
+            console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
             targetMon.takeDamage(result[0])
-            if(targetMon.status === null && result[1] !== undefined){
+            if(targetMon.status === null && result[1] !== undefined && result[1] !== null){
+                console.log(result[1] + "   -- fired from turnaction")
                 targetMon.applyStatus(result[1])
             }
+        }else if (result[2] === false && actingMon.health > 0){
+            console.log(actingMon.name + " is " + actingMon.status + ", it no move!");
         }
     }
 
@@ -129,6 +132,7 @@ module.exports = class Field {
 
     // User's switch method
     switchMon() {
+        this.activeMon.statusCount = 0
         let team = [];
         for (let i=0;i<this.user.team.length;i++){
             if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
@@ -171,14 +175,15 @@ module.exports = class Field {
 
     // Opp switch method (fires when their mon's faint)
     oppSwitch(){
-        let team = []
+        this.activeOpp.statusCount = 0;
+        let team = [];
         for (let i=0;i<this.opponent.team.length;i++){
             if (this.opponent.team[i].health > 0 && this.opponent.team[i] !== this.activeOpp){
                 team.push(this.opponent.team[i])
             }
         }
         if (team[0]){
-            this.activeOpp = team[0]
+            this.activeOpp = team[0];
         }else{
             console.log("loser")
         }
@@ -232,6 +237,7 @@ module.exports = class Field {
                     
                     case "test":
                         this.activeMon.test();
+                        this.activeOpp.test()
     
                     case "forfeit":
                     default: 

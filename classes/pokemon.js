@@ -8,6 +8,7 @@ class Pokemon {
         this.stats = pokemon[name].baseStats;
         this.moves = pokemon[name].moveSet;
         this.status = null;
+        this.statusCount = 0;
         //JUST A BLOCK FOR THE HEALTH CALC, DONT WANT IT GETTING TOO MESSY
         //For now, assuming perfect IV, max level, and decent EV's
         this.health = Math.floor((((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110)
@@ -63,6 +64,7 @@ class Pokemon {
         if (this.status === "burn" || this.status === "poison" || this.status === "poison2"){
             let ticDamage = statusEffect[this.status].active(this)
             this.health -= ticDamage;
+            this.statusCount ++;
         }
     }
 
@@ -71,13 +73,18 @@ class Pokemon {
         // This if statement is meant to check to see if the selected pokemon has a status that
         // would leave it unable to execute the move it's trainer instructed it do
         if (this.status === "paralyze" || this.status === "sleep" || this.status === "freeze"){
-            
+            this.statusCount ++;
             // returns the result of a helper function (statusEffect()) -- true or false
-            return statusEffect[this.status].active(this)
+            return statusEffect[this.status].active(this);
 
         }else{
             return true
         }
+    }
+
+    // Function can change depending on tests I want to run... overloading would be useful here
+    test(){
+        console.log(this);
     }
 }
 
