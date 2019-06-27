@@ -99,9 +99,30 @@ const statusEffect = {
     },
 
     secStatus: {
-        "leechSeed": (mon) =>{
-            console.log("FIRED THE LEECH SEED CAPTAIN")
-        }
+        "leechSeed": {
+            active(mon){
+
+            },
+            apply(mon){
+
+            }
+        },
+        "confusion": {
+            active(mon){
+
+            },
+            apply(mon){
+                
+            }
+        },
+        "charm": {
+            active(mon){
+
+            },
+            apply(mon){
+
+            }
+        },
     },
     
     

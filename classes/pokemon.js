@@ -63,14 +63,25 @@ class Pokemon {
     // BUT it is simple and fast... for now we leave this logic here
     // Just a reminder copied over, but this will mirror those functions, but work for a property named secStatus
     applySecStatus(status){
-        console.log("method fires")
         // I think the structure for this second status board is much better, will note the differences
-        if (!this.secStatus.status){
-            console.log("conditional logic fired")
+        if (!this.secStatus[status]){
+            console.log("conditional logic fired from applySecStatus()")
             // passing down the function may make for cleaner/shorter code
-            this.secStatus.status = status;
+            this.secStatus[status] = true;
         }
     }
+
+    removeSecStatus(status){
+        if (!status){
+            for (let x in this.secStatus){
+                this.secStatus[x] = null
+            }
+        }
+        else if(this.secStatus[status]){
+            this.secStatus[status] = null;
+        }
+    }
+
     // ticStatus() checks for damagins statuses and runs the damage (these types of statuses damage your pokemon at the end of the turn)
     ticStatus(){
         // console.log(this.status + " from Pokemon.ticStatus()")
@@ -81,6 +92,12 @@ class Pokemon {
         }
 
 
+    }
+
+    heal(amt){
+        // as long as no effects make healing weaker...
+        console.log(this.name + " has healed for " + amt)
+        this.health += amt;
     }
 
     // checkStatus() checks for preventative statuses and runs a check for passing or failing (these types of statuses prevents your from using a move your turn)

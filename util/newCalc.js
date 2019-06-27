@@ -4,72 +4,80 @@ const typeMatrix = require("../util/typeMatrix")
 const typeDict = require("../util/typeDict")
 
 function calc(mon1, mon2, move1){
+    move = moveList[move1]
     //initializing important variables
-    let stabUser,moveTypeUser,damageToOpp
+    let stabUser,moveTypeUser,damageToOpp,status, drain
     let typeModUser = 1
 
-    moveTypeUser = moveList[move1].type
-
-    // Damage calc pre modifiers (ie. stab, type effectiveness)
-    // These four if statements cover getting a basic damage for a special for physical attack
-    if (move1.category === "Special"){
-        damageToOpp = (((100/5+2)*mon1.stats.spa*moveList[move1].basePower)/mon2.stats.spd)
-    } else {
-        damageToOpp = (((100/5+2)*mon1.stats.atk*moveList[move1].basePower)/mon2.stats.def)
-    }
-
-
-    // Here I am just followig their math
-
-    damageToOpp = damageToOpp/50
-    damageToOpp += 2
-
-    // This is a STAB check, if it is stab,then the stab modifier goes to 1.5 instead of one
-    if (moveTypeUser== mon1.type[0] || moveTypeUser== mon1.type[1]){
-        stabUser = 1.5
-    } else{
-        stabUser = 1
-    }
-
-
-
-    // Here we apply the damage modifier
-    damageToOpp = damageToOpp * stabUser;
-
-    // Next is type modifier
-    // Loop through opponent pokemons types, and add the corresponding modifier
-    for (let j=0;j<mon2.type.length;j++){
-        if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 0){
-            // 0 is neutral, therefore do nothing to the modifier
+    moveTypeUser = move.type
+    if (move.category === "Special" || move.category === "Physical"){
+           // Damage calc pre modifiers (ie. stab, type effectiveness)
+           // These four if statements cover getting a basic damage for a special for physical attack
+        if (move.category === "Special"){
+            damageToOpp = (((100/5+2)*mon1.stats.spa*move.basePower)/mon2.stats.spd)
+        } else {
+            damageToOpp = (((100/5+2)*mon1.stats.atk*move.basePower)/mon2.stats.def)
         }
-        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 1){
-            typeModUser *= 2
+
+
+        // Here I am just followig their math
+
+        damageToOpp = damageToOpp/50
+        damageToOpp += 2
+
+        // This is a STAB check, if it is stab,then the stab modifier goes to 1.5 instead of one
+        if (moveTypeUser== mon1.type[0] || moveTypeUser== mon1.type[1]){
+            stabUser = 1.5
+        } else{
+            stabUser = 1
         }
-        else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === -1){
-            typeModUser *= .5
+
+
+
+        // Here we apply the damage modifier
+        damageToOpp = damageToOpp * stabUser;
+
+        // Next is type modifier
+        // Loop through opponent pokemons types, and add the corresponding modifier
+        for (let j=0;j<mon2.type.length;j++){
+            if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 0){
+                // 0 is neutral, therefore do nothing to the modifier
+            }
+            else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 1){
+                typeModUser *= 2
+            }
+            else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === -1){
+                typeModUser *= .5
+            }
         }
+
+        // Making use of the typeMod here
+        damageToOpp = damageToOpp * typeModUser 
+
+
+        // Lastly we create an arbitrary number for the final calc step Now we generate a random number between 217 and 255
+        arbitraryNum1 = (Math.random() * (255 - 217)) + 217
+
+        damageToOpp = (damageToOpp * arbitraryNum1) / 255
+
+        status = statusHelper(move)
+
+        if (move.drain){
+            drain = true
+        }
+
+
+
+        // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
+        // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
+        return [Math.floor(damageToOpp),status, move.category, drain]
     }
+    // This else statement covers status and secStatus moves
+    else{
+        return [0, move.secEffect, move.category, false]
 
-    // Making use of the typeMod here
-    damageToOpp = damageToOpp * typeModUser 
-
-
-    // Lastly we create an arbitrary number for the final calc step Now we generate a random number between 217 and 255
-    arbitraryNum1 = (Math.random() * (255 - 217)) + 217
-
-    damageToOpp = (damageToOpp * arbitraryNum1) / 255
-
-    let status = statusHelper(moveList[move1])
-
-    if (status === null || status === undefined){
-        status = secStatusHelper(moveList[move1])
     }
-
-
-
-    // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
-    // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
-    return [Math.floor(damageToOpp),status]
+ 
     
     
     function statusHelper(move){
@@ -86,11 +94,11 @@ function calc(mon1, mon2, move1){
     }
 
     function secStatusHelper(move){
-        console.log(move.setEffectmove)
-        if (move.secEffect.move)
-        {
+        console.log(move.secEffect);
+        // if (move.secEffect.move)
+        // {
 
-        }
+        // }
 
     }
 }
@@ -104,14 +112,13 @@ function calc(mon1, mon2, move1){
 // TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE TESTING CODE
 
 
-// let moves = ["Flamethrower", "Airslash", "Roost", "Solarbeam"]
-// let charizard = new Pokemon("Charizard", moves)
-// let venusaur = new Pokemon("Venusaur", moves)
+// let blastoise = new Pokemon("Blastoise")
+// let venusaur = new Pokemon("Venusaur")
 
 
 
-// let test = calc(charizard,venusaur,"Flamethrower","Gigadrain")
-// console.log(test)
+// let test = calc(blastoise,venusaur,"Leechseed")
+
 
 
 // console.log(test)

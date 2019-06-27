@@ -62,35 +62,65 @@ module.exports = class Field {
 
     //Applies damage and status
     turnAction(actingMon, targetMon, attack){
-        // result is equal to the result of damageCalc() coupled checStatus()
-        let result = () => {
-            let success = actingMon.checkStatus()
-            let attackResult = damageCalc(actingMon, targetMon, attack)
-            let damage = attackResult[0]
-            let status = attackResult[1]
+        // This entire function will be split into 2 pieces of functionality; conditionally fired off using an if statement
+        // abtstract this logic to 2 seperate turn actions, one more attacking moves, and one for status moves (maybe another for boosts and terrains)
+        // result is equal to the result of damageCalc() coupled checkStatus()
 
-            return [damage,status,success]
-        }
+            let result = () => {
+                let success = actingMon.checkStatus()
+                let attackResult = damageCalc(actingMon, targetMon, attack)
+                let damage = attackResult[0]
+                let status = attackResult[1]
+                let category = attackResult[2]
+                let drain = attackResult[3]
+    
+                return [damage,status,success,category,drain]
+            }
+    
+            result = result()
+    
+            if (result[2] === true && actingMon.health > 0 && result[3] !== "Status" && result[3] !== "SecStatus"){
+                if (result[0] > 0){
+                    console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
+                    targetMon.takeDamage(result[0])
+                    if (result[4] === true){
+                        // if result4 is true, it means the move is a draining move, in which a pokemon restores health equal
+                        // to half the damage it dealt
+                        let heal = Math.floor(result[0]/2)
+                        actingMon.heal(heal)
+                    }
+                }
+                
 
-        result = result()
-
-        if (result[2] === true && actingMon.health > 0){
-            if (result[0] > 0){
-                console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
-                targetMon.takeDamage(result[0])
+                // Feel like this will bread a bug in the future
+                // Because of the way i am storing this values in an array and just checking for nulls
+                if(targetMon.status === null && result[1] !== undefined && result[1] !== null){
+                    // console.log(result[1] + "   -- fired from turnaction")
+                    targetMon.applyStatus(result[1])
+                }
             }
 
-            if(targetMon.status === null && result[1] !== undefined && result[1] !== null){
-                console.log(result[1] + "   -- fired from turnaction")
+            // JUST FOR NOW, the damageCalc function will return different values if used for a move like leechseed/confuse ray
+            // refractoring this is going to be a bitch...
+            else if (result[3] === "SecStatus"){
+                console.log("TESTING THIS SHOULD FIRE OFF")
+                targetMon.applySecStatus(result[1])
+            }
+            else if (result[3] === "Status"){
                 targetMon.applyStatus(result[1])
             }
-
-            if (typeof result[1] === "object"){
-                targetMon.applySecStatus(result)
+            else if (result[2] === false && actingMon.health > 0)
+            {
+                console.log(actingMon.name + " is " + actingMon.status + ", it no move!");
             }
-        }else if (result[2] === false && actingMon.health > 0){
-            console.log(actingMon.name + " is " + actingMon.status + ", it no move!");
-        }
+
+
+            // console.log("New category works")
+            // if (targetMon.secStatus[attack]){
+            //     console.log("target isn't seeded... yet")
+            // }
+        
+
     }
 
     // Turn end checks for poison, burn, and leech seed tics by running a Pokemon method
@@ -140,6 +170,7 @@ module.exports = class Field {
     // User's switch method
     switchMon() {
         this.activeMon.statusCount = 0
+        this.activeMon.removeSecStatus();
         let team = [];
         for (let i=0;i<this.user.team.length;i++){
             if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
@@ -182,7 +213,9 @@ module.exports = class Field {
 
     // Opp switch method (fires when their mon's faint)
     oppSwitch(){
+        // Logic to clean up counters and other active info
         this.activeOpp.statusCount = 0;
+        this.activeOpp.removeSecStatus();
         let team = [];
         for (let i=0;i<this.opponent.team.length;i++){
             if (this.opponent.team[i].health > 0 && this.opponent.team[i] !== this.activeOpp){
@@ -243,6 +276,7 @@ module.exports = class Field {
                         break;
                     
                     case "test":
+                        this.activeOpp.removeSecStatus()
                         this.activeMon.test();
                         this.activeOpp.test();
     
