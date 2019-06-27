@@ -8,7 +8,7 @@ class Pokemon {
         this.stats = pokemon[name].baseStats;
         this.moves = pokemon[name].moveSet;
         this.status = null;
-        this.secStatus = {null: null};
+        this.secStatus = {};
         this.statusCount = 0;
         //JUST A BLOCK FOR THE HEALTH CALC, DONT WANT IT GETTING TOO MESSY
         //For now, assuming perfect IV, max level, and decent EV's
@@ -63,8 +63,10 @@ class Pokemon {
     // BUT it is simple and fast... for now we leave this logic here
     // Just a reminder copied over, but this will mirror those functions, but work for a property named secStatus
     applySecStatus(status){
+        console.log("method fires")
         // I think the structure for this second status board is much better, will note the differences
         if (!this.secStatus.status){
+            console.log("conditional logic fired")
             // passing down the function may make for cleaner/shorter code
             this.secStatus.status = status;
         }

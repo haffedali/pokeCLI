@@ -54,7 +54,7 @@ const moveList = {
         priority: 0,
 		type: "Water",
 		secEffect: {
-			leechSeed: 100,
+			"leechSeed": 100,
 		}
     },
     "Airslash": {

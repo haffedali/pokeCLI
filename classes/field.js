@@ -75,11 +75,18 @@ module.exports = class Field {
         result = result()
 
         if (result[2] === true && actingMon.health > 0){
-            console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
-            targetMon.takeDamage(result[0])
+            if (result[0] > 0){
+                console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
+                targetMon.takeDamage(result[0])
+            }
+
             if(targetMon.status === null && result[1] !== undefined && result[1] !== null){
                 console.log(result[1] + "   -- fired from turnaction")
                 targetMon.applyStatus(result[1])
+            }
+
+            if (typeof result[1] === "object"){
+                targetMon.applySecStatus(result)
             }
         }else if (result[2] === false && actingMon.health > 0){
             console.log(actingMon.name + " is " + actingMon.status + ", it no move!");
@@ -237,7 +244,7 @@ module.exports = class Field {
                     
                     case "test":
                         this.activeMon.test();
-                        this.activeOpp.test()
+                        this.activeOpp.test();
     
                     case "forfeit":
                     default: 

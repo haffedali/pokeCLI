@@ -61,7 +61,9 @@ function calc(mon1, mon2, move1){
 
     let status = statusHelper(moveList[move1])
 
-    
+    if (status === null || status === undefined){
+        status = secStatusHelper(moveList[move1])
+    }
 
 
 
@@ -84,7 +86,12 @@ function calc(mon1, mon2, move1){
     }
 
     function secStatusHelper(move){
-        
+        console.log(move.setEffectmove)
+        if (move.secEffect.move)
+        {
+
+        }
+
     }
 }
 

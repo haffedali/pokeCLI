@@ -99,7 +99,7 @@ const statusEffect = {
     },
 
     secStatus: {
-        leechSeed(mon){
+        "leechSeed": (mon) =>{
             console.log("FIRED THE LEECH SEED CAPTAIN")
         }
     },
