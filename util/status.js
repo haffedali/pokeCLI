@@ -96,7 +96,15 @@ const statusEffect = {
             console.log("Poison eroded " + mon.name+ " for "+ ticDamage + " damage");
             return ticDamage;
         }
-    }
+    },
+
+    secStatus: {
+        leechSeed(mon){
+            console.log("FIRED THE LEECH SEED CAPTAIN")
+        }
+    },
+    
+    
 }
 
 
