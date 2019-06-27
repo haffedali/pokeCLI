@@ -27,7 +27,8 @@ const moveList = {
         category: "Special",
         name: "Giga Drain",
         pp: 10,
-        priority: 0,
+		priority: 0,
+		drain: .5,
         // how to recover hp?
         type: "Grass"
     },
@@ -52,7 +53,10 @@ const moveList = {
         name: "Hydro Pump",
         pp: 5,
         priority: 0,
-        type: "Water"
+		type: "Water",
+		secEffect: {
+			"leechSeed": 100,
+		}
     },
     "Airslash": {
         num: 5,
@@ -95,50 +99,14 @@ const moveList = {
 		secondary: null,
 		target: "self",
 		type: "Flying",
-    },
-    "Leechseed": {
-		num: 73,
-		accuracy: 90,
-		basePower: 0,
-		category: "Status",
-		desc: "The Pokemon at the user's position steals 1/8 of the target's maximum HP, rounded down, at the end of each turn. If Big Root is held by the recipient, the HP recovered is 1.3x normal, rounded half down. If the target uses Baton Pass, the replacement will continue being leeched. If the target switches out or uses Rapid Spin successfully, the effect ends. Grass-type Pokemon are immune to this move on use, but not its effect.",
-		shortDesc: "1/8 of target's HP is restored to user every turn.",
-		id: "leechseed",
-		isViable: true,
-		name: "Leech Seed",
-		pp: 10,
-		priority: 0,
-		flags: {protect: 1, reflectable: 1, mirror: 1},
-		volatileStatus: 'leechseed',
-		effect: {
-			onStart(target) {
-				this.add('-start', target, 'move: Leech Seed');
-			},
-			onResidualOrder: 8,
-			onResidual(pokemon) {
-				let target = this.effectData.source.side.active[pokemon.volatiles['leechseed'].sourcePosition];
-				if (!target || target.fainted || target.hp <= 0) {
-					this.debug('Nothing to leech into');
-					return;
-				}
-				let damage = this.damage(pokemon.maxhp / 8, pokemon, target);
-				if (damage) {
-					this.heal(damage, target, pokemon);
-				}
-			},
-		},
-		onTryHit(target) {
-			if (target.hasType('Grass')) {
-				this.add('-immune', target);
-				return null;
-			}
-		},
-		secondary: null,
-		target: "normal",
-		type: "Grass",
-		zMoveEffect: 'clearnegativeboost',
-		contestType: "Clever",
-    },
+	},
+	"Leechseed":{
+		category: "SecStatus",
+		secEffect: "leechSeed",
+		//Toying with `immune` now
+		immune: {"grass": true}
+	},
+    
     "Sleeppowder": {
 		num: 79,
 		accuracy: 75,

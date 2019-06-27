@@ -96,7 +96,36 @@ const statusEffect = {
             console.log("Poison eroded " + mon.name+ " for "+ ticDamage + " damage");
             return ticDamage;
         }
-    }
+    },
+
+    secStatus: {
+        "leechSeed": {
+            active(mon){
+
+            },
+            apply(mon){
+
+            }
+        },
+        "confusion": {
+            active(mon){
+
+            },
+            apply(mon){
+                
+            }
+        },
+        "charm": {
+            active(mon){
+
+            },
+            apply(mon){
+
+            }
+        },
+    },
+    
+    
 }
 
 
