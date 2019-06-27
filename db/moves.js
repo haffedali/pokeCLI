@@ -52,7 +52,10 @@ const moveList = {
         name: "Hydro Pump",
         pp: 5,
         priority: 0,
-        type: "Water"
+		type: "Water",
+		secEffect: {
+			leechSeed: 100,
+		}
     },
     "Airslash": {
         num: 5,

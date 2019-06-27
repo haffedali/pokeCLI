@@ -82,6 +82,10 @@ function calc(mon1, mon2, move1){
             }
         }
     }
+
+    function secStatusHelper(move){
+        
+    }
 }
 
 

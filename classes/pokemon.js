@@ -8,7 +8,7 @@ class Pokemon {
         this.stats = pokemon[name].baseStats;
         this.moves = pokemon[name].moveSet;
         this.status = null;
-        this.secondaryStatus = null;
+        this.secStatus = {null: null};
         this.statusCount = 0;
         //JUST A BLOCK FOR THE HEALTH CALC, DONT WANT IT GETTING TOO MESSY
         //For now, assuming perfect IV, max level, and decent EV's
@@ -29,7 +29,7 @@ class Pokemon {
     // "burn" will have two functions; tic and apply
     applyStatus(status){
         // console.log(status)
-        if (this.status === null && status !== undefined){
+        if (this.status === null){
             this.status = status
             console.log(this.name + " was " + status + "ed!")
             switch (status){
@@ -59,6 +59,16 @@ class Pokemon {
         }
     }
 
+    // Apply and RemoveStatus() are closely tied together. I don't really like the way it is functioning, I feel like it could get bloated
+    // BUT it is simple and fast... for now we leave this logic here
+    // Just a reminder copied over, but this will mirror those functions, but work for a property named secStatus
+    applySecStatus(status){
+        // I think the structure for this second status board is much better, will note the differences
+        if (!this.secStatus.status){
+            // passing down the function may make for cleaner/shorter code
+            this.secStatus.status = status;
+        }
+    }
     // ticStatus() checks for damagins statuses and runs the damage (these types of statuses damage your pokemon at the end of the turn)
     ticStatus(){
         // console.log(this.status + " from Pokemon.ticStatus()")
@@ -67,6 +77,8 @@ class Pokemon {
             this.health -= ticDamage;
             this.statusCount ++;
         }
+
+
     }
 
     // checkStatus() checks for preventative statuses and runs a check for passing or failing (these types of statuses prevents your from using a move your turn)
