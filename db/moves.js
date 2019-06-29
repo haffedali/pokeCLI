@@ -8,7 +8,8 @@ const moveList = {
 	"Doubleedge": {
 		basePower: 120,
 		recoil: .5,
-		type: "Normal"
+		type: "Normal",
+		priority: 0,
 	},
     "Flamethrower": {
         num: 1,
@@ -42,7 +43,7 @@ const moveList = {
         // accuracy `true` for moves that CANNOT miss
         accuracy: true,
         basePower: 0,
-        category: "Status",
+        category: "Protect",
         name: "Protect",
         pp: 10,
         priority: 4,
@@ -406,6 +407,7 @@ const moveList = {
 		name: "Ice Beam",
 		pp: 10,
 		priority: 0,
+		drain: .5,
 		flags: {protect: 1, mirror: 1},
 		secondary: {
 			chance: 10,

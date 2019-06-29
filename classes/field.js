@@ -1,6 +1,6 @@
 const inquirer = require("inquirer")
 const { fakeAi, damageCalc} = require("../util")
-const {moveList} = require("../db");
+const {moves} = require("../db");
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user, opponent) {
@@ -66,7 +66,7 @@ module.exports = class Field {
         // This entire function will be split into 2 pieces of functionality; conditionally fired off using an if statement
         // abtstract this logic to 2 seperate turn actions, one more attacking moves, and one for status moves (maybe another for boosts and terrains)
         // result is equal to the result of damageCalc() coupled checkStatus()
-
+        // again, damageCalc being neccessary to the battle logic is super damaging.
             let result = () => {
                 let success = actingMon.checkStatus()
                 let attackResult = damageCalc(actingMon, targetMon, attack)
@@ -82,21 +82,27 @@ module.exports = class Field {
             
 
             // console.log(actingMon.name + "        " + result);
-            if (result[2] === true && actingMon.health > 0 && result[3] !== "Status" && result[3] !== "SecStatus"){
-                if (result[0] > 0){
-                    console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
-                    targetMon.takeDamage(result[0])
-                    if (result[4] === "drain"){
-                        // if result4 is true, it means the move is a draining move, in which a pokemon restores health equal
-                        // to half the damage it dealt
-                        let heal = Math.floor(result[0]/2)
-                        actingMon.heal(heal)
+            if (result[2] === true && actingMon.health > 0 && result[3] !== "Status" && result[3] !== "SecStatus" && result[3] !== "Protect"){
+                if (targetMon.isProtected !== true){
+                    if (result[0] > 0){
+                        console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
+                        targetMon.takeDamage(result[0])
+                        if (result[4] === "drain"){
+                            // if result4 is true, it means the move is a draining move, in which a pokemon restores health equal
+                            // to half the damage it dealt
+                            let heal = Math.floor(result[0]/2)
+                            console.log(attack + " healed " + actingMon.name + " for " + heal + " health points!")
+                            actingMon.heal(heal)
+                        }
+                        else if (result[4] === "recoil"){
+                            let recoil = Math.floor(result[0]/2)
+                            actingMon.recoil(recoil)
+                        }
                     }
-                    else if (result[4] === "recoil"){
-                        let recoil = Math.floor(result[0]/2)
-                        actingMon.recoil(recoil)
-                    }
+                }else{
+                    console.log(actingMon.name + " used " + attack + " but " + targetMon.name + " protected itself from any harm!")
                 }
+
                 
 
                 // Feel like this will bread a bug in the future
@@ -109,13 +115,17 @@ module.exports = class Field {
 
             // JUST FOR NOW, the damageCalc function will return different values if used for a move like leechseed/confuse ray
             // refractoring this is going to be a bitch...
-            else if (result[3] === "SecStatus"){
-                targetMon.applySecStatus(result[1])
+            else if (result[2] === true && result[3] === "SecStatus" && targetMon.isProtected !== true){
+                targetMon.applySecStatus(result[1]);
             }
-            else if (result[3] === "Status"){
-                targetMon.applyStatus(result[1])
+            else if (result[2] === true && result[3] === "Status" && targetMon.isProtected !== true){
+                targetMon.applyStatus(result[1]);
             }
-            else if (result[2] === false && actingMon.health > 0)
+            else if (result[2] === true && result[3] === "Protect"){
+                console.log(actingMon.name + " protected itself!")
+                actingMon.protect();
+            }
+            else if (result[2] === false && actingMon.health > 0 )
             {
                 console.log(actingMon.name + " is " + actingMon.status + ", it no move!");
             }
@@ -125,8 +135,7 @@ module.exports = class Field {
             // if (targetMon.secStatus[attack]){
             //     console.log("target isn't seeded... yet")
             // }
-        
-
+    
     }
 
     // Turn end checks for poison, burn, and leech seed tics by running a Pokemon method
@@ -144,6 +153,9 @@ module.exports = class Field {
         if (healOpp > 0){
             this.activeOpp.heal(healOpp)
         }
+
+        this.activeOpp.endProtect()
+        this.activeMon.endProtect()
         
     }
 
@@ -173,7 +185,7 @@ module.exports = class Field {
 
             // Conditional logic combining the result of the speedcheck()
             // Utilizes sequence built from speedCheck as well as moveList.db for priority checking
-            if (moveList[oppAttack].priority === moveList[attack].priority){
+            if (moves[oppAttack].priority === moves[attack].priority){
                 for (let i=0;i<sequence.length;i++){
                     if (sequence[i] === "activeMon"){
                         this.turnAction(this.activeMon,this.activeOpp,attack)
@@ -182,26 +194,34 @@ module.exports = class Field {
                     }
                 }
             }else {
-                if (moveList[oppAttack].priority > moveList[attack].priority){
+                if (moves[oppAttack].priority > moves[attack].priority){
                     this.turnAction(this.activeOpp, this.activeMon, oppAttack)
+                    this.turnAction(this.activeMon,this.activeOpp,attack)
+
                 }else{
                     this.turnAction(this.activeMon,this.activeOpp,attack)
+                    this.turnAction(this.activeOpp, this.activeMon, oppAttack)
                 }
             }
 
 
             // Hacky way to give time for turnActions before ending the turn and starting a new one
             setTimeout(() => this.turnEnd(), 2000)
-            setTimeout(() => this.fieldLoop(),3000)
+            setTimeout(() => this.fieldLoop(),2400)
 
         })
     }
 
     // User's switch method
     switchMon() {
+
+        // Resets status related counters
         this.activeMon.statusCount = 0;
         this.activeMon.secStatusCount = 0;
         this.activeMon.removeSecStatus();
+        this.activeMon.endProtect();
+
+        
         let team = [];
         for (let i=0;i<this.user.team.length;i++){
             if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
@@ -248,6 +268,9 @@ module.exports = class Field {
         this.activeOpp.secStatusCount = 0;
         this.activeOpp.statusCount = 0;
         this.activeOpp.removeSecStatus();
+        this.activeOpp.endProtect();
+
+
         let team = [];
         for (let i=0;i<this.opponent.team.length;i++){
             if (this.opponent.team[i].health > 0 && this.opponent.team[i] !== this.activeOpp){
@@ -309,7 +332,6 @@ module.exports = class Field {
                     
                     case "test":
                         this.activeMon.test();
-                        this.activeOpp.test();
     
                     case "forfeit":
                     default: 

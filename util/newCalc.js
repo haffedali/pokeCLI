@@ -75,6 +75,12 @@ function calc(mon1, mon2, move1){
 
         // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
         // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
+
+
+        // Here we check if the opposing pokemon is protected, if so, we can't do shiiit
+        if (mon2.isProtected){
+            return [null,null,null,"Protect"]
+        }
         return [Math.floor(damageToOpp),status, move.category, effect]
     }
     // This else statement covers status and secStatus moves
@@ -97,14 +103,6 @@ function calc(mon1, mon2, move1){
         }
     }
 
-    function secStatusHelper(move){
-        console.log(move.secEffect);
-        // if (move.secEffect.move)
-        // {
-
-        // }
-
-    }
 }
 
 

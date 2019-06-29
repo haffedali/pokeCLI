@@ -11,6 +11,7 @@ class Pokemon {
         this.secStatus = {};
         this.statusCount = 0;
         this.secStatusCount = 0;
+        this.isProtected = null;
         //JUST A BLOCK FOR THE HEALTH CALC, DONT WANT IT GETTING TOO MESSY
         //For now, assuming perfect IV, max level, and decent EV's
         this.health = Math.floor((((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110)
@@ -112,8 +113,16 @@ class Pokemon {
     }
 
     recoil(amt){
-        console.log(this.name + " took " +amt+ " recoil damage!")
+        console.log(this.name + " took " + amt + " recoil damage!")
         this.health -= amt
+    }
+
+    protect(){
+        this.isProtected = true;
+    }
+
+    endProtect(){
+        this.isProtected = null;
     }
 
     // checkStatus() checks for preventative statuses and runs a check for passing or failing (these types of statuses prevents your from using a move your turn)
@@ -145,7 +154,7 @@ class Pokemon {
 
     // Function can change depending on tests I want to run... overloading would be useful here
     test(){
-        console.log(this);
+        this.protect()
     }
 }
 
