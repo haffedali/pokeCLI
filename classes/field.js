@@ -82,7 +82,7 @@ module.exports = class Field {
             
 
             // console.log(actingMon.name + "        " + result);
-            if (result[2] === true && actingMon.health > 0 && result[3] !== "Status" && result[3] !== "SecStatus" && result[3] !== "Protect"){
+            if (result[2] === true && actingMon.health > 0 && result[3] !== "Status" && result[3] !== "SecStatus" && result[3] !== "Protect" && result[3] !== "Boost"){
                 if (targetMon.isProtected !== true){
                     if (result[0] > 0){
                         console.log(targetMon.name + " has taken " + result[0] + " damage from " + attack + "!")
@@ -124,6 +124,9 @@ module.exports = class Field {
             else if (result[2] === true && result[3] === "Protect"){
                 console.log(actingMon.name + " protected itself!")
                 actingMon.protect();
+            }
+            else if (result[2] === true && result[3] === "Boost"){
+                actingMon.boost(moves[attack].boost);
             }
             else if (result[2] === false && actingMon.health > 0 )
             {
