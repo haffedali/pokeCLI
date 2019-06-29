@@ -5,6 +5,7 @@ class Pokemon {
     constructor(name) {
         this.name = name;
         this.type = pokemon[name].types;
+        this.baseStats = pokemon[name].baseStats;
         this.stats = pokemon[name].baseStats;
         this.moves = pokemon[name].moveSet;
         this.status = null;
@@ -12,6 +13,8 @@ class Pokemon {
         this.statusCount = 0;
         this.secStatusCount = 0;
         this.isProtected = null;
+        //atk,spa,def,spd,spe,eva
+        this.boosts = {atk: 0, spa: 0, def: 0, spd: 0, spe: 0, eva: 0},
         //JUST A BLOCK FOR THE HEALTH CALC, DONT WANT IT GETTING TOO MESSY
         //For now, assuming perfect IV, max level, and decent EV's
         this.health = Math.floor((((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110)
@@ -58,6 +61,12 @@ class Pokemon {
                 break;
             default:
                 break;
+        }
+    }
+
+    boost(boostData){
+        for (let boost in boostData){
+            this.boosts[boost] = this.boosts[boost] + boostData[boost];
         }
     }
 
@@ -154,7 +163,7 @@ class Pokemon {
 
     // Function can change depending on tests I want to run... overloading would be useful here
     test(){
-        this.protect()
+        console.log(this);
     }
 }
 

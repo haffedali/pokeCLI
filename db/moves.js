@@ -112,6 +112,14 @@ const moveList = {
 		//Toying with `immune` now
 		immune: {"grass": true}
 	},
+	
+	"Withdraw":{
+		category: "Boost",
+		boost: {
+			def: 1
+		},
+		name: "Withdraw",
+	},
     
     "Sleeppowder": {
 		num: 79,
