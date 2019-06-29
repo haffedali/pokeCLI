@@ -5,6 +5,11 @@
 
 /**@type {{[k: string]: MoveData}} */
 const moveList = {
+	"Doubleedge": {
+		basePower: 120,
+		recoil: .5,
+		type: "Normal"
+	},
     "Flamethrower": {
         num: 1,
         accuracy: 100,
@@ -14,10 +19,10 @@ const moveList = {
         pp: 15,
         priority: 0,
         type: "Fire",
-				target: "normal",
-				effect: {
-					"burn": 10
-				}
+		target: "normal",
+		effect: {
+			"burn": 10
+		}
 				
     },
     "Gigadrain": {

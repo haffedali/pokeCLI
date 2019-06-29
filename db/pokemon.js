@@ -1,5 +1,6 @@
 //No abilities for now, but will definitely be added in later
 //switching to fixed movestes. Will prevent having to randomly generating opp teams movests. 
+
 let pokemonDex = {
     "Charizard": {
         num: 6,
@@ -13,7 +14,7 @@ let pokemonDex = {
         types: ["Water"],
         baseStats: {hp: 79, atk: 83, def: 100, spa: 85, spd: 85, spe: 78},
         name: "Blastoise",
-        moveSet: ["Icebeam", "Gigadrain", "Surf", "Hydropump"]
+        moveSet: ["Icebeam", "Leechseed", "Surf", "Hydropump"]
     },
     "Venusaur": {
         num: 3,
@@ -27,7 +28,7 @@ let pokemonDex = {
         types: ["Normal", "Flying"],
         baseStats: {hp: 83, atk: 80, def: 75, spa: 70, spd: 70, spe: 101},
         name: "Pidgeot",
-        moveSet: ["Aerialace", "Hyper Beam", "Agility", "Mirror Move"]
+        moveSet: ["Aerialace", "Doubleedge", "Agility", "Mirror Move"]
     },
     // "Nidoking": {//add movesets
     //     num: 34,
@@ -54,7 +55,7 @@ let pokemonDex = {
         types: ["Fire"],
         baseStats: {hp: 65, atk: 130, def: 60, spa: 110, spd: 110, spe: 65},
         name: "Flareon",
-        moveSet: ["Fire Blast", "Body Slam", "Hyper Beam", "Qucik Attack"]//fix moves
+        moveSet: ["Fireblast", "Body Slam", "Hyper Beam", "Qucik Attack"]//fix moves
     },
     "Vaporeon": {
         num: 134,

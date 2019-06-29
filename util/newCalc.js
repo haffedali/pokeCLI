@@ -6,7 +6,7 @@ const typeDict = require("../util/typeDict")
 function calc(mon1, mon2, move1){
     move = moveList[move1]
     //initializing important variables
-    let stabUser,moveTypeUser,damageToOpp,status, drain
+    let stabUser,moveTypeUser,damageToOpp,status,effect
     let typeModUser = 1
 
     moveTypeUser = move.type
@@ -62,20 +62,24 @@ function calc(mon1, mon2, move1){
 
         status = statusHelper(move)
 
-        if (move.drain){
-            drain = true
-        }
 
+        // Here I am checking to see if the move has either of these properties
+        // Which will allow me to reduce or heal the active mon based on their own attack
+        if (move.drain){
+            effect = "drain";
+        }
+        else if (move.recoil){
+            effect = "recoil";
+        }
 
 
         // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
         // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
-        return [Math.floor(damageToOpp),status, move.category, drain]
+        return [Math.floor(damageToOpp),status, move.category, effect]
     }
     // This else statement covers status and secStatus moves
     else{
-        return [0, move.secEffect, move.category, false]
-
+        return [0, move.secEffect, move.category, false];
     }
  
     

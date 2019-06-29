@@ -100,23 +100,32 @@ const statusEffect = {
 
     secStatus: {
         "leechSeed": {
-            active(mon){
-
+            tic(mon){
+                let ticDamage = Math.floor(mon.baseStats.hp/16);
+                console.log("Leechseed sapped " + mon.name+ " for "+ ticDamage + " damage");
+                return ticDamage;
             },
             apply(mon){
 
-            }
+            },
         },
         "confusion": {
-            active(mon){
-
+            check(mon){
+                let chance = Math.floor(Math.random() * 3);
+                let match = Math.floor(Math.random() * 3);
+                if (match === chance) {
+                    console.log(mon.name + " hurt itself in its confusion!")
+                    return false;
+                }else{
+                    return true;
+                }
             },
             apply(mon){
-                
+
             }
         },
         "charm": {
-            active(mon){
+            check(mon){
 
             },
             apply(mon){
