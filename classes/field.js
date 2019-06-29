@@ -257,7 +257,14 @@ module.exports = class Field {
                     }
                 }
                 
-                this.activeMon = this.user.team[choice];
+                if (this.activeMon.health > 0){
+                    this.activeMon = this.user.team[choice];
+                    let oppAttack = fakeAi(this.activeMon,this.activeOpp)
+                    this.turnAction(this.activeOpp, this.activeMon,oppAttack)
+                }else{
+                    this.activeMon = this.user.team[choice];
+                }
+                
 
                 //Conditional before fieldLoop to check if we need to execute and attack/damage
                 this.fieldLoop()
