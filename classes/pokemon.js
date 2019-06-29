@@ -14,7 +14,7 @@ class Pokemon {
         this.secStatusCount = 0;
         this.isProtected = null;
         //atk,spa,def,spd,spe,eva
-        this.boosts = {atk: 0, spa: 0, def: 0, spd: 0, spe: 0, eva: 0},
+        this.boosts = {atk: 0, spa: 0, def: 0, spd: 0, spe: 0},
         //JUST A BLOCK FOR THE HEALTH CALC, DONT WANT IT GETTING TOO MESSY
         //For now, assuming perfect IV, max level, and decent EV's
         this.health = Math.floor((((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110)

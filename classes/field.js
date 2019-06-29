@@ -223,6 +223,7 @@ module.exports = class Field {
         this.activeMon.secStatusCount = 0;
         this.activeMon.removeSecStatus();
         this.activeMon.endProtect();
+        this.activeMon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
         
         let team = [];
@@ -257,7 +258,14 @@ module.exports = class Field {
                     }
                 }
                 
-                this.activeMon = this.user.team[choice];
+                if (this.activeMon.health > 0){
+                    this.activeMon = this.user.team[choice];
+                    let oppAttack = fakeAi(this.activeMon,this.activeOpp)
+                    this.turnAction(this.activeOpp, this.activeMon,oppAttack)
+                }else{
+                    this.activeMon = this.user.team[choice];
+                }
+                
 
                 //Conditional before fieldLoop to check if we need to execute and attack/damage
                 this.fieldLoop()
@@ -272,6 +280,7 @@ module.exports = class Field {
         this.activeOpp.statusCount = 0;
         this.activeOpp.removeSecStatus();
         this.activeOpp.endProtect();
+        this.activeOpp.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
 
         let team = [];

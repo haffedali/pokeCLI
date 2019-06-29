@@ -11,12 +11,16 @@ function calc(mon1, mon2, move1){
 
     moveTypeUser = move.type
     if (move.category === "Special" || move.category === "Physical"){
+
+        let mon1Boost = boostHelper(mon1);
+        let mon2Boost = boostHelper(mon2);
+
            // Damage calc pre modifiers (ie. stab, type effectiveness)
            // These four if statements cover getting a basic damage for a special for physical attack
         if (move.category === "Special"){
-            damageToOpp = (((100/5+2)*mon1.stats.spa*move.basePower)/mon2.stats.spd)
+            damageToOpp = (((100/5+2)*(mon1.stats.spa + mon1Boost.spa)*move.basePower)/(mon2.stats.spd + mon2Boost.spd))
         } else {
-            damageToOpp = (((100/5+2)*mon1.stats.atk*move.basePower)/mon2.stats.def)
+            damageToOpp = (((100/5+2)*(mon1.stats.atk + mon1Boost.atk)*move.basePower)/(mon2.stats.def + mon2Boost.def))
         }
 
 
@@ -103,6 +107,15 @@ function calc(mon1, mon2, move1){
         }
     }
 
+    function boostHelper(mon){
+        let returnObj = {}
+        for (let boost in mon.boosts){
+            let chunk = Math.floor(mon.stats[boost] / 2)
+            returnObj[boost] = mon.boosts[boost] * chunk
+        }
+        return returnObj;
+    }
+
 }
 
 
@@ -119,7 +132,7 @@ function calc(mon1, mon2, move1){
 
 
 
-// let test = calc(blastoise,venusaur,"Leechseed")
+// let test = calc(blastoise,venusaur,"Surf")
 
 
 
