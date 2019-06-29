@@ -223,6 +223,7 @@ module.exports = class Field {
         this.activeMon.secStatusCount = 0;
         this.activeMon.removeSecStatus();
         this.activeMon.endProtect();
+        this.activeMon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
         
         let team = [];
@@ -279,6 +280,7 @@ module.exports = class Field {
         this.activeOpp.statusCount = 0;
         this.activeOpp.removeSecStatus();
         this.activeOpp.endProtect();
+        this.activeOpp.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
 
         let team = [];
