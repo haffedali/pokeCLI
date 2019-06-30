@@ -26,14 +26,20 @@ function decide(mon1, mon2){
     }
 
     function selectionCheck(options){
-        let top = -5
+        let top = -100
         let result = "";
         for (let x in options){
             if (options[x] > top){
                 top = options[x];
                 result = x;
+            }else if (options[x] === top){
+                let chance = Math.florr(Math.random() * 2)
+                if (chance === 1){
+                    result = x;
+                }
             }
         }
+
         return result
 
     }

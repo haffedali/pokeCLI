@@ -25,7 +25,15 @@ const moveList = {
 			"burn": 10
 		}
 				
-    },
+	},
+	"Agility": {
+		basePower: 0,
+		type: "Boost",
+		priority: 0,
+		boost: {
+			spe: 2
+		}
+	},
     "Gigadrain": {
         num: 2,
         accuracy: 100,
@@ -65,6 +73,7 @@ const moveList = {
 		}
     },
     "Airslash": {
+		category: "Special",
         num: 5,
         accuracy: 95,
         basePower: 75,
