@@ -81,7 +81,7 @@ module.exports = class Field {
             result = result()
             
 
-            // console.log(actingMon.name + "        " + result);
+
             if (result[2] === true && actingMon.health > 0 && result[3] !== "Status" && result[3] !== "SecStatus" && result[3] !== "Protect" && result[3] !== "Boost"){
                 if (targetMon.isProtected !== true){
                     if (result[0] > 0){
@@ -343,7 +343,11 @@ module.exports = class Field {
                         break;
                     
                     case "test":
-                        this.activeMon.test();
+                        // console.log(this.user)
+                        // console.log(this.opponent)
+                        console.log(this.activeOpp);
+                        this.fieldLoop();
+                        break;
     
                     case "forfeit":
                     default: 

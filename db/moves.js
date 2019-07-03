@@ -25,7 +25,15 @@ const moveList = {
 			"burn": 10
 		}
 				
-    },
+	},
+	"Agility": {
+		basePower: 0,
+		type: "Boost",
+		priority: 0,
+		boost: {
+			spe: 2
+		}
+	},
     "Gigadrain": {
         num: 2,
         accuracy: 100,
@@ -65,6 +73,7 @@ const moveList = {
 		}
     },
     "Airslash": {
+		category: "Special",
         num: 5,
         accuracy: 95,
         basePower: 75,
@@ -106,9 +115,13 @@ const moveList = {
 		target: "self",
 		type: "Flying",
 	},
+	
 	"Leechseed":{
+		basePower: 0,
+		type: "Grass",
 		category: "SecStatus",
 		secEffect: "leechSeed",
+		priority: 0,
 		//Toying with `immune` now
 		immune: {"grass": true}
 	},
@@ -647,7 +660,7 @@ const moveList = {
 			zMovePower: 160,
 			contestType: "Clever",
 		},
-		"aerialace": {
+		"Aerialace": {
 			num: 332,
 			accuracy: true,
 			basePower: 60,

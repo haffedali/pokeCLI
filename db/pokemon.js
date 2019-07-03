@@ -21,14 +21,14 @@ let pokemonDex = {
         types: ["Grass", "Poison"],
         baseStats: {hp: 80, atk: 82, def: 83, spa: 100, spd: 100, spe: 80},
         name: "Venusaur",
-        moveSet: ["Megapunch", "Megapunch" ,"Megapunch", "Megapunch"]
+        moveSet: ["Leechseed", "Doubleedge" ,"Gigadrain", "Sludgebomb"]
     },
     "Pidgeot": {//add movesets
         num: 18,
         types: ["Normal", "Flying"],
         baseStats: {hp: 83, atk: 80, def: 75, spa: 70, spd: 70, spe: 101},
         name: "Pidgeot",
-        moveSet: ["Aerialace", "Doubleedge", "Agility", "Mirror Move"]
+        moveSet: ["Aerialace", "Doubleedge", "Agility", "Quickattack"]
     },
     // "Nidoking": {//add movesets
     //     num: 34,
@@ -41,28 +41,28 @@ let pokemonDex = {
         types: ["Normal"],
         baseStats: {hp: 95, atk: 70, def: 73, spa: 95, spd: 90, spe: 60},
         name: "Clefable",
-        moveSet: ["Blizard", "Body Slam", "Thunderbolt", "Thunder Wave"]
+        moveSet: ["Sing", "Triattack", "Icebeam", "Metronome"]
     },
     "Jolteon": {
         num: 135,
         types: ["Electric"],
         baseStats: {hp: 65, atk: 65, def: 60, spa: 110, spd: 110, spe: 130},
         name: "Jolteon",
-        moveSet: ["Thunderbolt", "Thunder Wave", "Pin Missile", "Body Slam"]
+        moveSet: ["Thunderbolt", "Thunderwave", "Pinmissile", "Doublekick"]
     },
     "Flareon": {
-        num: 136,
+        num: 133,
         types: ["Fire"],
-        baseStats: {hp: 65, atk: 130, def: 60, spa: 110, spd: 110, spe: 65},
+        baseStats: {hp: 200, atk: 130, def: 150, spa: 300, spd: 190, spe: 65},
         name: "Flareon",
-        moveSet: ["Fireblast", "Body Slam", "Hyper Beam", "Qucik Attack"]//fix moves
+        moveSet: ["Flamethrower", "Body Slam", "Hyper Beam", "Qucik Attack"]//fix moves
     },
     "Vaporeon": {
         num: 134,
         types: ["Water"],
         baseStats: {hp: 130, atk: 65, def: 60, spa: 110, spd: 110, spe: 65},
         name: "Vaporeon",
-        moveSet: ["Surf", "Airslash", "Icebeam", "Sludgebomb"]
+        moveSet: ["Surf", "Acidarmor", "Icebeam", "Toxic"]
     },
     "Golem": {
         num: 76,
@@ -76,7 +76,7 @@ let pokemonDex = {
         types: ["Fighting"],
 		baseStats: {hp: 90, atk: 130, def: 80, spa: 65, spd: 65, spe: 55},
         name: "Machamp",
-        moveSet: ["Body Slam", "Earthquake", "Rock Throw", "Submission"]
+        moveSet: ["Karatechop", "Earthquake", "Thunderpunch", "Rockslide"]
     },
 }
 
