@@ -115,9 +115,13 @@ const moveList = {
 		target: "self",
 		type: "Flying",
 	},
+	
 	"Leechseed":{
+		basePower: 0,
+		type: "Grass",
 		category: "SecStatus",
 		secEffect: "leechSeed",
+		priority: 0,
 		//Toying with `immune` now
 		immune: {"grass": true}
 	},
@@ -656,7 +660,7 @@ const moveList = {
 			zMovePower: 160,
 			contestType: "Clever",
 		},
-		"aerialace": {
+		"Aerialace": {
 			num: 332,
 			accuracy: true,
 			basePower: 60,

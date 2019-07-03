@@ -33,7 +33,7 @@ function decide(mon1, mon2){
                 top = options[x];
                 result = x;
             }else if (options[x] === top){
-                let chance = Math.florr(Math.random() * 2)
+                let chance = Math.floor(Math.random() * 2)
                 if (chance === 1){
                     result = x;
                 }
