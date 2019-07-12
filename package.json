@@ -4,7 +4,8 @@
   "description": "Play and learn competitive pokemon from the comfort of your command line!",
   "main": "main.js",
   "scripts": {
-    "play": "clear && node main"
+    "play": "clear && node main",
+    "play-gui": "clear && node server.js"
   },
   "repository": {
     "type": "git",
