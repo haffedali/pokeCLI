@@ -14,14 +14,14 @@ let pokemonDex = {
         types: ["Water"],
         baseStats: {hp: 79, atk: 83, def: 100, spa: 85, spd: 85, spe: 78},
         name: "Blastoise",
-        moveSet: ["Icebeam", "Protect", "Withdraw", "Hydropump"]
+        moveSet: ["Icebeam", "Skullbash", "Withdraw", "Hydropump"]
     },
     "Venusaur": {
         num: 3,
         types: ["Grass", "Poison"],
         baseStats: {hp: 80, atk: 82, def: 83, spa: 100, spd: 100, spe: 80},
         name: "Venusaur",
-        moveSet: ["Leechseed", "Doubleedge" ,"Gigadrain", "Sludgebomb"]
+        moveSet: ["Leechseed", "Poisonpowder" ,"Gigadrain", "Take Down"]
     },
     "Pidgeot": {//add movesets
         num: 18,
