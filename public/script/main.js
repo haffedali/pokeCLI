@@ -1,14 +1,5 @@
 import Start from '../scenes/Start.js'
 import Battle from '../scenes/Battle.js'
-// function getPokemon(mon){
-
-//     $.ajax({
-//         url:"/pokemon/" + mon,
-//     }).then((res) =>{
-//         console.log(res)
-//     })
-// }
-
 
 class BootScene extends Phaser.Scene {
     constructor(){
@@ -22,11 +13,6 @@ class BootScene extends Phaser.Scene {
         this.scene.start('start')
     }
 }
-
-
-let test = "stillGlobal"
-
-
 
 
 var config = {

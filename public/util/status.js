@@ -2,7 +2,7 @@
 // FUTURE NOTE burn will have mutiple functions; apply() and tic()
 
 
-const statusEffect = {
+export default {
     "burn": 
     {
         active(mon){
@@ -136,7 +136,3 @@ const statusEffect = {
     
     
 }
-
-
-
-module.exports = statusEffect;

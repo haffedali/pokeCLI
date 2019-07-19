@@ -1,6 +1,6 @@
-module.exports= {
+export default  {
     
-    damageCalc: require("./newCalc"),
+    calc: require("./newCalc"),
     
     fakeAi: require("./decision"),
     
@@ -9,5 +9,7 @@ module.exports= {
     typeDict:require("./typeDict"),
     
     typeMatrix: require("./typeMatrix"),
+    
+    moveDb: require("./moveDb")
 
 }
