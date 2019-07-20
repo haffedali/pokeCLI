@@ -10,6 +10,7 @@ const moveList = {
 		recoil: .5,
 		type: "Normal",
 		priority: 0,
+		category: "Physical"
 	},
     "Flamethrower": {
         num: 1,

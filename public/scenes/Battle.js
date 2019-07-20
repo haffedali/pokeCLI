@@ -6,6 +6,9 @@ import decision from "../util/decision.js";
 import calc from "../util/newCalc.js";
 import pokemon from "../util/pokemonDb.js";
 import moves from "../util/moveDb.js";
+import Move from "../objects/move.js";
+import TeamBox from '../objects/teamBox.js';
+import HealthBox from "../objects/healthBox.js";
 
 
 
@@ -18,7 +21,86 @@ export default class Battle extends Phaser.Scene {
         var myMon;
         var oppMon;
         var myMove;
+        var myMonHappy;
+        var oppMonHappy;
+        var turnNum = 0;
+        var turnActive = false;
     }
+
+
+
+    pickMove(move){
+        this.myMove = move;
+        this.oppMove = decision(this.myMon, this.oppMon)
+        this.turnAction(this.myMove, this.oppMove)
+
+    }
+
+    turnAction(move, oppMove){
+        let result = this.speedCheck()
+
+        // After getting turn sequence, run a move for each
+        result.forEach((mon)=>{
+            if (this.myMon.name = mon){
+                this.runMove(this.myMon, this.myMove)
+            }
+            this.runMove(this.oppMon, this.oppMove)
+        })
+    }
+
+    runMove(mon, move){
+        console.log(moves[move])
+        // switch (moves[move].category){
+        //     case "Physical":
+        //         console.log(`{move} is a physical move`)
+        //         break;
+        //     case "Special":
+        //         console.log(`{move} is a special move`)
+        //         break;
+        //     case "Status":
+        //         console.log(`{move} is a status move`)
+                
+        // }
+    }
+
+    speedCheck(){
+        //returns 2 length array
+        if (this.myMon.stats.spe > this.oppMon.stats.spe){
+            return [this.myMon.name,this.oppMon.name]
+        }else if (this.myMon.stats.spe === this.oppMon.stats.spe){
+            return "tie"
+        }else {
+            return [this.oppMon.name,this.myMon.name]
+        }
+    }
+
+    statusCheck(){
+
+    }
+
+    turnEnd(){
+
+    }
+
+    statusMove(){
+
+    }
+
+    specialMove(){
+
+    }
+
+    physicalMove(){
+
+    }
+
+
+
+
+
+
+
+
 
 
     getPokemon(mon){
@@ -26,18 +108,9 @@ export default class Battle extends Phaser.Scene {
         return monData
     }
 
-    getTeam(mon){
-        switch (this.teamType){
-            case "fire": {
-                this.myTeam = new Team("Charizard")
-                this.myTeam.build()
-                this.myMon = this.myTeam[0]
-
-                this.oppTeam = new Team("Blastoise")
-                this.oppTeam.build()
-                this.oppMon = this.oppTeam[0]
-            }
-        }
+    start(){
+        this.myMonHappy = true
+        this.oppMonHappy = true
     }
 
     getMove(move){
@@ -49,6 +122,31 @@ export default class Battle extends Phaser.Scene {
 
     }
 
+    buildMoves(){
+        let xBuild = 100
+        this.myMon.moves.forEach((move)=>{
+            new Move(this, move, xBuild, 550).create()
+            xBuild += 135;
+        })
+
+
+    }
+
+    buildTeams(){
+         this.myTeam = new TeamBox(this, "team goes here", 80, 70).create()
+         .setInteractive().on('pointerup', ()=>{
+            this.scene.start('switch')
+         },this);
+         
+         this.oppTeam = new TeamBox(this, "enemy team goes here", 530, 70).create();
+
+
+    }
+
+    buildHealthBars(){
+        const myHealthBar = new HealthBox(this, this.myMon,220, 70).create();
+        const oppHealthBar = new HealthBox(this, this.oppMon, 380, 70).create();
+    }
 
     init(data){
         console.log(data)
@@ -85,9 +183,15 @@ export default class Battle extends Phaser.Scene {
 
     preload()
     {
+        this.load.image('battleBackground','./assets/sprites/battleBackground.png');
+        this.load.image('healthBar', './assets/sprites/healthBar.png');
+        this.load.image('healthBarUser','./assets/sprites/healthBarR.png');
+        this.load.image('switchBall', './assets/sprites/switchBall.png');
+        this.load.image('teamBox','./assets/sprites/teamContainer.png');
+        this.load.image('moveBox', './assets/sprites/moveContainer.png');
         this.load.image('pokeball', './assets/sprites/pokeballSmall.png');
         this.load.image('CharizardUser','./assets/sprites/charizardR.png');
-        this.load.image('Charizard', './assets/sprites/charizard.png')
+        this.load.image('Charizard', './assets/sprites/charizard.png');
         this.load.image('Blastoise','./assets/sprites/blastoise.png');
         this.load.image('BlastoiseUser','./assets/sprites/blastoiseR.png');
         this.load.image('Venusaur','./assets/sprites/venusaur.png');
@@ -97,7 +201,13 @@ export default class Battle extends Phaser.Scene {
 
 
     create(){
+        this.start();
+
+
+        this.add.image(0,0,'battleBackground').setDepth(-1);
         this.add.text(20,20,"Battle")
+
+
 
         this.getMove("Flamethrower")
 
@@ -105,8 +215,8 @@ export default class Battle extends Phaser.Scene {
 
 
         // Adds string 'User' for dynamic loading (a reversed version of sprite)
-        let myMon = this.add.sprite(150, 450, this.myMon.name + "User").setDepth(1);
-        let oppMon = this.add.sprite(450, 450, this.oppMon.name).setDepth(1);
+        let myMon = this.add.sprite(150, 420, this.myMon.name + "User").setDepth(1);
+        let oppMon = this.add.sprite(450, 420, this.oppMon.name).setDepth(1);
 
 
 
@@ -114,17 +224,26 @@ export default class Battle extends Phaser.Scene {
         myMon.setInteractive().on("pointerdown", ()=>{
             let x = myMon.x;
             let y = myMon.y;
-            console.log("test")
+            this.buildMoves();
+            this.buildTeams();
+            this.buildHealthBars();
+            
         })
+
+        myMon.displayWidth *=2
+        myMon.displayHeight *=2
+        oppMon.displayWidth *=2
+        oppMon.displayHeight *=2
         
 
         ////////////////////////////////////////////////////////////////
 
 
         testBall.setInteractive().on("pointerdown", ()=>{
-            console.log()
+            // this.scene.start('switch')
             console.log(this.myMon)
-            console.log(this.myTeam)
+            console.log(this.oppMon)
+            console.log(this.myMove)
         })
     
 
@@ -156,8 +275,18 @@ export default class Battle extends Phaser.Scene {
     
         //Blastoise on click
         oppMon.setInteractive().on("pointerup", ()=>{
+            // this routes to a different scene
             this.scene.start("start")
         }, this)
     
+    }
+    update(){
+        // if (this.turnActive === true){
+        //     this.add.text(200,200, 'turn is active')
+        //     this.pickMove(this.myMove)
+        // }
+        // else if(!this.turnAction){
+            
+        // }
     }
 }
