@@ -1,24 +1,23 @@
-
 import typeMatrix from "./typeMatrix.js"
 import typeDict from "./typeDict.js"
 
 
-export default function decide(mon1, mon2){
+export default async function decide(mon1, mon2){
     let selectComplete = false
     let viability = 0;
     let selection = {}
     let finalChoice;
     let moves = mon2.moves
     let moveType;
-    let movesObj = []
+    let movesArr = []
 
-    for (let i=0;i<moves.length;i++){
+    moves.forEach((move)=>{
         let viabilityScore = 0
         $.ajax({
-            url: "/moves/" + moves[i]
+            url: "/moves/" + move
         })
         .then((response)=>{
-            movesObj.append(response)
+            movesArr.push(response)
             moveType = response.type
             for (let j=0;j<mon1.type.length;j++){
                 // console.log(typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]])
@@ -29,17 +28,18 @@ export default function decide(mon1, mon2){
                     viabilityScore -= 1
                 }
             }
-            selection[moves[i]] = viabilityScore
+            selection[move] = viabilityScore
 
-            if (movesObj === 4){
+            if (movesArr.length === 4){
                 selectComplete = true;
             }
+            console.log(movesArr)
         })
+    })
 
         // console.log(moves[i] + " "+  viabilityScore + " while viability is " + viability)
-    }
 
-    function selectionCheck(options){
+    async function selectionCheck(options){
         let top = -100
         let result = "";
         for (let x in options){
@@ -57,8 +57,9 @@ export default function decide(mon1, mon2){
         return result
     }
 
-    
-    if (movesObj.length === 4 && selectComplete === true){
+    console.log(movesArr)
+    if (movesArr.length === 4 && selectComplete === true){
+        console.log(selection)
         finalChoice = selectionCheck(selection)
     }
 
@@ -68,3 +69,6 @@ export default function decide(mon1, mon2){
  
     
 }
+
+
+

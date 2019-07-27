@@ -29,10 +29,8 @@ export default class Battle extends Phaser.Scene {
 
 
 
-    async pickMove(move){
-        this.myMove = move;
-        console.log(decision(this.myMon,this.oppMon))
-        this.oppMove = decision(this.myMon, this.oppMon)
+    async pickMove(){
+        this.oppMove = await decision(this.myMon, this.oppMon)
         return Promise.resolve(this.myMove, this.oppMove)
 
         // this.turnAction(this.myMove, this.oppMove)
@@ -235,6 +233,7 @@ export default class Battle extends Phaser.Scene {
 
         testBall.setInteractive().on("pointerdown", ()=>{
             // this.scene.start('switch')
+            console.log(this.myMove)
             console.log(this.oppMove)
             this.pickMove().then(console.log(this.oppMove))
         })
