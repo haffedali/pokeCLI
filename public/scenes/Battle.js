@@ -29,15 +29,17 @@ export default class Battle extends Phaser.Scene {
 
 
 
-    pickMove(move){
+    async pickMove(move){
         this.myMove = move;
+        console.log(decision(this.myMon,this.oppMon))
         this.oppMove = decision(this.myMon, this.oppMon)
-        this.turnAction(this.myMove, this.oppMove)
+        return Promise.resolve(this.myMove, this.oppMove)
 
+        // this.turnAction(this.myMove, this.oppMove)
     }
 
-    turnAction(move, oppMove){
-        let result = this.speedCheck()
+    async turnAction(move, oppMove){
+        let result = await this.speedCheck()
 
         // After getting turn sequence, run a move for each
         result.forEach((mon)=>{
@@ -48,7 +50,7 @@ export default class Battle extends Phaser.Scene {
         })
     }
 
-    runMove(mon, move){
+    async runMove(mon, move){
         console.log(moves[move])
         // switch (moves[move].category){
         //     case "Physical":
@@ -63,14 +65,14 @@ export default class Battle extends Phaser.Scene {
         // }
     }
 
-    speedCheck(){
+    async speedCheck(){
         //returns 2 length array
         if (this.myMon.stats.spe > this.oppMon.stats.spe){
-            return [this.myMon.name,this.oppMon.name]
+            return Promise.resolve([this.myMon.name,this.oppMon.name])
         }else if (this.myMon.stats.spe === this.oppMon.stats.spe){
-            return "tie"
+            return Promise.resolve("tie")
         }else {
-            return [this.oppMon.name,this.myMon.name]
+            return Promise.resolve([this.oppMon.name,this.myMon.name])
         }
     }
 
@@ -93,10 +95,6 @@ export default class Battle extends Phaser.Scene {
     physicalMove(){
 
     }
-
-
-
-
 
 
 
@@ -209,16 +207,12 @@ export default class Battle extends Phaser.Scene {
 
 
 
-        this.getMove("Flamethrower")
 
         let testBall = this.add.sprite(300, 300, "pokeball").setDepth(1);
-
 
         // Adds string 'User' for dynamic loading (a reversed version of sprite)
         let myMon = this.add.sprite(150, 420, this.myMon.name + "User").setDepth(1);
         let oppMon = this.add.sprite(450, 420, this.oppMon.name).setDepth(1);
-
-
 
 
         myMon.setInteractive().on("pointerdown", ()=>{
@@ -241,9 +235,8 @@ export default class Battle extends Phaser.Scene {
 
         testBall.setInteractive().on("pointerdown", ()=>{
             // this.scene.start('switch')
-            console.log(this.myMon)
-            console.log(this.oppMon)
-            console.log(this.myMove)
+            console.log(this.oppMove)
+            this.pickMove().then(console.log(this.oppMove))
         })
     
 
