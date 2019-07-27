@@ -1,7 +1,9 @@
 //create a class that takes in 3 mon as an argument and builds an array based on that
-// const Pokemon = require("./pokemon")
-const Pokemon = require("./pokemon");
-module.exports = class Team {
+
+
+import Pokemon from "../classes/pokemon.js";
+
+export default class Team {
     constructor(starter, second, third) {
         this.starter = starter;
         this.second = second;

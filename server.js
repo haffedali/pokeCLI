@@ -1,6 +1,7 @@
 var express = require("express");
 var path = require("path")
-var Pokemon = require("./classes/pokemon.js")
+const {Pokemon, Team, Status} = require("./classes")
+const moveList = require("./db/moves")
 var router = express.Router()
 
 var PORT = process.env.PORT || 8080;
@@ -28,15 +29,29 @@ app.get("/", function(req,res){
     res.sendFile(path.join(__dirname, "index.html"))
 })
 
-app.get("/pokemon", function(req,res){
+
+// First test route to get retrieve pokemon data from the db to the client
+app.get("/pokemon/:mon", function(req,res){
+  console.log(req.params.mon)
+  let pokemon = new Pokemon(req.params.mon);
+  res.json(pokemon);
+})
+
+app.get("/pokemon/:mon/team", function(req,res){
+  console.log(req.params.mon)
+  let team = new Team(req.params.mon)
+  team.build()
+  res.json(team)
+})
+
+app.get("/pokemon/choice/:mon", function(req,res){
   console.log(req.body)
   // let test = new Pokemon(req.body.mon);
   // res.json(test);
   res.json("hi")
 })
 
-app.get("/pokemon/:mon", function(req,res){
-  console.log(req.params.mon)
-  let test = new Pokemon(req.params.mon);
-  res.json(test);
+app.get("/moves/:move", function(req,res){
+  let response = moveList[req.params.move]
+  res.json(response)
 })

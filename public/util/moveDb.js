@@ -4,13 +4,13 @@
 
 
 /**@type {{[k: string]: MoveData}} */
-const moveList = {
+
+export default {
 	"Doubleedge": {
 		basePower: 120,
 		recoil: .5,
 		type: "Normal",
 		priority: 0,
-		category: "Physical"
 	},
     "Flamethrower": {
         num: 1,
@@ -684,4 +684,3 @@ const moveList = {
     
 }
  
-module.exports = moveList;
