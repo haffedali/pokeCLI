@@ -21,7 +21,7 @@ let pokemonDex = {
         types: ["Grass", "Poison"],
         baseStats: {hp: 80, atk: 82, def: 83, spa: 100, spd: 100, spe: 80},
         name: "Venusaur",
-        moveSet: ["Leechseed", "Poisonpowder" ,"Gigadrain", "Take Down"]
+        moveSet: ["Leechseed", "Sludgebomb" ,"Gigadrain", "Megapunch"]
     },
     "Pidgeot": {//add movesets
         num: 18,

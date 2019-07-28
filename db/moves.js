@@ -133,6 +133,7 @@ const moveList = {
 			def: 1
 		},
 		name: "Withdraw",
+		type: 'Normal'
 	},
     
     "Sleeppowder": {

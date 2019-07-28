@@ -1,48 +1,67 @@
-
 import typeMatrix from "./typeMatrix.js"
 import typeDict from "./typeDict.js"
 
 
-export default function decide(mon1, mon2){
+export default async function decide(mon1, mon2){
     let selectComplete = false
     let viability = 0;
     let selection = {}
     let finalChoice;
     let moves = mon2.moves
     let moveType;
-    let movesObj = []
+    let movesArr = []
+    let result;
 
-    for (let i=0;i<moves.length;i++){
-        let viabilityScore = 0
-        $.ajax({
-            url: "/moves/" + moves[i]
-        })
-        .then((response)=>{
-            movesObj.append(response)
-            moveType = response.type
-            for (let j=0;j<mon1.type.length;j++){
-                // console.log(typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]])
-                if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === 1){
-                    viabilityScore += 1
-                }
-                else if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === -1){
-                    viabilityScore -= 1
-                }
-            }
-            selection[moves[i]] = viabilityScore
 
-            if (movesObj === 4){
-                selectComplete = true;
-            }
-        })
+
+    processMoves(moves, viabilityCheck).then((err)=>{
+        console.log(result)
+    });
+
+
+    // moves.forEach((move)=>{
+    //     let viabilityScore = 0
+    //     $.ajax({
+    //         url: "/moves/" + move
+    //     })
+    //     .then((response)=>{
+    //         movesArr.push(response)
+    //         moveType = response.type
+    //         for (let j=0;j<mon1.type.length;j++){
+    //             // console.log(typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]])
+    //             if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === 1){
+    //                 viabilityScore += 1
+    //             }
+    //             else if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === -1){
+    //                 viabilityScore -= 1
+    //             }
+    //         }
+    //         selection[move] = viabilityScore
+
+    //         if (movesArr.length === 4){
+    //             selectComplete = true;
+    //         }
+    //     })
+    // })
+
+    // .then(()=>{
+        // console.log(selection)
+        // if (movesArr.length === 4 && selectComplete === true){
+        //     console.log(selection)
+        //     finalChoice = selectionCheck(selection)
+        // }
+    
+        // if (finalChoice !== null && finalChoice !== undefined){
+        //     return finalChoice
+        // }
+    // })
 
         // console.log(moves[i] + " "+  viabilityScore + " while viability is " + viability)
-    }
 
-    function selectionCheck(options){
+    async function selectionCheck(options){
         let top = -100
-        let result = "";
         for (let x in options){
+            console.log(options[x])
             if (options[x] > top){
                 top = options[x];
                 result = x;
@@ -53,18 +72,46 @@ export default function decide(mon1, mon2){
                 }
             }
         }
-
-        return result
     }
 
-    
-    if (movesObj.length === 4 && selectComplete === true){
-        finalChoice = selectionCheck(selection)
+    async function processMoves(array, func){
+        await array.forEach(async (move)=>{
+            func(move)
+            movesArr.push(move)
+        })
+
+        selectionCheck(selection)
     }
 
-    if (finalChoice !== null && finalChoice !== undefined){
-        return finalChoice
+
+    async function viabilityCheck(move){
+        let viabilityScore = 0
+        $.ajax({
+            url: "/moves/" + move
+        })
+        .then((response)=>{
+            movesArr.push(response)
+            moveType = response.type
+            for (let j=0;j<mon1.type.length;j++){
+                // console.log(typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]])
+                if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === 1){
+                    viabilityScore += 1
+                }
+                else if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === -1){
+                    viabilityScore -= 1
+                }
+            }
+
+            console.log(move,viabilityScore)
+            selection[move] = viabilityScore
+
+            if (movesArr.length === 4){
+                selectComplete = true;
+            }
+        })
     }
- 
     
 }
+
+
+
