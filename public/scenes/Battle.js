@@ -15,16 +15,16 @@ import HealthBox from "../objects/healthBox.js";
 export default class Battle extends Phaser.Scene {
     constructor() {
         super("battle");
-        var teamType;
-        var myTeam;
-        var oppTeam;
-        var myMon;
-        var oppMon;
-        var myMove;
-        var myMonHappy;
-        var oppMonHappy;
-        var turnNum = 0;
-        var turnActive = false;
+        let teamType;
+        let myTeam;
+        let oppTeam;
+        let myMon;
+        let oppMon;
+        let myMove;
+        let myMonHappy;
+        let oppMonHappy;
+        let turnNum = 0;
+        let turnActive = false;
     }
 
 
@@ -74,23 +74,23 @@ export default class Battle extends Phaser.Scene {
         }
     }
 
-    statusCheck(){
+    async statusCheck(){
 
     }
 
-    turnEnd(){
+    async turnEnd(){
 
     }
 
-    statusMove(){
+    async statusMove(){
 
     }
 
-    specialMove(){
+    async specialMove(){
 
     }
 
-    physicalMove(){
+    async physicalMove(){
 
     }
 
@@ -233,9 +233,10 @@ export default class Battle extends Phaser.Scene {
 
         testBall.setInteractive().on("pointerdown", ()=>{
             // this.scene.start('switch')
-            console.log(this.myMove)
-            console.log(this.oppMove)
-            this.pickMove().then(console.log(this.oppMove))
+            // console.log(this.myMove)
+            // console.log(this.oppMove)
+            // this.pickMove().then(console.log(this.oppMove))
+            this.pickMove();
         })
     
 
