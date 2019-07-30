@@ -3,7 +3,7 @@ const Pokemon = require("../classes/pokemon")
 const typeMatrix = require("../util/typeMatrix")
 const typeDict = require("../util/typeDict")
 
-function calc(mon1, mon2, move1){
+async function calc(mon1, mon2, move1){
     move = moveList[move1]
     //initializing important variables
     let stabUser,moveTypeUser,damageToOpp,status,effect

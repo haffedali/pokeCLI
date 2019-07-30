@@ -31,5 +31,17 @@ export default class Switch extends Phaser.Scene {
         thirdSprite.setX(third.getCenter().x)
         thirdSprite.setY(third.getCenter().y)
 
+        firstSprite.setInteractive().on('pointerup',()=>{
+            this.scene.start('start')
+        },this);
+
+        secondSprite.setInteractive().on('pointerup',()=>{
+            this.scene.start('start')
+        },this);
+
+        thirdSprite.setInteractive().on('pointerup',()=>{
+            this.scene.start('start')
+        },this);
+
     }
 }

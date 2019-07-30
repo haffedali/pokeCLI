@@ -3,7 +3,9 @@ const typeMatrix = require("../util/typeMatrix")
 const typeDict = require("../util/typeDict")
 
 
-function decide(mon1, mon2){
+
+// mon1 = usermon | mon2 = oppmon
+async function decide(mon1, mon2){
     let viability = 0;
     let selection = {}
     let finalChoice;

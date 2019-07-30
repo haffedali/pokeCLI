@@ -2,6 +2,7 @@ var express = require("express");
 var path = require("path")
 const {Pokemon, Team, Status} = require("./classes")
 const moveList = require("./db/moves")
+const Util = require('./util')
 var router = express.Router()
 
 var PORT = process.env.PORT || 8080;
@@ -54,4 +55,35 @@ app.get("/pokemon/choice/:mon", function(req,res){
 app.get("/moves/:move", function(req,res){
   let response = moveList[req.params.move]
   res.json(response)
+})
+
+app.post('/turnChoice/:move', function(req,res){
+  let field = req.body.battleState
+
+  
+  Util.stateChange(field)
+  
+
+  // field.oppMon.health -= myDmg
+  // oppDmg = Util.damageCalc(field.oppMon,field.myMon)
+  
+  res.json(field)
+
+
+  // The user sends a move they chose that turn, from here the server
+  // should do the rest of the heavy lifting.
+  // 
+  // 1. The enemy AI needs to pick a move
+  // 2. The moves must be executed
+  //    *Will need a reference to the active pokemon (For health and stat changes)
+  // 3. The tics must be executed
+  // 
+  // We will run all that logic and return the end state of that process
+  // to the user.
+  //
+  // The data will be formatted as follows
+})
+
+app.post('/calc/:user/:move/:target', function(req,res){
+
 })

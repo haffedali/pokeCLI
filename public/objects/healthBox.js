@@ -5,6 +5,7 @@ export default class HealthBox extends Phaser.Scene {
         this.x = x;
         this.y = y;
         this.healthBox;
+        this.healthText;
         this.health = mon.health;
         this.opp = false;
         if (x > 220){
@@ -21,10 +22,15 @@ export default class HealthBox extends Phaser.Scene {
             this.healthBox = this.scene.add.sprite(this.x,this.y,'healthBar');
         }
 
-        let healthText = this.scene.add.text(this.x,this.y, this.health);
+        this.healthText = this.scene.add.text(this.x,this.y, this.health);
 
-        healthText.setOrigin(0.5);
-        healthText.setX(this.healthBox.getCenter().x);
-        healthText.setY(this.healthBox.getCenter().y);
+        this.healthText.setOrigin(0.5);
+        this.healthText.setX(this.healthBox.getCenter().x);
+        this.healthText.setY(this.healthBox.getCenter().y);
+    }
+
+    updateHp(num){
+
+        this.healthText.setText(num)
     }
 }
