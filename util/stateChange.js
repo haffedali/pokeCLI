@@ -26,6 +26,7 @@ async function stateChange(state){
         type = calc[2]
         last = calc[3]
 
+        // This code is not working because a ref to the class doesn't have access to the class's methods
         if (status && v){
             state.oppMon.applyStatus(status)
         }

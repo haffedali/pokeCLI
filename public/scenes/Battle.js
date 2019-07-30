@@ -35,16 +35,6 @@ export default class Battle extends Phaser.Scene {
             turnNum: 0
         }
 
-        // let teamType;
-        // let myTeam;
-        // let oppTeam;
-        // let myMon;
-        // let oppMon;
-        // let myMove;
-        // let myMonHappy;
-        // let oppMonHappy;
-        // let turnNum = 0;
-        // let turnActive = false;
     }
 
     // Function that fires as soon as this scene's create() method starts
@@ -56,7 +46,7 @@ export default class Battle extends Phaser.Scene {
     //Different tests can be pasted here for quick testing
     // CURRENTLY: 
     pokeTest(){
-        
+        console.log(this.battleState.myMon)
     }
 
     turnReturn(res){
@@ -77,16 +67,16 @@ export default class Battle extends Phaser.Scene {
     getTeams(a,b){
         axios.get('/pokemon/' + a + '/team')
             .then((res)=>{
-                this.battleState.myMon = res.data.team[0]
-                this.battleState.myTeam = res.data.team
+                this.battleState.myMon = res.data.active
+                this.battleState.myTeam = res.data.roster
             })
             .catch((err)=>{
                 console.log(err)
             })
         axios.get('/pokemon/' + b + "/team")
             .then((res)=>{
-                this.battleState.oppMon = res.data.team[0]
-                this.battleState.oppTeam = res.data.team
+                this.battleState.oppMon = res.data.active
+                this.battleState.oppTeam = res.data.roster
             })
             .catch((err)=>{
                 console.log(err)
@@ -113,7 +103,7 @@ export default class Battle extends Phaser.Scene {
     }
 
 
-    // Builds move boxes
+    // UI Builds move boxes
     buildMoves(){
         let xBuild = 100
         this.battleState.myMon.moves.forEach((move)=>{
@@ -122,7 +112,7 @@ export default class Battle extends Phaser.Scene {
         })
     }
 
-    // Builds team boxes
+    // UI Builds team boxes
     buildTeams(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
@@ -131,7 +121,7 @@ export default class Battle extends Phaser.Scene {
          new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
 
-    // Builds health bars
+    // UI Builds health bars
     buildHealthBars(){
         this.myHealthBar.create();
         this.oppHealthBar.create();
@@ -209,9 +199,10 @@ export default class Battle extends Phaser.Scene {
 
         testBall.setInteractive().on("pointerdown", ()=>{
             // this.scene.start('switch')
-            // this.pokeTest();
+            this.pokeTest();
 
-            this.pickMove(this.myMove);
+            // this.pickMove(this.myMove);
+            // this.battleState.myMon.takeDamage(10)
 
         })
 

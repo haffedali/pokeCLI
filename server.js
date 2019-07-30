@@ -38,12 +38,15 @@ app.get("/pokemon/:mon", function(req,res){
   res.json(pokemon);
 })
 
+
+// Route gets called to build teams
 app.get("/pokemon/:mon/team", function(req,res){
-  console.log(req.params.mon)
   let team = new Team(req.params.mon)
   team.build()
   res.json(team)
 })
+
+
 
 app.get("/pokemon/choice/:mon", function(req,res){
   console.log(req.body)
@@ -57,16 +60,20 @@ app.get("/moves/:move", function(req,res){
   res.json(response)
 })
 
+
+// Route gets called when user picks move
 app.post('/turnChoice/:move', function(req,res){
   let field = req.body.battleState
 
-  
+
+
   Util.stateChange(field)
+
+  
   
 
-  // field.oppMon.health -= myDmg
-  // oppDmg = Util.damageCalc(field.oppMon,field.myMon)
-  
+
+
   res.json(field)
 
 
