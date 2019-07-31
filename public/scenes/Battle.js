@@ -41,7 +41,14 @@ export default class Battle extends Phaser.Scene {
         console.log(this.field)
     }
 
+
+
     // Gets called after pickMove, updates the clientSide Field
+    /**
+     * turnReturn is invoked on the return of an updated Field state from the server.
+     * 
+     * @param {Object} res A new Field state returned by the server
+     */
     turnReturn(res){
         // this.battleState = res
         this.field = res;
@@ -55,6 +62,11 @@ export default class Battle extends Phaser.Scene {
 
 
     // Axios GET request for pokemon teams; populates myTeam, oppTeam, myMon, and oppMon properties
+    /**
+     * 
+     * @param {*} a 
+     * @param {*} b 
+     */
     getTeams(a,b){
         axios.get('/pokemon/' + a + '/team')
             .then((res)=>{
@@ -70,10 +82,10 @@ export default class Battle extends Phaser.Scene {
     pickMove(move){
         axios.post('/turnChoice/' + move)
         .then((res)=>{
-            // console.log(res.data)
+            console.log(res.data)
             // console.log(this.battleState)
     
-            this.turnReturn(res.data)
+            // this.turnReturn(res.data)
         })
         .catch((err)=>{
             console.log(err)

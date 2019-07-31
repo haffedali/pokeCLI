@@ -4,7 +4,13 @@ const typeDict = require("./typeDict")
 
 
 
-// mon1 = usermon | mon2 = oppmon
+/**
+ * Very dumb AI function that returns the "best" course of action for computer opponent 
+ * 
+ * @param {Object} mon1 user1Mon
+ * @param {Object} mon2 user2Mon (Computer Opponent)
+ * @returns {string} Name of move
+ */
 async function decide(mon1, mon2){
     let viability = 0;
     let selection = {}
@@ -13,7 +19,6 @@ async function decide(mon1, mon2){
 
     for (let i=0;i<moves.length;i++){
         let viabilityScore = 0
-        console.log(moves[i])
         let moveType = moveList[moves[i]].type
         for (let j=0;j<mon1.type.length;j++){
             if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === 1){
@@ -28,6 +33,14 @@ async function decide(mon1, mon2){
 
     }
 
+
+    /**
+     * Iterates through decide()'s selection object and returns the key with the highest (num) value
+     * 
+     * @see decide 
+     * @param {Object} options Used by decide() to keep track of viability on each move
+     * @returns {string}
+     */
     function selectionCheck(options){
         let top = -100
         let result = "";

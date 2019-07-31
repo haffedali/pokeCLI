@@ -85,12 +85,12 @@ app.post('/turnChoice/:move', function(req,res){
   
 
   // Util.stateChange(field).then()
-  field.turnStart();
+  field.turnStart()
+    .then(()=>{
+      res.json(field)
+    });
   
 
-
-
-  res.json(field)
 
 
   // The user sends a move they chose that turn, from here the server

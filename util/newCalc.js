@@ -3,6 +3,14 @@ const Pokemon = require("../classes/pokemon")
 const typeMatrix = require("../util/typeMatrix")
 const typeDict = require("../util/typeDict")
 
+/**
+ * Runs a damage calculation and handles other attack logic
+ * 
+ * @param {Object} mon1 Attacking Pokemon
+ * @param {Object} mon2 Defending Pokemon
+ * @param {string} move1 Attack choice
+ * @returns {Array} [damage,status,moveCategory,moveEffect]
+ */
 async function calc(mon1, mon2, move1){
     move = moveList[move1]
     //initializing important variables
@@ -15,8 +23,8 @@ async function calc(mon1, mon2, move1){
         let mon1Boost = boostHelper(mon1);
         let mon2Boost = boostHelper(mon2);
 
-           // Damage calc pre modifiers (ie. stab, type effectiveness)
-           // These four if statements cover getting a basic damage for a special for physical attack
+        // Damage calc pre modifiers (ie. stab, type effectiveness)
+        // These four if statements cover getting a basic damage for a special for physical attack
         if (move.category === "Special"){
             damageToOpp = (((100/5+2)*(mon1.stats.spa + mon1Boost.spa)*move.basePower)/(mon2.stats.spd + mon2Boost.spd))
         } else {
@@ -77,9 +85,6 @@ async function calc(mon1, mon2, move1){
         }
 
 
-        // console.log("Flamethrower " + damageToOpp + "---------------------Typemod " + typeModUser)
-        // console.log("Gigadrain " + damageToUser + "---------------------Typemod " + typeModOpp)
-
 
         // Here we check if the opposing pokemon is protected, if so, we can't do shiiit
         if (mon2.isProtected){
@@ -94,6 +99,12 @@ async function calc(mon1, mon2, move1){
  
     
     
+    /**
+     * Runs through secondary effects of selected moves and returns a string of the effect if triggered
+     * 
+     * @param {string} move
+     * @returns {string} or returns null if secondary effect doesn't trigger   
+     */
     function statusHelper(move){
         if (move.effect) {
             for (let x in move.effect){
@@ -107,6 +118,13 @@ async function calc(mon1, mon2, move1){
         }
     }
 
+
+    /**
+     * Helper function to temporarily boost stats for damage rolls
+     * 
+     * @param {object} mon
+     * @returns {object} an object to apply boosts to a Pokemon's base stats 
+     */
     function boostHelper(mon){
         let returnObj = {}
         for (let boost in mon.boosts){
