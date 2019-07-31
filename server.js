@@ -3,6 +3,7 @@ var path = require("path")
 const {Pokemon, Team, Status} = require("./classes")
 const moveList = require("./db/moves")
 const Util = require('./util')
+const Field = require('./tempMain.js')
 var router = express.Router()
 
 var PORT = process.env.PORT || 8080;
@@ -16,8 +17,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Single route here for game
-
+// Variable where we will store the Field
+let field,teamA,teamB;
 
 // Start our server so that it can begin listening to client requests.
 app.listen(PORT, function() {
@@ -39,11 +40,28 @@ app.get("/pokemon/:mon", function(req,res){
 })
 
 
-// Route gets called to build teams
+// Route gets called to build teams then build Field
 app.get("/pokemon/:mon/team", function(req,res){
   let team = new Team(req.params.mon)
   team.build()
-  res.json(team)
+  switch (req.params.mon){
+    case ("Charizard"):
+      teamB = new Team("Blastoise")
+      teamB.build()
+      break;
+    case ("Blastoise"):
+      teamB = new Team("Venusaur")
+      teamB.build()
+      break;
+    case ("Venusaur"):
+      teamB = new Team("Charizard")
+      teamB.build()
+      break;
+  }
+
+  field = new Field(team,teamB)
+
+  res.json(field)
 })
 
 
@@ -63,13 +81,11 @@ app.get("/moves/:move", function(req,res){
 
 // Route gets called when user picks move
 app.post('/turnChoice/:move', function(req,res){
-  let field = req.body.battleState
-
-
-
-  Util.stateChange(field)
-
+  field.user1Move = req.params.move
   
+
+  // Util.stateChange(field).then()
+  field.turnStart();
   
 
 

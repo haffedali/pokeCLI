@@ -27,7 +27,7 @@ export default class Move extends Phaser.Scene {
     }
 
     click(){
-        this.scene.battleState.myMove = this.move;
+        this.scene.field.user1Move = this.move;
         // this.scene.turnActive = true;
     }
 }

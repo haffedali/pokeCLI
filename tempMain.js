@@ -2,16 +2,18 @@
 const {Pokemon, Team, Status} = require("./classes")
 const moveList = require("./db/moves")
 const Util = require('./util')
-const { fakeAi, damageCalc} = require("./util")
+const { fakeAi, damageCalc, decision} = require("./util")
 const {moves} = require("./db");
 //this will be the class that holds all game actions
 module.exports = class Field {
     constructor(user1, user2) {
         this.user1Mon = user1.active;//you
         this.user2Mon = user2.active;//them
-        this.user1Team = user1.roster
-        this.user2Team = user2.roster
-        this.turnNum = 0
+        this.user1Team = user1.roster;
+        this.user2Team = user2.roster;
+        this.user1Move;
+        this.user2Move;
+        this.turnNum = 0;
     }
 
 
@@ -94,6 +96,7 @@ module.exports = class Field {
             // }
     
     }
+
 
     // Turn end checks for poison, burn, and leech seed tics by running a Pokemon method
     // Will need to further abstract this logic, STATUS and secSTATUS ARE VERY DIFFERENT
@@ -256,12 +259,12 @@ module.exports = class Field {
 
     // Returns sequenced turn order (firstMon, secondMon)
     speedCheck(){
-        if (this.activeMon.stats.spe > this.activeOpp.stats.spe){
-            return ["activeMon","activeOpp"]
-        }else if (this.activeMon.stats.spe === this.activeOpp.stats.spe){
+        if (this.user1Mon.stats.spe > this.user2Mon.stats.spe){
+            return ["user1Mon","user2Mon"]
+        }else if (this.user1Mon.stats.spe === this.user2Mon.stats.spe){
             return "tie"
         }else {
-            return ["activeOpp","activeMon"]
+            return ["user2Mon","user1Mon"]
         }
     }
 
@@ -271,5 +274,53 @@ module.exports = class Field {
 
     gameOver(){
         console.log("GAME OVER TURN THIS SHIT OFF")
+    }
+
+
+
+
+
+
+
+
+
+    // We have simple damage working on the user side, will need to work in
+    // The AI for the user2 attack
+    async eachTurn(arr){
+        arr.forEach((mon)=>{
+            if (mon == "user1Mon"){
+                console.log(this.user1Move)
+                damageCalc(this.user1Mon,this.user2Mon,this.user1Move)
+                    .then((res)=>{
+                        // this.user2Mon.takeDamage(res[0])
+                        this.damageCalcSettle(res, this.user2Mon)
+                    })
+            }
+            else {
+                damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
+                    .then((res)=>{
+                        this.damageCalcSettle(res, this.user1Mon)
+                    })
+
+            }
+        })
+    }
+
+    async turnStart(move){
+        this.user2Move = decision(this.user1Mon,this.user2Mon)
+        this.eachTurn(this.speedCheck())
+    }
+
+    exeMove(move){
+
+    }
+
+    damageCalcSettle(result, target){
+
+        target.takeDamage(result[0])
+
+        if (result[1]){
+            target.applyStatus(result[1])
+        }
     }
 }

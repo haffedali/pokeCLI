@@ -1,65 +1,27 @@
-const inquirer = require("inquirer")
-const { fakeAi, damageCalc} = require("../util")
-const {moves} = require("../db");
+
+const {Pokemon, Team, Status} = require("./classes")
+const moveList = require("./db/moves")
+const Util = require('./util')
+const { decision, damageCalc} = require("./util")
+const {moves} = require("./db");
 //this will be the class that holds all game actions
 module.exports = class Field {
-    constructor(user, opponent) {
-        this.user = user;//you
-        this.opponent = opponent;//them
-        this.isActive = true;//battle state
-        this.activeMon = this.user.active//grab the front mon
-        this.activeOpp = this.opponent.active;//grab opp starter
-        this.isrunningTurn = false; //used to control flow
-    }
-    //here we'll ad the methods of game logic. 
-    /*methods:
-
-        1) Field loop [X]
-        2) Action prompt[X]
-            -will iquire:
-                forfeit(x), switchMon(X), attack(X) 
-        3) Forfeit [X]
-        4) Main Attack Action  < discuss these  
-        4.1) User Attack Calc ( actMon, actOpp )
-        4.2) Opp Attack Calc  ( actMon, actOpp )
-        5) switchMon[x]
-        6) status
-    */
-
-    //got to high to code anything too complex so i made it look pretty-ish
-    fieldDisplay() {
-        //styling stuff
-        //way to generte empty space after dynamic variables     
-        let blankSpaceGen = (str = "", offset = 0) => `${str}${` `.repeat(offset - str.length)}`
-
-        let display = [
-            blankSpaceGen(this.activeOpp.name, 11),
-            blankSpaceGen(this.activeMon.name, 11),
-            blankSpaceGen(this.user.active.name, 12),
-            blankSpaceGen(this.user.roster[0].name, 12),
-            blankSpaceGen(this.user.roster[1].name, 12),
-            blankSpaceGen(JSON.stringify(this.activeOpp.health), 8),
-            blankSpaceGen(JSON.stringify(this.activeMon.health), 8),
-            blankSpaceGen("", 32)
-        ]
-
-
-        console.log(
-                     `  
-             ____________________________________________________________
-            | Roster      |                                | ${display[0]}|
-            | _________   |                                | HP:${display[5]}|
-            | ${display[2]}|                                |____________|
-            | ${display[3]}|                                             |
-            | ${display[4]}|____________                                 |
-            |             | ${display[1]}|${display[7]}|
-            |             | HP:${display[6]}|${display[7]}|
-            |_____________|____________|________________________________|
-                     `
-                 )
+    constructor(user1, user2) {
+        this.user1Mon = user1.active;//you
+        this.user2Mon = user2.active;//them
+        this.user1Team = user1.roster;
+        this.user2Team = user2.roster;
+        this.turnNum = 0;
     }
 
 
+    useMove(user,target,move){
+        let success = user.checkStatus();
+        let attackResult = damageCalc(user,target,move)
+        let oppMove = decision(user,target)
+
+        console.log(success,attackResult,oppMove)
+    }
     //Applies damage and status
     turnAction(actingMon, targetMon, attack){
         // This entire function will be split into 2 pieces of functionality; conditionally fired off using an if statement
@@ -225,21 +187,21 @@ module.exports = class Field {
         this.activeMon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
         
-        let roster = [];
-        for (let i=0;i<this.user.roster.length;i++){
-            if (this.user.roster[i] !== this.activeMon && this.user.roster[i].health > 0){
-                roster.push(this.user.roster[i])
+        let team = [];
+        for (let i=0;i<this.user.team.length;i++){
+            if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
+                team.push(this.user.team[i])
             }
         }
         
-        //loop through roster to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
+        //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
         inquirer.prompt([
             {
                 name: "select",
                 type: "rawlist",
                 message: "SELECT A MON",
-                choices: [...roster, "RETURN"]
-                // choices: [...this.user.roster.map(mon => mon.name), "RETURN"]
+                choices: [...team, "RETURN"]
+                // choices: [...this.user.team.map(mon => mon.name), "RETURN"]
             }
         ]).then(({ select }) => {
             if (select === this.activeMon.name) {
@@ -251,18 +213,18 @@ module.exports = class Field {
             }
             else {
                 let choice = 0
-                for (let i=0;i<this.user.roster.length;i++){
-                    if (this.user.roster[i].name === select){
+                for (let i=0;i<this.user.team.length;i++){
+                    if (this.user.team[i].name === select){
                         choice = i
                     }
                 }
                 
                 if (this.activeMon.health > 0){
-                    this.activeMon = this.user.roster[choice];
+                    this.activeMon = this.user.team[choice];
                     let oppAttack = fakeAi(this.activeMon,this.activeOpp)
                     this.turnAction(this.activeOpp, this.activeMon,oppAttack)
                 }else{
-                    this.activeMon = this.user.roster[choice];
+                    this.activeMon = this.user.team[choice];
                 }
                 
 
@@ -282,14 +244,14 @@ module.exports = class Field {
         this.activeOpp.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
 
-        let roster = [];
-        for (let i=0;i<this.opponent.roster.length;i++){
-            if (this.opponent.roster[i].health > 0 && this.opponent.roster[i] !== this.activeOpp){
-                roster.push(this.opponent.roster[i])
+        let team = [];
+        for (let i=0;i<this.opponent.team.length;i++){
+            if (this.opponent.team[i].health > 0 && this.opponent.team[i] !== this.activeOpp){
+                team.push(this.opponent.team[i])
             }
         }
-        if (roster[0]){
-            this.activeOpp = roster[0];
+        if (team[0]){
+            this.activeOpp = team[0];
         }else{
             console.log("loser")
         }
@@ -312,63 +274,6 @@ module.exports = class Field {
 
     // The main game loop
     fieldLoop() {
-        //display Current mons
-
-        // Check for wining/losing -- hard coded in so i can show a friend the game
-        if (this.opponent.roster[0].health < 0 && this.opponent.roster[1].health < 0 && this.opponent.active.health < 0){
-            this.gameOver()
-        }else{
-
-        
-        this.fieldDisplay()
-        if (this.activeMon.health > 0 && this.activeOpp.health > 0){
-            inquirer.prompt([
-                {
-                    name: "action",
-                    type: "rawlist",
-                    message: "|0>- SELECT AN ACTION -<0|",
-                    choices: ["ATTACK", "SWITCH", "FORFEIT","TEST"]
-                }
-            ]).then(({ action }) => {
-                switch (action.toLowerCase()) {
-                    
-                    case "attack":
-                        this.isrunningTurn = true;
-                        this.attackAction();
-                        break;
-    
-                    case "switch":
-                        this.switchMon();
-                        break;
-                    
-                    case "test":
-                        // console.log(this.user)
-                        // console.log(this.opponent)
-                        console.log(this.activeOpp);
-                        this.fieldLoop();
-                        break;
-    
-                    case "forfeit":
-                    default: 
-                        console.log(`
-                       _______________________   +
-                     /[                       ]  |~+ + ~+ ~
-                    ||[                       ]  |~ (^_^) +~
-                    |+[ THANK YOU FOR PLAYING!]  |~+ + ~+ ~
-                    ||[                       ]  |
-                    |+[_______________________]  |
-                    |/(/)(/(/)(/(/)/(/)(/(/)(/  [=]     
-                                    `)
-                        process.exit()
-                        break;
-                }
-            })
-        }else if (this.activeMon.health <= 0){
-            this.switchMon()
-        }else if (this.activeOpp.health <= 0){
-            this.oppSwitch()
-        }
-    }
     }
 
     gameOver(){

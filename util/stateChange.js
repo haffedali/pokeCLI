@@ -19,7 +19,8 @@ async function stateChange(state){
         })
 
     
-    function settleCalc(calc, v){
+    // @params {boolean} f just a flag for each pokemon's attack
+    function settleCalc(calc, f){
         let dmg,status,type,last
         dmg = calc[0]
         status = calc[1]
@@ -27,17 +28,17 @@ async function stateChange(state){
         last = calc[3]
 
         // This code is not working because a ref to the class doesn't have access to the class's methods
-        if (status && v){
+        if (status && f){
             state.oppMon.applyStatus(status)
         }
-        else if (status && !v){
+        else if (status && !f){
             state.myMon.applyStatus(status)
         }
 
-        if (dmg && v){
+        if (dmg && f){
             state.oppMon.health -= dmg
         }
-        else if (dmg && !v){
+        else if (dmg && !f){
             state.myMon.health -= dmg
         }
     }
