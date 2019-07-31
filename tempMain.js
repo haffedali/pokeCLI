@@ -287,6 +287,7 @@ module.exports = class Field {
     // We have simple damage working on the user side, will need to work in
     // The AI for the user2 attack
     async eachTurn(arr){
+        console.log(this.user2Move)
         arr.forEach((mon)=>{
             if (mon == "user1Mon"){
                 console.log(this.user1Move)
@@ -307,8 +308,14 @@ module.exports = class Field {
     }
 
     async turnStart(move){
-        this.user2Move = decision(this.user1Mon,this.user2Mon)
-        this.eachTurn(this.speedCheck())
+        decision(this.user1Mon,this.user2Mon)
+            .then((AiMove)=>{
+                this.user2Move = AiMove
+                console.log(AiMove)
+            })
+            .then(()=>{
+                this.eachTurn(this.speedCheck())
+            })
     }
 
     exeMove(move){

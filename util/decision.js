@@ -1,6 +1,6 @@
 const moveList = require("../db/moves");
-const typeMatrix = require("../util/typeMatrix")
-const typeDict = require("../util/typeDict")
+const typeMatrix = require("./typeMatrix")
+const typeDict = require("./typeDict")
 
 
 
@@ -13,6 +13,7 @@ async function decide(mon1, mon2){
 
     for (let i=0;i<moves.length;i++){
         let viabilityScore = 0
+        console.log(moves[i])
         let moveType = moveList[moves[i]].type
         for (let j=0;j<mon1.type.length;j++){
             if (typeMatrix[typeDict[moveType]][typeDict[mon1.type[j]]] === 1){
