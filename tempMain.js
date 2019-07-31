@@ -47,7 +47,16 @@ const moveList = require("./db/moves")
 const Util = require('./util')
 const { fakeAi, damageCalc, decision} = require("./util")
 const {moves} = require("./db");
-//this will be the class that holds all game actions
+
+
+/**
+ * Stores game state and takes requests (instructions) from the server to handle
+ * any game state changes. 
+ * 
+ * @constructor
+ * @param {Object} user1 User1 Team class object
+ * @param {Object} user2 User2 Team class object
+ */
 module.exports = class Field {
     constructor(user1, user2) {
         this.user1Mon = user1.active;//you
@@ -301,15 +310,7 @@ module.exports = class Field {
     }
 
     // Returns sequenced turn order (firstMon, secondMon)
-    speedCheck(){
-        if (this.user1Mon.stats.spe > this.user2Mon.stats.spe){
-            return ["user1Mon","user2Mon"]
-        }else if (this.user1Mon.stats.spe === this.user2Mon.stats.spe){
-            return "tie"
-        }else {
-            return ["user2Mon","user1Mon"]
-        }
-    }
+
 
     // The main game loop
     fieldLoop() {
@@ -327,8 +328,15 @@ module.exports = class Field {
 
 
 
-    // We have simple damage working on the user side, will need to work in
-    // The AI for the user2 attack
+
+
+
+    /**
+     * Iterates over speedCheck_arr and executes turn logic for the pokemon in the order recieved in
+     * 
+     * @see speedCheck returns 'arr' for us to use
+     * @param {Array} arr Two element array with string reps of user1 and user2
+     */
     async eachTurn(arr){
         console.log(this.user2Move)
         arr.forEach((mon)=>{
@@ -350,6 +358,13 @@ module.exports = class Field {
         })
     }
 
+    /**
+     * Method for starting the whole turn operation, chains into eachTurn after using decision
+     * to decide move for AI opponent (user2)
+     * 
+     * @see eachTurn
+     * @param {string} move 
+     */
     async turnStart(move){
         decision(this.user1Mon,this.user2Mon)
             .then((AiMove)=>{
@@ -365,12 +380,30 @@ module.exports = class Field {
 
     }
 
+
+    /**
+     * Helper function for settling the result of damageCalc
+     * 
+     * @see damageCalc
+     * @param {Array} result result of damage calc [ damage,status,moveCategory,moveEffect ]
+     * @param {Object} target target Pokemon
+     */
     damageCalcSettle(result, target){
 
         target.takeDamage(result[0])
 
         if (result[1]){
             target.applyStatus(result[1])
+        }
+    }
+
+    speedCheck(){
+        if (this.user1Mon.stats.spe > this.user2Mon.stats.spe){
+            return ["user1Mon","user2Mon"]
+        }else if (this.user1Mon.stats.spe === this.user2Mon.stats.spe){
+            return "tie"
+        }else {
+            return ["user2Mon","user1Mon"]
         }
     }
 }
