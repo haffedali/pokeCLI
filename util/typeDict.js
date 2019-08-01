@@ -1,3 +1,7 @@
+/**
+ * Honestly not too sure I remember how this one works, All I know it is a key 
+ * that allows us to use typeMatrix effectively
+ */
 const typeDict = {
     "Normal":0,
     "Fire":1,

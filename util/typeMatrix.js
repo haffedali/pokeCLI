@@ -2,10 +2,12 @@
 normal,fire,water,grass,electric,ice,fighting,poision,ground,flying,psychic,bug,rock,ghost,dragon,dark,steel
 
 
+@see damageCalc()
+matrix is used to check for type effectiveness
 
-// 1: Super effective
-// -1: Not very effective
-// null: immune
+1: Super effective
+-1: Not very effective
+null: immune
 */
 
 const typeMatrix = 
