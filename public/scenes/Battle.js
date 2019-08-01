@@ -1,178 +1,133 @@
-import typeDict from "../util/typeDict.js";
-import Pokemon from "../classes/pokemon.js";
-import Team from "../classes/team.js";
-import status from "../util/status.js";
-import decision from "../util/decision.js";
-import calc from "../util/newCalc.js";
-import pokemon from "../util/pokemonDb.js";
-import moves from "../util/moveDb.js";
 import Move from "../objects/move.js";
 import TeamBox from '../objects/teamBox.js';
 import HealthBox from "../objects/healthBox.js";
+// import axios from "axios";
 
 
 
 export default class Battle extends Phaser.Scene {
+    // For now team and pokemon will be stored clientside
+    // When we roll out multiplay, maybe create a firebase instance for each game
+    // Then kill the instance when battle is over
     constructor() {
         super("battle");
-        let teamType;
-        let myTeam;
-        let oppTeam;
-        let myMon;
-        let oppMon;
-        let myMove;
-        let myMonHappy;
-        let oppMonHappy;
-        let turnNum = 0;
-        let turnActive = false;
+
+
+        // IF CODE WORKS, DELETE THIS COMMENT BLOCK
+        // this.teamType;
+        // this.myMon;
+        // this.oppMon;
+        // this.myTeam;
+        // this.oppTeam;
+        // this.myMove;
+        // this.turnNum;
+
+        let myHealthBar;
+        let oppHealthBar;
+
+        this.field;
+
+    }
+
+    // Function that fires as soon as this scene's create() method starts
+    start(){
+
+    }
+
+
+    //Different tests can be pasted here for quick testing
+    // CURRENTLY: 
+    pokeTest(){
+        console.log(this.field)
     }
 
 
 
-    async pickMove(){
-        this.oppMove = await decision(this.myMon, this.oppMon)
-        return Promise.resolve(this.myMove, this.oppMove)
+    // Gets called after pickMove, updates the clientSide Field
+    /**
+     * turnReturn is invoked on the return of an updated Field state from the server.
+     * 
+     * @param {Object} res A new Field state returned by the server
+     */
+    turnReturn(res){
+        // this.battleState = res
+        this.field = res;
 
-        // this.turnAction(this.myMove, this.oppMove)
+        this.myHealthBar.updateHp(res.user1Mon.health);
+        this.oppHealthBar.updateHp(res.user2Mon.health);
+
+        // this.myHealthBar.updateHp();
+        // this.oppHealthBar.updateHp();
     }
 
-    async turnAction(move, oppMove){
-        let result = await this.speedCheck()
 
-        // After getting turn sequence, run a move for each
-        result.forEach((mon)=>{
-            if (this.myMon.name = mon){
-                this.runMove(this.myMon, this.myMove)
-            }
-            this.runMove(this.oppMon, this.oppMove)
+    // Axios GET request for pokemon teams; populates myTeam, oppTeam, myMon, and oppMon properties
+    /**
+     * 
+     * @param {*} a 
+     * @param {*} b 
+     */
+    getTeams(a,b){
+        axios.get('/pokemon/' + a + '/team')
+            .then((res)=>{
+                this.field = res.data
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    }
+
+
+    // Function choosing move and POST request to server to take that info (as well as all battle info) and return the result of the turn.
+    pickMove(move){
+        axios.post('/turnChoice/' + move)
+        .then((res)=>{
+            console.log(res.data)
+            // console.log(this.battleState)
+    
+            // this.turnReturn(res.data)
+        })
+        .catch((err)=>{
+            console.log(err)
         })
     }
 
-    async runMove(mon, move){
-        console.log(moves[move])
-        // switch (moves[move].category){
-        //     case "Physical":
-        //         console.log(`{move} is a physical move`)
-        //         break;
-        //     case "Special":
-        //         console.log(`{move} is a special move`)
-        //         break;
-        //     case "Status":
-        //         console.log(`{move} is a status move`)
-                
-        // }
-    }
 
-    async speedCheck(){
-        //returns 2 length array
-        if (this.myMon.stats.spe > this.oppMon.stats.spe){
-            return Promise.resolve([this.myMon.name,this.oppMon.name])
-        }else if (this.myMon.stats.spe === this.oppMon.stats.spe){
-            return Promise.resolve("tie")
-        }else {
-            return Promise.resolve([this.oppMon.name,this.myMon.name])
-        }
-    }
-
-    async statusCheck(){
-
-    }
-
-    async turnEnd(){
-
-    }
-
-    async statusMove(){
-
-    }
-
-    async specialMove(){
-
-    }
-
-    async physicalMove(){
-
-    }
-
-
-
-
-
-
-    getPokemon(mon){
-        let monData = pokemon[mon]
-        return monData
-    }
-
-    start(){
-        this.myMonHappy = true
-        this.oppMonHappy = true
-    }
-
-    getMove(move){
-        let moveData = moves[move]
-        return moveData
-    }
-
-    buildPokemon(){
-
-    }
-
+    // UI Builds move boxes
     buildMoves(){
         let xBuild = 100
-        this.myMon.moves.forEach((move)=>{
+        this.field.user1Mon.moves.forEach((move)=>{
             new Move(this, move, xBuild, 550).create()
             xBuild += 135;
         })
-
-
     }
 
+    // UI Builds team boxes
     buildTeams(){
-         this.myTeam = new TeamBox(this, "team goes here", 80, 70).create()
-         .setInteractive().on('pointerup', ()=>{
-            this.scene.start('switch')
-         },this);
-         
-         this.oppTeam = new TeamBox(this, "enemy team goes here", 530, 70).create();
-
-
+         new TeamBox(this, "team goes here", 80, 70).create()
+            .setInteractive().on('pointerup', ()=>{
+               this.scene.start('switch')
+            },this);
+         new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
 
+    // UI Builds health bars
     buildHealthBars(){
-        const myHealthBar = new HealthBox(this, this.myMon,220, 70).create();
-        const oppHealthBar = new HealthBox(this, this.oppMon, 380, 70).create();
+        this.myHealthBar.create();
+        this.oppHealthBar.create();
     }
 
     init(data){
         console.log(data)
         switch (data.type){
             case "fire": 
-                this.myTeam = new Team("Charizard")
-                this.myTeam.build()
-                this.myMon = this.myTeam.team[0];
-
-                this.oppTeam = new Team("Blastoise")
-                this.oppTeam.build()
-                this.oppMon = this.oppTeam.team[0]
+                this.getTeams("Charizard","Blastoise")
                 break;
             case "water":
-                this.myTeam = new Team("Blastoise")
-                this.myTeam.build()
-                this.myMon = this.myTeam.team[0];
-
-                this.oppTeam = new Team("Venusaur")
-                this.oppTeam.build()
-                this.oppMon = this.oppTeam.team[0]
+                this.getTeams("Blastoise","Venusaur")
                 break;
             case "grass":
-                this.myTeam = new Team("Venusaur")
-                this.myTeam.build()
-                this.myMon = this.myTeam.team[0];
-``
-                this.oppTeam = new Team("Charizard")
-                this.oppTeam.build()
-                this.oppMon = this.oppTeam.team[0]
+                this.getTeams("Venusaur","Charizard")
                 break;
         }
     }
@@ -209,8 +164,10 @@ export default class Battle extends Phaser.Scene {
         let testBall = this.add.sprite(300, 300, "pokeball").setDepth(1);
 
         // Adds string 'User' for dynamic loading (a reversed version of sprite)
-        let myMon = this.add.sprite(150, 420, this.myMon.name + "User").setDepth(1);
-        let oppMon = this.add.sprite(450, 420, this.oppMon.name).setDepth(1);
+        let myMon = this.add.sprite(150, 420, this.field.user1Mon.name + "User").setDepth(1);
+        let oppMon = this.add.sprite(450, 420, this.field.user2Mon.name).setDepth(1);
+        this.myHealthBar = new HealthBox(this, this.field.user1Mon,220, 70)
+        this.oppHealthBar = new HealthBox(this, this.field.user2Mon, 380, 70)
 
 
         myMon.setInteractive().on("pointerdown", ()=>{
@@ -233,11 +190,18 @@ export default class Battle extends Phaser.Scene {
 
         testBall.setInteractive().on("pointerdown", ()=>{
             // this.scene.start('switch')
-            // console.log(this.myMove)
-            // console.log(this.oppMove)
-            // this.pickMove().then(console.log(this.oppMove))
-            this.pickMove();
+            // this.pokeTest();
+
+            this.pickMove(this.field.user1Move);
+            // this.field.user1.takeDamage(10)
+
         })
+
+
+        oppMon.setInteractive().on("pointerup", ()=>{
+            // this routes to a different scene
+            console.log(this.field)
+        }, this)
     
 
         ////////////////////////////////////////////////////////////////
@@ -266,11 +230,7 @@ export default class Battle extends Phaser.Scene {
     
 
     
-        //Blastoise on click
-        oppMon.setInteractive().on("pointerup", ()=>{
-            // this routes to a different scene
-            this.scene.start("start")
-        }, this)
+
     
     }
     update(){

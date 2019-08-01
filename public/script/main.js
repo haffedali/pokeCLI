@@ -10,7 +10,6 @@ class BootScene extends Phaser.Scene {
     }
 
     preload(){
-        console.log(this)
         this.scene.start('start')
     }
 }
@@ -18,7 +17,7 @@ class BootScene extends Phaser.Scene {
 
 var config = {
     type: Phaser.WEBGL,
-    width: 600,
+    width: 1000,
     height: 600,
     backgroundColor: '#ababab',
     parent: 'gameContainer',

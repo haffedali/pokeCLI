@@ -1,9 +1,17 @@
 const moveList = require("../db/moves");
-const typeMatrix = require("../util/typeMatrix")
-const typeDict = require("../util/typeDict")
+const typeMatrix = require("./typeMatrix")
+const typeDict = require("./typeDict")
 
 
-function decide(mon1, mon2){
+
+/**
+ * Very dumb AI function that returns the "best" course of action for computer opponent 
+ * 
+ * @param {Object} mon1 user1Mon
+ * @param {Object} mon2 user2Mon (Computer Opponent)
+ * @returns {string} Name of move
+ */
+async function decide(mon1, mon2){
     let viability = 0;
     let selection = {}
     let finalChoice;
@@ -25,6 +33,14 @@ function decide(mon1, mon2){
 
     }
 
+
+    /**
+     * Iterates through decide()'s selection object and returns the key with the highest (num) value
+     * 
+     * @see decide 
+     * @param {Object} options Used by decide() to keep track of viability on each move
+     * @returns {string}
+     */
     function selectionCheck(options){
         let top = -100
         let result = "";

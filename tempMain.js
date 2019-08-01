@@ -1,63 +1,62 @@
-const inquirer = require("inquirer")
-const { fakeAi, damageCalc} = require("../util")
-const {moves} = require("../db");
+/**
+ * Summary. (use period)
+ *
+ * Description. (use period)
+ *
+ * @since      x.x.x
+ * @deprecated x.x.x Use new_function_name() instead.
+ * @access     private
+ *
+ * @class
+ * @augments parent
+ * @mixes    mixin
+ *
+ * @alias    realName
+ * @memberof namespace
+ *
+ * @see  Function/class relied on
+ * @link URL
+ * @global
+ *
+ * @fires   eventName
+ * @fires   className#eventName
+ * @listens event:eventName
+ * @listens className~event:eventName
+ *
+ * @param {type}   var           Description.
+ * @param {type}   [var]         Description of optional variable.
+ * @param {type}   [var=default] Description of optional variable with default variable.
+ * @param {Object} objectVar     Description.
+ * @param {type}   objectVar.key Description of a key in the objectVar parameter.
+ *
+ * @yield {type} Yielded value description.
+ *
+ * @return {type} Return value description.
+ */
+
+
+
+
+
+
+
+
+
+const {Pokemon, Team, Status} = require("./classes")
+const moveList = require("./db/moves")
+const Util = require('./util')
+const { fakeAi, damageCalc, decision} = require("./util")
+const {moves} = require("./db");
 //this will be the class that holds all game actions
 module.exports = class Field {
-    constructor(user, opponent) {
-        this.user = user;//you
-        this.opponent = opponent;//them
-        this.isActive = true;//battle state
-        this.activeMon = this.user.team[0]//grab the front mon
-        this.activeIn = this.user.team.indexOf(this.activeMon)// used to store the index of current mon to reinsert it later.
-        this.activeOpp = this.opponent.team[0];//grab opp starter
-        this.isrunningTurn = false; //used to control flow
-    }
-    //here we'll ad the methods of game logic. 
-    /*methods:
-
-        1) Field loop [X]
-        2) Action prompt[X]
-            -will iquire:
-                forfeit(x), switchMon(X), attack(X) 
-        3) Forfeit [X]
-        4) Main Attack Action  < discuss these  
-        4.1) User Attack Calc ( actMon, actOpp )
-        4.2) Opp Attack Calc  ( actMon, actOpp )
-        5) switchMon[x]
-        6) status
-    */
-
-    //got to high to code anything too complex so i made it look pretty-ish
-    fieldDisplay() {
-        //styling stuff
-        //way to generte empty space after dynamic variables     
-        let blankSpaceGen = (str = "", offset = 0) => `${str}${` `.repeat(offset - str.length)}`
-
-        let display = [
-            blankSpaceGen(this.activeOpp.name, 11),
-            blankSpaceGen(this.activeMon.name, 11),
-            blankSpaceGen(this.user.team[0].name, 12),
-            blankSpaceGen(this.user.team[1].name, 12),
-            blankSpaceGen(this.user.team[2].name, 12),
-            blankSpaceGen(JSON.stringify(this.activeOpp.health), 8),
-            blankSpaceGen(JSON.stringify(this.activeMon.health), 8),
-            blankSpaceGen("", 32)
-        ]
-
-
-        console.log(
-                     `  
-             ____________________________________________________________
-            | Roster      |                                | ${display[0]}|
-            | _________   |                                | HP:${display[5]}|
-            | ${display[2]}|                                |____________|
-            | ${display[3]}|                                             |
-            | ${display[4]}|____________                                 |
-            |             | ${display[1]}|${display[7]}|
-            |             | HP:${display[6]}|${display[7]}|
-            |_____________|____________|________________________________|
-                     `
-                 )
+    constructor(user1, user2) {
+        this.user1Mon = user1.active;//you
+        this.user2Mon = user2.active;//them
+        this.user1Team = user1.roster;
+        this.user2Team = user2.roster;
+        this.user1Move;
+        this.user2Move;
+        this.turnNum = 0;
     }
 
 
@@ -140,6 +139,7 @@ module.exports = class Field {
             // }
     
     }
+
 
     // Turn end checks for poison, burn, and leech seed tics by running a Pokemon method
     // Will need to further abstract this logic, STATUS and secSTATUS ARE VERY DIFFERENT
@@ -302,77 +302,75 @@ module.exports = class Field {
 
     // Returns sequenced turn order (firstMon, secondMon)
     speedCheck(){
-        if (this.activeMon.stats.spe > this.activeOpp.stats.spe){
-            return ["activeMon","activeOpp"]
-        }else if (this.activeMon.stats.spe === this.activeOpp.stats.spe){
+        if (this.user1Mon.stats.spe > this.user2Mon.stats.spe){
+            return ["user1Mon","user2Mon"]
+        }else if (this.user1Mon.stats.spe === this.user2Mon.stats.spe){
             return "tie"
         }else {
-            return ["activeOpp","activeMon"]
+            return ["user2Mon","user1Mon"]
         }
     }
 
     // The main game loop
     fieldLoop() {
-        //display Current mons
-
-        // Check for wining/losing -- hard coded in so i can show a friend the game
-        if (this.opponent.team[0].health < 0 && this.opponent.team[1].health < 0 && this.opponent.team[2].health < 0){
-            this.gameOver()
-        }else{
-
-        
-        this.fieldDisplay()
-        if (this.activeMon.health > 0 && this.activeOpp.health > 0){
-            inquirer.prompt([
-                {
-                    name: "action",
-                    type: "rawlist",
-                    message: "|0>- SELECT AN ACTION -<0|",
-                    choices: ["ATTACK", "SWITCH", "FORFEIT","TEST"]
-                }
-            ]).then(({ action }) => {
-                switch (action.toLowerCase()) {
-                    
-                    case "attack":
-                        this.isrunningTurn = true;
-                        this.attackAction();
-                        break;
-    
-                    case "switch":
-                        this.switchMon();
-                        break;
-                    
-                    case "test":
-                        // console.log(this.user)
-                        // console.log(this.opponent)
-                        console.log(this.activeOpp);
-                        this.fieldLoop();
-                        break;
-    
-                    case "forfeit":
-                    default: 
-                        console.log(`
-                       _______________________   +
-                     /[                       ]  |~+ + ~+ ~
-                    ||[                       ]  |~ (^_^) +~
-                    |+[ THANK YOU FOR PLAYING!]  |~+ + ~+ ~
-                    ||[                       ]  |
-                    |+[_______________________]  |
-                    |/(/)(/(/)(/(/)/(/)(/(/)(/  [=]     
-                                    `)
-                        process.exit()
-                        break;
-                }
-            })
-        }else if (this.activeMon.health <= 0){
-            this.switchMon()
-        }else if (this.activeOpp.health <= 0){
-            this.oppSwitch()
-        }
-    }
     }
 
     gameOver(){
         console.log("GAME OVER TURN THIS SHIT OFF")
+    }
+
+
+
+
+
+
+
+
+
+    // We have simple damage working on the user side, will need to work in
+    // The AI for the user2 attack
+    async eachTurn(arr){
+        console.log(this.user2Move)
+        arr.forEach((mon)=>{
+            if (mon == "user1Mon"){
+                console.log(this.user1Move)
+                damageCalc(this.user1Mon,this.user2Mon,this.user1Move)
+                    .then((res)=>{
+                        // this.user2Mon.takeDamage(res[0])
+                        this.damageCalcSettle(res, this.user2Mon)
+                    })
+            }
+            else {
+                damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
+                    .then((res)=>{
+                        this.damageCalcSettle(res, this.user1Mon)
+                    })
+
+            }
+        })
+    }
+
+    async turnStart(move){
+        decision(this.user1Mon,this.user2Mon)
+            .then((AiMove)=>{
+                this.user2Move = AiMove
+                console.log(AiMove)
+            })
+            .then(()=>{
+                this.eachTurn(this.speedCheck())
+            })
+    }
+
+    exeMove(move){
+
+    }
+
+    damageCalcSettle(result, target){
+
+        target.takeDamage(result[0])
+
+        if (result[1]){
+            target.applyStatus(result[1])
+        }
     }
 }
