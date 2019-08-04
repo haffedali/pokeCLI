@@ -17,11 +17,14 @@ class BootScene extends Phaser.Scene {
 
 var config = {
     type: Phaser.WEBGL,
-    width: 1000,
+    width: 800,
     height: 600,
     backgroundColor: '#ababab',
     parent: 'gameContainer',
     scene: [BootScene,Start,Battle,Switch]
 };
+
+const socket = io.connect('http://localhost:8080')
+
 
 var game = new Phaser.Game(config);

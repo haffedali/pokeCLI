@@ -1,6 +1,7 @@
 const { moves, pokemon } = require("../db")
 const {statusEffect} = require("../util")
 
+
 class Pokemon {
     constructor(name) {
         this.name = name;
