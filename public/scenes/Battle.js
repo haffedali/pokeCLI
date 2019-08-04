@@ -1,6 +1,7 @@
 import Move from "../objects/move.js";
 import TeamBox from '../objects/teamBox.js';
 import HealthBox from "../objects/healthBox.js";
+import SwitchButton from "../objects/switch.js";
 // import axios from "axios";
 
 
@@ -11,19 +12,9 @@ export default class Battle extends Phaser.Scene {
     // Then kill the instance when battle is over
     constructor() {
         super("battle");
-
-
-        // IF CODE WORKS, DELETE THIS COMMENT BLOCK
-        // this.teamType;
-        // this.myMon;
-        // this.oppMon;
-        // this.myTeam;
-        // this.oppTeam;
-        // this.myMove;
-        // this.turnNum;
-
         let myHealthBar;
         let oppHealthBar;
+        let switchButton;
 
         this.field;
 
@@ -39,11 +30,13 @@ export default class Battle extends Phaser.Scene {
     // CURRENTLY: 
     pokeTest(){
         console.log(this.field)
+
+
     }
 
 
 
-    // Gets called after pickMove, updates the clientSide Field
+
     /**
      * turnReturn is invoked on the return of an updated Field state from the server.
      * 
@@ -56,13 +49,11 @@ export default class Battle extends Phaser.Scene {
         this.myHealthBar.updateHp(res.user1Mon.health);
         this.oppHealthBar.updateHp(res.user2Mon.health);
 
-        // this.myHealthBar.updateHp();
-        // this.oppHealthBar.updateHp();
     }
 
 
-    // Axios GET request for pokemon teams; populates myTeam, oppTeam, myMon, and oppMon properties
     /**
+     * Axios GET request for pokemon teams; populates myTeam, oppTeam, myMon, and oppMon properties
      * 
      * @param {*} a 
      * @param {*} b 
@@ -85,7 +76,7 @@ export default class Battle extends Phaser.Scene {
             console.log(res.data)
             // console.log(this.battleState)
     
-            // this.turnReturn(res.data)
+            this.turnReturn(res.data)
         })
         .catch((err)=>{
             console.log(err)
@@ -103,7 +94,7 @@ export default class Battle extends Phaser.Scene {
     }
 
     // UI Builds team boxes
-    buildTeams(){
+    buildTeamBoxes(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
                this.scene.start('switch')
@@ -115,6 +106,14 @@ export default class Battle extends Phaser.Scene {
     buildHealthBars(){
         this.myHealthBar.create();
         this.oppHealthBar.create();
+    }
+
+    buildSwitchButton(){
+        this.switchButton = new SwitchButton()
+                                .create()
+                                .setInteractive.on('pointerup', function(){
+                                    this.scene.start('swith');
+                                })
     }
 
     init(data){
@@ -134,6 +133,7 @@ export default class Battle extends Phaser.Scene {
 
     preload()
     {
+        this.load.image('switchMon', './assets/sprites/switchMon.png');
         this.load.image('battleBackground','./assets/sprites/battleBackground.png');
         this.load.image('healthBar', './assets/sprites/healthBar.png');
         this.load.image('healthBarUser','./assets/sprites/healthBarR.png');
@@ -148,8 +148,6 @@ export default class Battle extends Phaser.Scene {
         this.load.image('Venusaur','./assets/sprites/venusaur.png');
         this.load.image('VenusaurUser','./assets/sprites/venusaurR.png');
     }
-
-
 
     create(){
         this.start();
@@ -168,14 +166,16 @@ export default class Battle extends Phaser.Scene {
         let oppMon = this.add.sprite(450, 420, this.field.user2Mon.name).setDepth(1);
         this.myHealthBar = new HealthBox(this, this.field.user1Mon,220, 70)
         this.oppHealthBar = new HealthBox(this, this.field.user2Mon, 380, 70)
+        
 
 
         myMon.setInteractive().on("pointerdown", ()=>{
             let x = myMon.x;
             let y = myMon.y;
             this.buildMoves();
-            this.buildTeams();
+            this.buildTeamBoxes();
             this.buildHealthBars();
+            this.buildSwitchButton();
             
         })
 
@@ -189,19 +189,16 @@ export default class Battle extends Phaser.Scene {
 
 
         testBall.setInteractive().on("pointerdown", ()=>{
-            // this.scene.start('switch')
-            // this.pokeTest();
+            this.pokeTest();
 
             this.pickMove(this.field.user1Move);
-            // this.field.user1.takeDamage(10)
 
         })
 
 
         oppMon.setInteractive().on("pointerup", ()=>{
-            // this routes to a different scene
             console.log(this.field)
-        }, this)
+        })
     
 
         ////////////////////////////////////////////////////////////////

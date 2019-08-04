@@ -4,6 +4,7 @@ const {Pokemon, Team, Status} = require("./classes")
 const moveList = require("./db/moves")
 const Util = require('./util')
 const Field = require('./tempMain.js')
+const socket = require('socket.io')
 var router = express.Router()
 
 var PORT = process.env.PORT || 8080;
@@ -21,14 +22,16 @@ app.use(express.json());
 let field,teamA,teamB;
 
 // Start our server so that it can begin listening to client requests.
-app.listen(PORT, function() {
+const server = app.listen(PORT, function() {
   // Log (server-side) when our server has started
   console.log("Server listening on: http://localhost:" + PORT);
 });
 
 
-app.get("/", function(req,res){
-    res.sendFile(path.join(__dirname, "index.html"))
+const io = socket(server)
+
+io.on('connection',(socket)=>{
+  console.log('Pokemon all on my sockets')
 })
 
 
@@ -65,6 +68,9 @@ app.get("/pokemon/:mon/team", function(req,res){
 })
 
 
+app.get('/', function(req,res){
+  res.sendFile(path.join(__dirname, 'index.html'))
+})
 
 app.get("/pokemon/choice/:mon", function(req,res){
   console.log(req.body)
@@ -78,6 +84,10 @@ app.get("/moves/:move", function(req,res){
   res.json(response)
 })
 
+app.get('/changepagebitch', function(req,res){
+  
+  res.sendFile(path.join(__dirname, 'crap.html'))
+})
 
 // Route gets called when user picks move
 app.post('/turnChoice/:move', function(req,res){
