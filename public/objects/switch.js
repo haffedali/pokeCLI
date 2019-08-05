@@ -10,8 +10,7 @@ export default class SwitchButton extends Phaser.Scene {
     }
 
     create(){
-        this.switchButton = this.scene.add.sprite(this.x,this.y,'switchMon')
-        this.switchButton.setInteractive().on('pointerup', ()=>{this.click()})
+        return this.switchButton = this.scene.add.sprite(this.x,this.y,'switchMon')
     }
 
     click(){

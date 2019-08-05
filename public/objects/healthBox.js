@@ -1,3 +1,12 @@
+// This file is now HAFFEDS BEST PRACTICE FOR POKEMON SCHOOL
+
+//  ... for now at least
+
+
+
+
+
+
 export default class HealthBox extends Phaser.Scene {
     constructor(scene, mon, x, y){
         super(scene)
