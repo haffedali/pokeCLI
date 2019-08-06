@@ -2,6 +2,8 @@ import Move from "../objects/move.js";
 import TeamBox from '../objects/teamBox.js';
 import HealthBox from "../objects/healthBox.js";
 import SwitchButton from "../objects/switch.js";
+import pokemonSprite from "../objects/pokemon.js";
+
 // import axios from "axios";
 
 
@@ -15,6 +17,9 @@ export default class Battle extends Phaser.Scene {
         let myHealthBar;
         let oppHealthBar;
         let switchButton;
+        let user1;
+        let user2;
+        this.moveX = 100
 
         this.field;
 
@@ -22,7 +27,11 @@ export default class Battle extends Phaser.Scene {
 
     // Function that fires as soon as this scene's create() method starts
     start(){
-
+            // this.buildMoves();
+            this.buildTeamBoxes();
+            // this.buildHealthBars();
+            this.buildSwitchButton()
+            this.buildMons();
     }
 
 
@@ -30,7 +39,7 @@ export default class Battle extends Phaser.Scene {
     // CURRENTLY: 
     pokeTest(){
         console.log(this.field)
-
+        this.start()
 
     }
 
@@ -84,6 +93,24 @@ export default class Battle extends Phaser.Scene {
     }
 
 
+
+    /**
+     * A general use function that switches the active pokemon in the field data as well as the gui
+     * 
+     * @param {string} mon The name of the desired switch 
+     */
+    switchPokemon(mon){
+        switch(mon){
+            case "charizard":
+                console.log('hello')
+                console.log(this)
+                break;
+            default:
+                break;
+        }
+    }
+
+
     // UI Builds move boxes
     buildMoves(){
         let xBuild = 100
@@ -103,32 +130,60 @@ export default class Battle extends Phaser.Scene {
     }
 
     // UI Builds health bars
-    buildHealthBars(){
-        this.myHealthBar.create();
-        this.oppHealthBar.create();
+    // buildHealthBars(){
+    //     this.myHealthBar.create();
+    //     this.oppHealthBar.create();
+    // }
+
+    buildMons(){
+        this.user1.create();
+        this.user2.create();
     }
 
-    buildSwitchButton(){
-        this.switchButton = new SwitchButton()
-                                .create()
-                                .setInteractive.on('pointerup', function(){
-                                    this.scene.start('swith');
-                                })
+    async buildSwitchButton(){
+        this.switchButton.create()
     }
+
+    async interactSwitchButton(){
+        this.switchButton.setInteractive().on('pointerup',()=>{
+            console.log('test it worked please fucking god i am trash at this i need guidance')
+        })
+    }
+
+
+
+
 
     init(data){
         console.log(data)
-        switch (data.type){
-            case "fire": 
+        if (data.lead){
+            switch(data.lead){
+                case "charizard": 
+                    this.switchPokemon(data.lead)
+                break;
+            case "blastoise":
+                    // switch pokemon function use here
+                break;
+            case "venusaur":
+                    // switch pokemon function use here
+                break;
+
+            }
+        }
+        else if (data.type){
+            switch (data.type){
+            case "charizard": 
                 this.getTeams("Charizard","Blastoise")
                 break;
-            case "water":
+            case "blastoise":
                 this.getTeams("Blastoise","Venusaur")
                 break;
-            case "grass":
+            case "venusaur":
                 this.getTeams("Venusaur","Charizard")
                 break;
+            }
         }
+
     }
 
     preload()
@@ -149,8 +204,14 @@ export default class Battle extends Phaser.Scene {
         this.load.image('VenusaurUser','./assets/sprites/venusaurR.png');
     }
 
+
+
+
+
+
+    // Start refractoring this code and creating class objects for different sprites
+    // and buttons
     create(){
-        this.start();
 
 
         this.add.image(0,0,'battleBackground').setDepth(-1);
@@ -161,28 +222,54 @@ export default class Battle extends Phaser.Scene {
 
         let testBall = this.add.sprite(300, 300, "pokeball").setDepth(1);
 
+
         // Adds string 'User' for dynamic loading (a reversed version of sprite)
-        let myMon = this.add.sprite(150, 420, this.field.user1Mon.name + "User").setDepth(1);
-        let oppMon = this.add.sprite(450, 420, this.field.user2Mon.name).setDepth(1);
-        this.myHealthBar = new HealthBox(this, this.field.user1Mon,220, 70)
-        this.oppHealthBar = new HealthBox(this, this.field.user2Mon, 380, 70)
+        // let myMon = this.add.sprite(150, 420, this.field.user1Mon.name + "User").setDepth(1);
+        // let oppMon = this.add.sprite(450, 420, this.field.user2Mon.name).setDepth(1);
+
+        // myMon.setInteractive().on('pointerdown', ()=>{
+        //     console.log()
+        // })
+
+
+        // This is the way we do things now. We just create the sprites and stuff her
+        // before porting this over to their class objects, build the switch button in this fashion.
+        // if it doesnt work, back to the drawing board.
+        // this.myHealthBar = new HealthBox(this, this.field.user1Mon,220, 70)
+        // this.oppHealthBar = new HealthBox(this, this.field.user2Mon, 380, 70)
+
+        this.add.existing(new HealthBox(this,this.field.user1Mon,220,70));
+        this.add.existing(new HealthBox(this,this.field.user2Mon,380,70));
+        
+        this.field.user1Mon.moves.forEach((move)=>{
+            this.add.existing(new Move(this,move,this.moveX,550))
+            if (this.moveX + 135 < 506){
+                this.moveX += 135
+            }else{
+                this.moveX = 100
+            }
+        })
         
 
+        this.user1 = new pokemonSprite(this,this.field.user1Mon,150,420);
+        this.user2 = new pokemonSprite(this, this.field.user2Mon,450,420)
 
-        myMon.setInteractive().on("pointerdown", ()=>{
-            let x = myMon.x;
-            let y = myMon.y;
-            this.buildMoves();
-            this.buildTeamBoxes();
-            this.buildHealthBars();
-            this.buildSwitchButton();
-            
-        })
+        this.switchButton = new SwitchButton(this, 600, 400);
 
-        myMon.displayWidth *=2
-        myMon.displayHeight *=2
-        oppMon.displayWidth *=2
-        oppMon.displayHeight *=2
+
+        // this.user1.setInteractive().on("pointerdown", ()=>{
+        //     let x = this.user1.x;
+        //     let y = this.user1.y;
+        //     this.buildMoves();
+        //     this.buildTeamBoxes();
+        //     this.buildHealthBars();
+        //     this.buildSwitchButton()
+        // })
+
+        // this.user1.displayWidth *=2
+        // this.user1.displayHeight *=2
+        // this.user2.displayWidth *=2
+        // this.user2.displayHeight *=2
         
 
         ////////////////////////////////////////////////////////////////
@@ -191,39 +278,39 @@ export default class Battle extends Phaser.Scene {
         testBall.setInteractive().on("pointerdown", ()=>{
             this.pokeTest();
 
-            this.pickMove(this.field.user1Move);
+            // this.pickMove(this.field.user1Move);
 
         })
 
 
-        oppMon.setInteractive().on("pointerup", ()=>{
-            console.log(this.field)
-        })
+        // this.user2.setInteractive().on("pointerup", ()=>{
+        //     console.log(this.field)
+        // })
     
 
         ////////////////////////////////////////////////////////////////
 
 
-        myMon.on('pointerover', function () {
+        // this.user1.on('pointerover', function () {
     
-            this.setTint(0x00ff00);
+        //     this.setTint(0x00ff00);
     
-        });
+        // });
     
-        myMon.on('pointerout', function () {
+        // this.user1.on('pointerout', function () {
     
-            this.clearTint();
+        //     this.clearTint();
     
-        });
+        // });
     
-        this.input.setDraggable(myMon);
+        // this.input.setDraggable(this.user1);
     
-        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+        // this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
     
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+        //     gameObject.x = dragX;
+        //     gameObject.y = dragY;
     
-        });
+        // });
     
 
     

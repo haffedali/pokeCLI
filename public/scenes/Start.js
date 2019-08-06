@@ -26,16 +26,20 @@ export default class Start extends Phaser.Scene {
         waterType.type = "water"
         leafType.type = "grass"
 
+        fireType.name = 'charizard'
+        waterType.name = 'blastoise'
+        leafType.name = 'venusaur'
+
         fireType.setInteractive().on("pointerdown", ()=>{
-            this.scene.start("battle", {type:fireType.type})
+            this.scene.start("battle", {type:fireType.name})
         })
 
         waterType.setInteractive().on("pointerdown", ()=>{
-            this.scene.start("battle",{type:waterType.type})
+            this.scene.start("battle",{type:waterType.name})
         })
 
         leafType.setInteractive().on("pointerdown", ()=>{
-            this.scene.start("battle",{type:leafType.type})
+            this.scene.start("battle",{type:leafType.name})
         })
 
     }
