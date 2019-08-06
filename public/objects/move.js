@@ -1,31 +1,29 @@
 
-export default class Move extends Phaser.Scene {
+export default class Move extends Phaser.GameObjects.Sprite {
     constructor(scene, move, x, y){
         super(scene,move,x,y);
         this.setTexture('moveBox')
         this.setPosition(x,y)
+        this.move = move
+        this.setText()
+        this.setInteractive().on('pointerup',()=>{
+            this.click()
+        })
     }
 
 
-    test(){
-        console.log(console)
-    }
-    create(){
-        this.moveButton = this.scene.add.sprite(this.x,this.y,"moveBox")
-        this.moveButton.setInteractive().on('pointerup', ()=> {this.click()})
-        let text = this.scene.add.text(this.x - 30, this.y, this.move)
 
+    setText(){
+        let text = this.scene.add.text(this.x-30,this.y,this.move).setDepth(3)
         text.setOrigin(0.5)
-        text.setX(this.moveButton.getCenter().x);
-        text.setY(this.moveButton.getCenter().y);
-
-
-        // Write the name of the move in the center of this sprite
+        text.setX(this.getCenter().x);
+        text.setY(this.getCenter().y);
     }
 
+
+    // Click has access to field, just making sure with the console log here
     click(){
-        this.scene.field.user1Move = this.move;
-        // this.scene.turnActive = true;
+        console.log(this.scene.field)
     }
 }
 

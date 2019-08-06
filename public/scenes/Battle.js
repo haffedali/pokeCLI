@@ -19,6 +19,7 @@ export default class Battle extends Phaser.Scene {
         let switchButton;
         let user1;
         let user2;
+        this.moveX = 100
 
         this.field;
 
@@ -26,7 +27,7 @@ export default class Battle extends Phaser.Scene {
 
     // Function that fires as soon as this scene's create() method starts
     start(){
-            this.buildMoves();
+            // this.buildMoves();
             this.buildTeamBoxes();
             // this.buildHealthBars();
             this.buildSwitchButton()
@@ -239,6 +240,15 @@ export default class Battle extends Phaser.Scene {
 
         this.add.existing(new HealthBox(this,this.field.user1Mon,220,70));
         this.add.existing(new HealthBox(this,this.field.user2Mon,380,70));
+        
+        this.field.user1Mon.moves.forEach((move)=>{
+            this.add.existing(new Move(this,move,this.moveX,550))
+            if (this.moveX + 135 < 506){
+                this.moveX += 135
+            }else{
+                this.moveX = 100
+            }
+        })
         
 
         this.user1 = new pokemonSprite(this,this.field.user1Mon,150,420);
