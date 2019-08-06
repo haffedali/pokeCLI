@@ -1,17 +1,14 @@
 
 export default class Move extends Phaser.Scene {
     constructor(scene, move, x, y){
-        super(scene);
-        this.scene = scene;
-        this.move = move;
-        this.moveButton;
-        this.x = x;
-        this.y = y;
+        super(scene,move,x,y);
+        this.setTexture('moveBox')
+        this.setPosition(x,y)
     }
 
 
     test(){
-        console.log(this)
+        console.log(console)
     }
     create(){
         this.moveButton = this.scene.add.sprite(this.x,this.y,"moveBox")

@@ -10,10 +10,10 @@ export default class pokemonSprite extends Phaser.Scene {
 
 
     create(){
-        this.pokemonSprite =  this.scene.add.sprite(this.x,this.y,this.pokemonSprite);
+        this.pokemonSprite =  this.scene.add.sprite(this.x,this.y,this.name);
 
-
-        
+        this.pokemonSprite.displayHeight *= 2;
+        this.pokemonSprite.displayWidth *= 2;
     }
 
 
