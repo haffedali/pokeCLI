@@ -231,13 +231,7 @@ export default class Battle extends Phaser.Scene {
         //     console.log()
         // })
 
-
-        // This is the way we do things now. We just create the sprites and stuff her
-        // before porting this over to their class objects, build the switch button in this fashion.
-        // if it doesnt work, back to the drawing board.
-        // this.myHealthBar = new HealthBox(this, this.field.user1Mon,220, 70)
-        // this.oppHealthBar = new HealthBox(this, this.field.user2Mon, 380, 70)
-
+        // Adding All Sprites and Objects to the scene
         this.add.existing(new HealthBox(this,this.field.user1Mon,220,70));
         this.add.existing(new HealthBox(this,this.field.user2Mon,380,70));
         
