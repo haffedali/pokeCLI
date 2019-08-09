@@ -3,7 +3,7 @@ var path = require("path")
 const {Pokemon, Team, Status} = require("./classes")
 const moveList = require("./db/moves")
 const Util = require('./util')
-const Field = require('./tempMain.js')
+const Field = require('./field.js')
 const socket = require('socket.io')
 var router = express.Router()
 
