@@ -1,10 +1,10 @@
 import Move from "../objects/move.js";
 import TeamBox from '../objects/teamBox.js';
 import HealthBox from "../objects/healthBox.js";
-import SwitchButton from "../objects/switch.js";
-import pokemonSprite from "../objects/pokemon.js";
+import SwitchButton from "../objects/switchButton.js";
+import PokemonSprite from "../objects/pokemonSprite.js";
 
-// import axios from "axios";
+import axios from "axios";
 
 
 
@@ -16,7 +16,6 @@ export default class Battle extends Phaser.Scene {
         super("battle");
         let myHealthBar;
         let oppHealthBar;
-        let switchButton;
         let user1;
         let user2;
         this.moveX = 100
@@ -30,8 +29,8 @@ export default class Battle extends Phaser.Scene {
             // this.buildMoves();
             this.buildTeamBoxes();
             // this.buildHealthBars();
-            this.buildSwitchButton()
-            this.buildMons();
+            // this.buildSwitchButton()
+            // this.buildMons();
     }
 
 
@@ -63,7 +62,7 @@ export default class Battle extends Phaser.Scene {
 
     /**
      * Axios GET request for pokemon teams; populates myTeam, oppTeam, myMon, and oppMon properties
-     * 
+     * Also is responsible for setting up the inital field state   <--- IMPORTANT
      * @param {*} a 
      * @param {*} b 
      */
@@ -159,7 +158,7 @@ export default class Battle extends Phaser.Scene {
         if (data.lead){
             switch(data.lead){
                 case "charizard": 
-                    this.switchPokemon(data.lead)
+                    // this.switchPokemon(data.lead)
                 break;
             case "blastoise":
                     // switch pokemon function use here
@@ -244,11 +243,15 @@ export default class Battle extends Phaser.Scene {
             }
         })
         
+        this.add.existing(new PokemonSprite(this,this.field.user1Mon,150,420))
+        this.add.existing(new PokemonSprite(this,this.field.user2Mon,450,420))
 
-        this.user1 = new pokemonSprite(this,this.field.user1Mon,150,420);
-        this.user2 = new pokemonSprite(this, this.field.user2Mon,450,420)
+//80 70 
+//530 70
 
-        this.switchButton = new SwitchButton(this, 600, 400);
+        this.add.existing(new SwitchButton(this,80,70))   
+        this.add.existing(new SwitchButton(this,530,70))
+        // this.switchButton = new SwitchButton(this, 600, 400);
 
 
         // this.user1.setInteractive().on("pointerdown", ()=>{
