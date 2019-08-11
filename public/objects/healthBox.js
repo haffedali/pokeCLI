@@ -35,5 +35,13 @@ export default class HealthBox extends Phaser.GameObjects.Sprite {
         this.text.setText(this.health)
     }
 
+    updateHp(){
+        if (this.x>220){
+            this.text.setText(this.scene.field.user1Mon.health)
+        } else {
+            this.text.setText(this.scene.field.user2Mon.health)
+        }
+    }
+
 
 }

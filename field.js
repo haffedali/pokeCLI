@@ -358,6 +358,7 @@ module.exports = class Field {
         })
     }
 
+
     /**
      * Method for starting the whole turn operation, chains into eachTurn after using decision
      * to decide move for AI opponent (user2)
@@ -366,6 +367,7 @@ module.exports = class Field {
      * @param {string} move 
      */
     async turnStart(move){
+        // console.log("field before transform", this)
         decision(this.user1Mon,this.user2Mon)
             .then((AiMove)=>{
                 this.user2Move = AiMove
@@ -373,6 +375,9 @@ module.exports = class Field {
             })
             .then(()=>{
                 this.eachTurn(this.speedCheck())
+            })
+            .then(()=>{
+                return this
             })
     }
 
@@ -388,13 +393,14 @@ module.exports = class Field {
      * @param {Array} result result of damage calc [ damage,status,moveCategory,moveEffect ]
      * @param {Object} target target Pokemon
      */
-    damageCalcSettle(result, target){
-
+    async damageCalcSettle(result, target){
+        console.log('before takeDamage method', target)
         target.takeDamage(result[0])
 
         if (result[1]){
             target.applyStatus(result[1])
         }
+        console.log('after takeDamage method',target)
     }
 
     speedCheck(){

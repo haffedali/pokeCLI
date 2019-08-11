@@ -1,3 +1,4 @@
+// import axios from 'axios';
 
 export default class Move extends Phaser.GameObjects.Sprite {
     constructor(scene, move, x, y){
@@ -6,8 +7,14 @@ export default class Move extends Phaser.GameObjects.Sprite {
         this.setPosition(x,y)
         this.move = move
         this.setText()
-        this.setInteractive().on('pointerup',()=>{
-            this.click()
+        this.setInteractive().on('pointerdown',()=>{
+            this.click();
+        })
+        this.setInteractive().on('pointerover',()=>{
+            this.setTint(0x32CD32)
+        })
+        this.setInteractive().on('pointerout', ()=>{
+            this.clearTint()
         })
     }
 
@@ -23,7 +30,19 @@ export default class Move extends Phaser.GameObjects.Sprite {
 
     // Click has access to field, just making sure with the console log here
     click(){
-        console.log(this.scene.field)
+        axios.get('/turnChoice/' + this.move)
+            .then((res)=>{
+                this.scene.field = res.data;
+                console.log("Response from api call", res.data);
+                this.scene.myHealthBar.updateHp();
+                this.scene.oppHealthBar.updateHp();
+            })
+
+        // axios.get('/test')
+        //     .then((res)=>{
+        //         this.scene.field = res.data;
+        //     })
+        
     }
 }
 

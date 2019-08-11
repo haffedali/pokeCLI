@@ -3,8 +3,7 @@ import TeamBox from '../objects/teamBox.js';
 import HealthBox from "../objects/healthBox.js";
 import SwitchButton from "../objects/switchButton.js";
 import PokemonSprite from "../objects/pokemonSprite.js";
-
-import axios from "axios";
+// import axios from "axios";
 
 
 
@@ -14,8 +13,8 @@ export default class Battle extends Phaser.Scene {
     // Then kill the instance when battle is over
     constructor() {
         super("battle");
-        let myHealthBar;
-        let oppHealthBar;
+        this.myHealthBar;
+        this.oppHealthBar;
         let user1;
         let user2;
         this.moveX = 100
@@ -26,11 +25,7 @@ export default class Battle extends Phaser.Scene {
 
     // Function that fires as soon as this scene's create() method starts
     start(){
-            // this.buildMoves();
             this.buildTeamBoxes();
-            // this.buildHealthBars();
-            // this.buildSwitchButton()
-            // this.buildMons();
     }
 
 
@@ -123,7 +118,7 @@ export default class Battle extends Phaser.Scene {
     buildTeamBoxes(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
-               this.scene.start('switch')
+               this.scene.switch('switch')
             },this);
          new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
@@ -205,9 +200,6 @@ export default class Battle extends Phaser.Scene {
 
 
 
-
-
-
     // Start refractoring this code and creating class objects for different sprites
     // and buttons
     create(){
@@ -231,8 +223,9 @@ export default class Battle extends Phaser.Scene {
         // })
 
         // Adding All Sprites and Objects to the scene
-        this.add.existing(new HealthBox(this,this.field.user1Mon,220,70));
-        this.add.existing(new HealthBox(this,this.field.user2Mon,380,70));
+        // Add reference with 'this' for easier access to object methods
+        this.myHealthBar =this.add.existing(new HealthBox(this,this.field.user1Mon,220,70));
+        this.oppHealthBar = this.add.existing(new HealthBox(this,this.field.user2Mon,380,70));
         
         this.field.user1Mon.moves.forEach((move)=>{
             this.add.existing(new Move(this,move,this.moveX,550))
@@ -314,6 +307,8 @@ export default class Battle extends Phaser.Scene {
 
     
     }
+
+    
     update(){
         // if (this.turnActive === true){
         //     this.add.text(200,200, 'turn is active')

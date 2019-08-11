@@ -72,6 +72,13 @@ app.get('/', function(req,res){
   res.sendFile(path.join(__dirname, 'index.html'))
 })
 
+
+//route to test if field change persists
+app.get('/test', function(req,res){
+  field.turnNum += 1
+  res.json(field);
+})
+
 app.get("/pokemon/choice/:mon", function(req,res){
   console.log(req.body)
   // let test = new Pokemon(req.body.mon);
@@ -90,14 +97,15 @@ app.get('/changepagebitch', function(req,res){
 })
 
 // Route gets called when user picks move
-app.post('/turnChoice/:move', function(req,res){
+app.get('/turnChoice/:move', function(req,res){
   field.user1Move = req.params.move
   
 
   // Util.stateChange(field).then()
   field.turnStart()
-    .then(()=>{
-      res.json(field)
+    .then((res)=>{
+      console.log("field after transform",res)
+      res.json(res)
     });
   
 
