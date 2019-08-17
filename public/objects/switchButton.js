@@ -35,15 +35,6 @@ export default class SwitchButton extends Phaser.GameObjects.Sprite {
         this.setInteractive().on('pointerup',()=>{
             this.click()
         })
-
-        this.on('pointerover',()=>{
-            this.setStyle({fill:'#ff0'})
-        })
-
-        this.on('pointerout', ()=> {
-            this.setStyle({fill: '#0f0'})
-        })
-
     }
 
     click(){

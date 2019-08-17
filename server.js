@@ -28,11 +28,14 @@ const server = app.listen(PORT, function() {
 });
 
 
+// Feeding our express app into socket
 const io = socket(server)
 
 io.on('connection',(socket)=>{
   console.log('Pokemon all on my sockets')
 })
+
+
 
 
 // First test route to get retrieve pokemon data from the db to the client
@@ -79,22 +82,22 @@ app.get('/test', function(req,res){
   res.json(field);
 })
 
+// Test route for pokemon data
 app.get("/pokemon/choice/:mon", function(req,res){
   console.log(req.body)
-  // let test = new Pokemon(req.body.mon);
-  // res.json(test);
   res.json("hi")
 })
 
+// Test route for move data
 app.get("/moves/:move", function(req,res){
   let response = moveList[req.params.move]
   res.json(response)
 })
 
-app.get('/changepagebitch', function(req,res){
-  
-  res.sendFile(path.join(__dirname, 'crap.html'))
-})
+
+
+
+
 
 // Route gets called when user picks move
 app.get('/turnChoice/:move', function(req,res){
@@ -103,9 +106,8 @@ app.get('/turnChoice/:move', function(req,res){
 
   // Util.stateChange(field).then()
   field.turnStart()
-    .then((res)=>{
-      console.log("field after transform",res)
-      res.json(res)
+    .then(()=>{
+      res.json(field)
     });
   
 
@@ -125,6 +127,6 @@ app.get('/turnChoice/:move', function(req,res){
   // The data will be formatted as follows
 })
 
-app.post('/calc/:user/:move/:target', function(req,res){
 
-})
+
+

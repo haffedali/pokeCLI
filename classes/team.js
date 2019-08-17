@@ -24,4 +24,12 @@ module.exports = class Team {
                 break;
         }
     }
+
+
+    /**
+     * 
+     */
+    switchMon(){
+        console.log('Switch pokemon')
+    }
 }

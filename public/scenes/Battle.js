@@ -15,6 +15,8 @@ export default class Battle extends Phaser.Scene {
         super("battle");
         this.myHealthBar;
         this.oppHealthBar;
+        this.user1Sprite;
+        this.user2Sprite;
         let user1;
         let user2;
         this.moveX = 100
@@ -31,7 +33,7 @@ export default class Battle extends Phaser.Scene {
 
     //Different tests can be pasted here for quick testing
     // CURRENTLY: 
-    pokeTest(){
+    static pokeTest(){
         console.log(this.field)
         this.start()
 
@@ -150,10 +152,11 @@ export default class Battle extends Phaser.Scene {
 
     init(data){
         console.log(data)
-        if (data.lead){
-            switch(data.lead){
+        if (data.switch){
+            switch(data.switch){
                 case "charizard": 
                     // this.switchPokemon(data.lead)
+                    // SwitchMon method here
                 break;
             case "blastoise":
                     // switch pokemon function use here
@@ -236,8 +239,8 @@ export default class Battle extends Phaser.Scene {
             }
         })
         
-        this.add.existing(new PokemonSprite(this,this.field.user1Mon,150,420))
-        this.add.existing(new PokemonSprite(this,this.field.user2Mon,450,420))
+        this.user1Sprite = this.add.existing(new PokemonSprite(this,this.field.user1Mon,150,420))
+        this.user2Sprite = this.add.existing(new PokemonSprite(this,this.field.user2Mon,450,420))
 
 //80 70 
 //530 70

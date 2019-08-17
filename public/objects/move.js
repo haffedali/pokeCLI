@@ -33,16 +33,10 @@ export default class Move extends Phaser.GameObjects.Sprite {
         axios.get('/turnChoice/' + this.move)
             .then((res)=>{
                 this.scene.field = res.data;
-                console.log("Response from api call", res.data);
+                // console.log("Response from api call", res.data);
                 this.scene.myHealthBar.updateHp();
                 this.scene.oppHealthBar.updateHp();
             })
-
-        // axios.get('/test')
-        //     .then((res)=>{
-        //         this.scene.field = res.data;
-        //     })
-        
     }
 }
 
