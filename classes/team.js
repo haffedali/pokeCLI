@@ -1,21 +1,18 @@
-//create a class that takes in 3 mon as an argument and builds an array based on that
-// const Pokemon = require("./pokemon")
-const Pokemon = require("./pokemon");
+const Pokemon = require('./pokemon')
+
 module.exports = class Team {
-    constructor(starter, second, third) {
-        this.starter = starter;
-        this.second = second;
-        this.third = third;
-        this.team = [];
+    constructor(mon){
+        this.active = new Pokemon(mon)
+        this.roster = [];
     }
-    build() {
+
+    build(){
         let bTeam = (backup, last) => {
-            this.team[1] = new Pokemon(backup);
-            this.team[2] = new Pokemon(last)
+            this.roster[0] = new Pokemon(backup);
+            this.roster[1] = new Pokemon(last)
         }
-        let starter = this.starter;
-        this.team[0] = new Pokemon(starter)
-        switch (starter) {
+        let mon = this.active.name;
+        switch (mon) {
             case "Charizard":
                 bTeam("Jolteon","Golem")
                 break;
@@ -26,5 +23,13 @@ module.exports = class Team {
                 bTeam("Vaporeon", "Machamp")
                 break;
         }
+    }
+
+
+    /**
+     * 
+     */
+    switchMon(){
+        console.log('Switch pokemon')
     }
 }

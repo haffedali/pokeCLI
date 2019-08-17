@@ -316,7 +316,7 @@ module.exports = class Field {
 
     // The main game loop
     fieldLoop() {
-
+        
     }
 
     gameOver(){
@@ -354,25 +354,22 @@ module.exports = class Field {
      * @param {Array} arr Two element array with string reps of user1 and user2
      */
     async eachTurn(arr){
+        console.log(this.user2Move)
         arr.forEach((mon)=>{
             if (mon == "user1Mon"){
-                // If check to see if the acting pokemon has over 0 health points
-                // Which it needs to execute any move
-                if (this.user1Mon.health > 0){
-                    damageCalc(this.user1Mon,this.user2Mon,this.user1Move)
+                console.log(this.user1Move)
+                damageCalc(this.user1Mon,this.user2Mon,this.user1Move)
                     .then((res)=>{
                         // this.user2Mon.takeDamage(res[0])
                         this.damageCalcSettle(res, this.user2Mon)
                     })
-                }
             }
             else {
-                if (this.user2Mon.health > 0){
-                    damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
+                damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
                     .then((res)=>{
                         this.damageCalcSettle(res, this.user1Mon)
                     })
-                }
+
             }
         })
     }

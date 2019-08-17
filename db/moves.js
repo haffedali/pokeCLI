@@ -133,6 +133,7 @@ const moveList = {
 			def: 1
 		},
 		name: "Withdraw",
+		type: 'Normal'
 	},
     
     "Sleeppowder": {
@@ -429,15 +430,10 @@ const moveList = {
 		name: "Ice Beam",
 		pp: 10,
 		priority: 0,
-		drain: .5,
 		flags: {protect: 1, mirror: 1},
-		secondary: {
-			chance: 10,
-			status: 'frz',
-		},
-		effect: {
-			"burn": 100
-		},
+		// effect: {
+		// 	"burn": 100
+		// },
 		target: "normal",
 		type: "Ice",
 		zMovePower: 175,

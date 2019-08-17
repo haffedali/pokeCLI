@@ -1,7 +1,10 @@
-//here ill put status calculations
-// FUTURE NOTE burn will have mutiple functions; apply() and tic()
-
-
+/**
+ * Object containing keys for each primary status and object values that contain any game logic
+ * needed to execute/apply/tic these statuses
+ * 
+ * NOTE: There is a second Object nested within statusEffect named secStatus; secStatus achieves the 
+ * same functionality as the parent object, but it responsible for secondary statuses
+ */
 const statusEffect = {
     "burn": 
     {

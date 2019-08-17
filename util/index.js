@@ -2,7 +2,7 @@ module.exports= {
     
     damageCalc: require("./newCalc"),
     
-    fakeAi: require("./decision"),
+    decision: require("./decision"),
     
     statusEffect:require("./status"),
     
@@ -10,4 +10,5 @@ module.exports= {
     
     typeMatrix: require("./typeMatrix"),
 
+    stateChange: require("./stateChange")
 }

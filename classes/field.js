@@ -7,9 +7,8 @@ module.exports = class Field {
         this.user = user;//you
         this.opponent = opponent;//them
         this.isActive = true;//battle state
-        this.activeMon = this.user.team[0]//grab the front mon
-        this.activeIn = this.user.team.indexOf(this.activeMon)// used to store the index of current mon to reinsert it later.
-        this.activeOpp = this.opponent.team[0];//grab opp starter
+        this.activeMon = this.user.active//grab the front mon
+        this.activeOpp = this.opponent.active;//grab opp starter
         this.isrunningTurn = false; //used to control flow
     }
     //here we'll ad the methods of game logic. 
@@ -36,9 +35,9 @@ module.exports = class Field {
         let display = [
             blankSpaceGen(this.activeOpp.name, 11),
             blankSpaceGen(this.activeMon.name, 11),
-            blankSpaceGen(this.user.team[0].name, 12),
-            blankSpaceGen(this.user.team[1].name, 12),
-            blankSpaceGen(this.user.team[2].name, 12),
+            blankSpaceGen(this.user.active.name, 12),
+            blankSpaceGen(this.user.roster[0].name, 12),
+            blankSpaceGen(this.user.roster[1].name, 12),
             blankSpaceGen(JSON.stringify(this.activeOpp.health), 8),
             blankSpaceGen(JSON.stringify(this.activeMon.health), 8),
             blankSpaceGen("", 32)
@@ -226,21 +225,21 @@ module.exports = class Field {
         this.activeMon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
         
-        let team = [];
-        for (let i=0;i<this.user.team.length;i++){
-            if (this.user.team[i] !== this.activeMon && this.user.team[i].health > 0){
-                team.push(this.user.team[i])
+        let roster = [];
+        for (let i=0;i<this.user.roster.length;i++){
+            if (this.user.roster[i] !== this.activeMon && this.user.roster[i].health > 0){
+                roster.push(this.user.roster[i])
             }
         }
         
-        //loop through team to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
+        //loop through roster to check mons to sitch, if the user selects the same mon, thow an error and rerun this function
         inquirer.prompt([
             {
                 name: "select",
                 type: "rawlist",
                 message: "SELECT A MON",
-                choices: [...team, "RETURN"]
-                // choices: [...this.user.team.map(mon => mon.name), "RETURN"]
+                choices: [...roster, "RETURN"]
+                // choices: [...this.user.roster.map(mon => mon.name), "RETURN"]
             }
         ]).then(({ select }) => {
             if (select === this.activeMon.name) {
@@ -252,18 +251,18 @@ module.exports = class Field {
             }
             else {
                 let choice = 0
-                for (let i=0;i<this.user.team.length;i++){
-                    if (this.user.team[i].name === select){
+                for (let i=0;i<this.user.roster.length;i++){
+                    if (this.user.roster[i].name === select){
                         choice = i
                     }
                 }
                 
                 if (this.activeMon.health > 0){
-                    this.activeMon = this.user.team[choice];
+                    this.activeMon = this.user.roster[choice];
                     let oppAttack = fakeAi(this.activeMon,this.activeOpp)
                     this.turnAction(this.activeOpp, this.activeMon,oppAttack)
                 }else{
-                    this.activeMon = this.user.team[choice];
+                    this.activeMon = this.user.roster[choice];
                 }
                 
 
@@ -283,14 +282,14 @@ module.exports = class Field {
         this.activeOpp.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
 
 
-        let team = [];
-        for (let i=0;i<this.opponent.team.length;i++){
-            if (this.opponent.team[i].health > 0 && this.opponent.team[i] !== this.activeOpp){
-                team.push(this.opponent.team[i])
+        let roster = [];
+        for (let i=0;i<this.opponent.roster.length;i++){
+            if (this.opponent.roster[i].health > 0 && this.opponent.roster[i] !== this.activeOpp){
+                roster.push(this.opponent.roster[i])
             }
         }
-        if (team[0]){
-            this.activeOpp = team[0];
+        if (roster[0]){
+            this.activeOpp = roster[0];
         }else{
             console.log("loser")
         }
@@ -316,7 +315,7 @@ module.exports = class Field {
         //display Current mons
 
         // Check for wining/losing -- hard coded in so i can show a friend the game
-        if (this.opponent.team[0].health < 0 && this.opponent.team[1].health < 0 && this.opponent.team[2].health < 0){
+        if (this.opponent.roster[0].health < 0 && this.opponent.roster[1].health < 0 && this.opponent.active.health < 0){
             this.gameOver()
         }else{
 
