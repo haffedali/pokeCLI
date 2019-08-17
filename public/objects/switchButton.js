@@ -35,7 +35,6 @@ export default class SwitchButton extends Phaser.GameObjects.Sprite {
         this.setInteractive().on('pointerup',()=>{
             this.click()
         })
-
     }
 
     click(){

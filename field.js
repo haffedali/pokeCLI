@@ -65,6 +65,8 @@ module.exports = class Field {
         this.user2Team = user2.roster;
         this.user1Move;
         this.user2Move;
+        this.user1 = user1;
+        this.user2 = user2;
         this.turnNum = 0;
     }
 
@@ -314,6 +316,7 @@ module.exports = class Field {
 
     // The main game loop
     fieldLoop() {
+        
     }
 
     gameOver(){
@@ -323,6 +326,19 @@ module.exports = class Field {
 
 
 
+
+
+
+    
+    //************************************************************************/
+    //************************************************************************/
+
+    // Above code is the field MONSTER class from the CLI version of the game
+    // Below, we are writing the logic for the GUI version of the game, using
+    // previous code as a sort of rough draft/reference for the game logic
+
+    //************************************************************************/
+    //************************************************************************/
 
 
 
@@ -358,6 +374,7 @@ module.exports = class Field {
         })
     }
 
+
     /**
      * Method for starting the whole turn operation, chains into eachTurn after using decision
      * to decide move for AI opponent (user2)
@@ -366,18 +383,40 @@ module.exports = class Field {
      * @param {string} move 
      */
     async turnStart(move){
-        decision(this.user1Mon,this.user2Mon)
+        // console.log("field before transform", this)
+        await decision(this.user1Mon,this.user2Mon)
             .then((AiMove)=>{
                 this.user2Move = AiMove
-                console.log(AiMove)
+                // console.log(AiMove)
             })
             .then(()=>{
                 this.eachTurn(this.speedCheck())
+            })
+            .then(()=>{
+                 
             })
     }
 
     exeMove(move){
 
+    }
+
+    async switchMon(){
+        this.user1Mon.statusCount = 0;
+        this.user1Mon.secStatusCount = 0;
+        this.user1Mon.removeSecStatus();
+        this.user1Mon.endProtect();
+        this.user1Mon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
+
+        let team = [];
+
+        for (let i=0;i<this.user1Team.length;i++){
+            if (this.user1Team[i] !== this.activeMon && this.user1Team[i].health > 0){
+                team.push(this.user1Team[i])
+            }
+        }
+
+        
     }
 
 
@@ -388,13 +427,14 @@ module.exports = class Field {
      * @param {Array} result result of damage calc [ damage,status,moveCategory,moveEffect ]
      * @param {Object} target target Pokemon
      */
-    damageCalcSettle(result, target){
-
+    async damageCalcSettle(result, target){
+        // console.log('before takeDamage method', target)
         target.takeDamage(result[0])
 
         if (result[1]){
             target.applyStatus(result[1])
         }
+        // console.log('after takeDamage method',target)
     }
 
     speedCheck(){
@@ -405,5 +445,14 @@ module.exports = class Field {
         }else {
             return ["user2Mon","user1Mon"]
         }
+    }
+
+    /**
+     * Function to be fired if the damage calc results in a pokemon being knocked out
+     * 
+     * @param team this.user1 || this.user2
+     */
+    KoSwitch(team){
+        team
     }
 }
