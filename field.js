@@ -357,19 +357,21 @@ module.exports = class Field {
         console.log(this.user2Move)
         arr.forEach((mon)=>{
             if (mon == "user1Mon"){
-                console.log(this.user1Move)
-                damageCalc(this.user1Mon,this.user2Mon,this.user1Move)
+                if (this.user1Mon.health > 0){
+                    damageCalc(this.user1Mon,this.user2Mon,this.user1Move)
                     .then((res)=>{
                         // this.user2Mon.takeDamage(res[0])
                         this.damageCalcSettle(res, this.user2Mon)
                     })
+                }
             }
             else {
-                damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
+                if (this.user2Mon > 0){
+                    damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
                     .then((res)=>{
                         this.damageCalcSettle(res, this.user1Mon)
                     })
-
+                }
             }
         })
     }
