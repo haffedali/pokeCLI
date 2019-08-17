@@ -52,7 +52,7 @@ export default class HealthBox extends Phaser.GameObjects.Sprite {
         if (this.x>220){
             this.text.setText(this.scene.field.user2Mon.health)
             if (this.scene.field.user2Mon.health <= 0){
-                console.log("fainted")
+                this.scene.user2Sprite.angle -= 90;
             }
         } else {
             this.text.setText(this.scene.field.user1Mon.health)

@@ -354,7 +354,6 @@ module.exports = class Field {
      * @param {Array} arr Two element array with string reps of user1 and user2
      */
     async eachTurn(arr){
-        console.log(this.user2Move)
         arr.forEach((mon)=>{
             if (mon == "user1Mon"){
                 if (this.user1Mon.health > 0){
@@ -366,7 +365,7 @@ module.exports = class Field {
                 }
             }
             else {
-                if (this.user2Mon > 0){
+                if (this.user2Mon.health > 0){
                     damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
                     .then((res)=>{
                         this.damageCalcSettle(res, this.user1Mon)
