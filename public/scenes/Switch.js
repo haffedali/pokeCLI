@@ -1,6 +1,7 @@
 export default class Switch extends Phaser.Scene {
     constructor(){
         super("switch")
+        this.team;
     }
 
     preload(){
@@ -24,16 +25,18 @@ export default class Switch extends Phaser.Scene {
     }
 
     init(){
-        console.log(this)
+        this.team = this.game.scene.scenes[2].field.user1
+        console.log(this.team)
     }
+
     create(){
         let first = this.add.sprite(100, 125, 'switchBall');
         let second = this.add.sprite(100,325, 'switchBall');
         let third = this.add.sprite(100,525, 'switchBall')
 
-        let firstSprite = this.add.sprite(0,0, 'charizard');
-        let secondSprite = this.add.sprite(0,0, 'blastoise');
-        let thirdSprite = this.add.sprite(0,0, 'venusaur');
+        let firstSprite = this.add.sprite(0,0, this.team.active.name);
+        let secondSprite = this.add.sprite(0,0, this.team.roster[0].name);
+        let thirdSprite = this.add.sprite(0,0, this.team.roster[1].name);
 
         firstSprite.setOrigin(0.5);
         firstSprite.setX(first.getCenter().x)

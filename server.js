@@ -95,6 +95,13 @@ app.get("/moves/:move", function(req,res){
 })
 
 
+// Switch route, fires from Switch Scene and modifies field state
+app.get('/switch/:mon', function(req,res){
+  let newMon = req.params.mon;
+  
+})
+
+
 
 
 
