@@ -1,9 +1,14 @@
 export default class Start extends Phaser.Scene {
     constructor() {
         super("start")
+        this.team = []
 
     }
 
+
+    init(data){
+        
+    }
 
     preload(){
         this.load.image("fire","./assets/sprites/fire.png")

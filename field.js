@@ -407,7 +407,7 @@ module.exports = class Field {
         this.user1Mon.secStatusCount = 0;
         this.user1Mon.removeSecStatus();
         this.user1Mon.endProtect();
-        this.user1Mon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0}
+        this.user1Mon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0};
 
         let team = [];
 
@@ -431,6 +431,9 @@ module.exports = class Field {
     async damageCalcSettle(result, target){
         // console.log('before takeDamage method', target)
         target.takeDamage(result[0])
+        .then(()=>{
+
+        })
 
         if (result[1]){
             target.applyStatus(result[1])
@@ -454,6 +457,15 @@ module.exports = class Field {
      * @param team this.user1 || this.user2
      */
     KoSwitch(team){
-        team
+        // First if check lets know which user to force a switch on
+        if (team === this.user1){
+
+        }else {
+
+        }
     }
 }
+
+
+
+
