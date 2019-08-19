@@ -13,7 +13,7 @@ module.exports = class Team {
             this.team['second'] = new Pokemon(backup);
             this.team['third'] = new Pokemon(last);
         }
-        let mon = this.active.name;
+        let mon = this.team['first'].name;
         switch (mon) {
             case "Charizard":
                 bTeam("Jolteon","Golem")
@@ -32,8 +32,18 @@ module.exports = class Team {
      * 
      * 
      */
-    switchMon(monChoice){
-        console.log('Switch pokemon')
+    switchMon(place){
+        switch(place){
+            case "first":
+                this.active = place
+                break;
+            case "second":
+                this.active = place
+                break;
+            case "third":
+                this.active = place
+                break;
+        }
     }
 
     test(){

@@ -34,10 +34,10 @@ export default class Switch extends Phaser.Scene {
         let second = this.add.sprite(100,325, 'switchBall');
         let third = this.add.sprite(100,525, 'switchBall')
 
-        let firstSprite = this.add.sprite(0,0, this.team.active.name);
-        let secondSprite = this.add.sprite(0,0, this.team.roster[0].name);
-        let thirdSprite = this.add.sprite(0,0, this.team.roster[1].name);
-
+        let firstSprite = this.add.sprite(0,0, this.team.team['first'].name);
+        let secondSprite = this.add.sprite(0,0, this.team.team['second'].name);
+        let thirdSprite = this.add.sprite(0,0, this.team.team['third'].name);
+        
         firstSprite.setOrigin(0.5);
         firstSprite.setX(first.getCenter().x)
         firstSprite.setY(first.getCenter().y)
