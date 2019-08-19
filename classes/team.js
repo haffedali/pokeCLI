@@ -2,14 +2,16 @@ const Pokemon = require('./pokemon')
 
 module.exports = class Team {
     constructor(mon){
-        this.active = new Pokemon(mon)
-        this.roster = [];
+        this.team = {
+            'first': new Pokemon(mon)
+        };
+        this.active = 'first';
     }
 
     build(){
         let bTeam = (backup, last) => {
-            this.roster[0] = new Pokemon(backup);
-            this.roster[1] = new Pokemon(last)
+            this.team['second'] = new Pokemon(backup);
+            this.team['third'] = new Pokemon(last);
         }
         let mon = this.active.name;
         switch (mon) {

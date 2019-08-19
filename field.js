@@ -59,10 +59,10 @@ const {moves} = require("./db");
  */
 module.exports = class Field {
     constructor(user1, user2) {
-        this.user1Mon = user1.active;//you
-        this.user2Mon = user2.active;//them
-        this.user1Team = user1.roster;
-        this.user2Team = user2.roster;
+        this.user1Mon = user1.team['first'];//you
+        this.user2Mon = user2.team['first'];//them
+        this.user1Team = user1.team;
+        this.user2Team = user2.team;
         this.user1Move;
         this.user2Move;
         this.user1 = user1;
@@ -409,7 +409,7 @@ module.exports = class Field {
         this.user1Mon.endProtect();
         this.user1Mon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0};
 
-        
+
 
         
     }
