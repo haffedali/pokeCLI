@@ -4,12 +4,28 @@ export default class Switch extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('switchBall', './assets/sprites/switchBall.png');
-        this.load.image('charizard','./assets/sprites/charizard.png');
-        this.load.image('blastoise', './assets/sprites/blastoise.png');
-        this.load.image('venusaur','./assets/sprites/venusaur.png');
+        // this.load.image('switchBall', './assets/sprites/switchBall.png');
+        // this.load.image('charizard','./assets/sprites/charizard.png');
+        // this.load.image('blastoise', './assets/sprites/blastoise.png');
+        // this.load.image('venusaur','./assets/sprites/venusaur.png');
+        this.load.image('CharizardUser','./assets/sprites/charizardR.png');
+        this.load.image('Charizard', './assets/sprites/charizard.png');
+        this.load.image('Blastoise','./assets/sprites/blastoise.png');
+        this.load.image('BlastoiseUser','./assets/sprites/blastoiseR.png');
+        this.load.image('Venusaur','./assets/sprites/venusaur.png');
+        this.load.image('VenusaurUser','./assets/sprites/venusaurR.png');
+        this.load.image('Clefable', './assets/sprites/clefable.png');
+        this.load.image('Jolteon', './assets/sprites/jolteon.png')
+        this.load.image('Flareon', './assets/sprites/flareon.png')
+        this.load.image('Vaporeon', './assets/sprites/vaporeon.png')
+        this.load.image('Pidgeot', './assets/sprites/pidgeot.png')
+        this.load.image('Golem', './assets/sprites/golem.png')
+        this.load.image('Machamp', './assets/sprites/machamp.png')
     }
 
+    init(){
+        console.log(this)
+    }
     create(){
         let first = this.add.sprite(100, 125, 'switchBall');
         let second = this.add.sprite(100,325, 'switchBall');

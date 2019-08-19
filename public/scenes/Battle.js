@@ -32,10 +32,10 @@ export default class Battle extends Phaser.Scene {
 
 
     //Different tests can be pasted here for quick testing
-    // CURRENTLY: 
-    static pokeTest(){
-        console.log(this.field)
-        this.start()
+    // CURRENTLY: console logging the Team class 
+    pokeTest(){
+        this.field.user1.test();
+        this.field.user2.test();
 
     }
 
@@ -120,7 +120,7 @@ export default class Battle extends Phaser.Scene {
     buildTeamBoxes(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
-               this.scene.switch('switch')
+               this.scene.switch('switch', {team:this.user1})
             },this);
          new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
@@ -194,6 +194,13 @@ export default class Battle extends Phaser.Scene {
         this.load.image('BlastoiseUser','./assets/sprites/blastoiseR.png');
         this.load.image('Venusaur','./assets/sprites/venusaur.png');
         this.load.image('VenusaurUser','./assets/sprites/venusaurR.png');
+        this.load.image('Clefable', './assets/sprites/clefable.png');
+        this.load.image('Jolteon', './assets/sprites/jolteon.png')
+        this.load.image('Flareon', './assets/sprites/flareon.png')
+        this.load.image('Vaporeon', './assets/sprites/vaporeon.png')
+        this.load.image('Pidgeot', './assets/sprites/pidgeot.png')
+        this.load.image('Golem', './assets/sprites/golem.png')
+        this.load.image('Machamp', './assets/sprites/machamp.png')
     }
 
 

@@ -28,8 +28,13 @@ module.exports = class Team {
 
     /**
      * 
+     * 
      */
-    switchMon(){
+    switchMon(monChoice){
         console.log('Switch pokemon')
+    }
+
+    test(){
+        console.log(this)
     }
 }

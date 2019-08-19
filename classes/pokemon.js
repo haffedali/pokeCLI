@@ -21,7 +21,7 @@ class Pokemon {
         this.health = Math.floor((((2*pokemon[name].baseStats.hp + 30 + 20) * 78)/100) + 110)
     }
 
-    takeDamage(damage){//must be a number, generrated form
+    async takeDamage(damage){//must be a number, generrated form
         this.health -= damage
         if (this.health <= 0){
             console.log(this.name + " has fainted!")
