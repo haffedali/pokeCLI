@@ -167,6 +167,7 @@ export default class Battle extends Phaser.Scene {
             }
         }
         else if (data.type){
+            console.log('Should fire only on first start')
             switch (data.type){
             case "charizard": 
                 this.getTeams("Charizard","Blastoise")
