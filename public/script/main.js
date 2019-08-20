@@ -1,7 +1,7 @@
 import Start from '../scenes/Start.js'
 import Battle from '../scenes/Battle.js'
 import Switch from '../scenes/Switch.js'
-
+const connection = io.connect('http://localhost:8080')
 class BootScene extends Phaser.Scene {
     constructor(){
         super({
@@ -15,7 +15,7 @@ class BootScene extends Phaser.Scene {
 }
 
 
-var config = {
+const config = {
     type: Phaser.WEBGL,
     width: 800,
     height: 600,
@@ -24,7 +24,7 @@ var config = {
     scene: [BootScene,Start,Battle,Switch]
 };
 
-const socket = io.connect('http://localhost:8080')
 
 
-var game = new Phaser.Game(config);
+
+const game = new Phaser.Game(config);
