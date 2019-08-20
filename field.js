@@ -402,20 +402,14 @@ module.exports = class Field {
 
     }
 
-    async switchMon(){
+    async switchMon(newMon){
         this.user1Mon.statusCount = 0;
         this.user1Mon.secStatusCount = 0;
         this.user1Mon.removeSecStatus();
         this.user1Mon.endProtect();
         this.user1Mon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0};
 
-        let team = [];
-
-        for (let i=0;i<this.user1Team.length;i++){
-            if (this.user1Team[i] !== this.activeMon && this.user1Team[i].health > 0){
-                team.push(this.user1Team[i])
-            }
-        }
+        
 
         
     }
@@ -463,7 +457,7 @@ module.exports = class Field {
         }else {
 
         }
-    }
+    }   
 }
 
 

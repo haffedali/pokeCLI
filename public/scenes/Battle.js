@@ -120,7 +120,12 @@ export default class Battle extends Phaser.Scene {
     buildTeamBoxes(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
-               this.scene.switch('switch', {team:this.user1})
+               this.scene.transition({
+                   target: 'switch',
+                   data: "test",
+                   duration: 100,
+                   sleep: true,
+               })
             },this);
          new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
@@ -146,7 +151,6 @@ export default class Battle extends Phaser.Scene {
 
 
     init(data){
-        console.log(data)
         if (data.switch){
             switch(data.switch){
                 case "charizard": 
