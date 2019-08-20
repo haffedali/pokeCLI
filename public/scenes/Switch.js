@@ -30,13 +30,13 @@ export default class Switch extends Phaser.Scene {
     }
 
     create(){
-        let first = this.add.sprite(100, 125, 'switchBall');
-        let second = this.add.sprite(100,325, 'switchBall');
-        let third = this.add.sprite(100,525, 'switchBall')
+        let first = this.add.sprite(100, 125, 'switchBall').setDepth(-3);
+        let second = this.add.sprite(100,325, 'switchBall').setDepth(-3);
+        let third = this.add.sprite(100,525, 'switchBall').setDepth(-3)
 
-        let firstSprite = this.add.sprite(0,0, this.team.team['first'].name);
-        let secondSprite = this.add.sprite(0,0, this.team.team['second'].name);
-        let thirdSprite = this.add.sprite(0,0, this.team.team['third'].name);
+        let firstSprite = this.add.sprite(0,0, this.team.team['first'].name).setDepth(-2);
+        let secondSprite = this.add.sprite(0,0, this.team.team['second'].name).setDepth(-2);
+        let thirdSprite = this.add.sprite(0,0, this.team.team['third'].name).setDepth(-2);
         
         firstSprite.setOrigin(0.5);
         firstSprite.setX(first.getCenter().x)
@@ -51,15 +51,18 @@ export default class Switch extends Phaser.Scene {
         thirdSprite.setY(third.getCenter().y)
 
         firstSprite.setInteractive().on('pointerup',()=>{
-            this.scene.switch('battle',{switch:'charizard'})
+            this.scene.sleep('switch');
+            this.scene.launch('battle',{launch:'charizard'})
         },this);
 
         secondSprite.setInteractive().on('pointerup',()=>{
-            this.scene.switch('battle'),{switch:'blastoise'}
+            this.scene.sleep('switch');
+            this.scene.launch('battle'),{launch:'blastoise'}
         },this);
 
         thirdSprite.setInteractive().on('pointerup',()=>{
-            this.scene.switch('battle'),{switch:'venusaur'}
+            this.scene.sleep('switch');
+            this.scene.launch('battle'),{launch:'venusaur'}
         },this);
 
     }

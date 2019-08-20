@@ -5,6 +5,8 @@
     <title>Trainer School</title>  
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>    
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-firestore.js"></script>
     <script type="text/javascript" src="./script/phaser.js"></script>    
     <style type="text/css">
         body {
@@ -16,6 +18,21 @@
 </head>
 <body>    
         <div class="gameContainer"></div>
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+              apiKey: "AIzaSyBNueBWgUVIZHZTW6Qdutb3hLoKAk8RQ3E",
+              authDomain: "pokeschool-720e3.firebaseapp.com",
+              databaseURL: "https://pokeschool-720e3.firebaseio.com",
+              projectId: "pokeschool-720e3",
+              storageBucket: "",
+              messagingSenderId: "858353794996",
+              appId: "1:858353794996:web:5a6c4fcdcb002ac4"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+          </script>
         <script type="module" src="./script/main.js"></script>
 </body>
 </html>

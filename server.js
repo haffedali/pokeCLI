@@ -33,6 +33,10 @@ const io = socket(server)
 
 io.on('connection',(socket)=>{
   console.log('Pokemon all on my sockets')
+
+  socket.on('battle',(data)=>{
+    console.log(data)
+  })
 })
 
 

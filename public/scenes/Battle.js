@@ -7,6 +7,7 @@ import PokemonSprite from "../objects/pokemonSprite.js";
 
 
 
+
 export default class Battle extends Phaser.Scene {
     // For now team and pokemon will be stored clientside
     // When we roll out multiplay, maybe create a firebase instance for each game
@@ -17,9 +18,8 @@ export default class Battle extends Phaser.Scene {
         this.oppHealthBar;
         this.user1Sprite;
         this.user2Sprite;
-        let user1;
-        let user2;
         this.moveX = 100
+        this.socket;
 
         this.field;
 
@@ -32,10 +32,14 @@ export default class Battle extends Phaser.Scene {
 
 
     //Different tests can be pasted here for quick testing
-    // CURRENTLY: console logging the Team class 
+    // CURRENTLY: testing for socket
     pokeTest(){
-        this.field.user1.test();
-        this.field.user2.test();
+        // this.field.user1.test();
+        // this.field.user2.test();
+
+        this.socket.emit('battle',{
+            field: this.field
+        })
 
     }
 
@@ -120,12 +124,8 @@ export default class Battle extends Phaser.Scene {
     buildTeamBoxes(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
-               this.scene.transition({
-                   target: 'switch',
-                   data: "test",
-                   duration: 100,
-                   sleep: true,
-               })
+               this.scene.sleep('battle')
+               this.scene.launch('switch')
             },this);
          new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
@@ -151,7 +151,10 @@ export default class Battle extends Phaser.Scene {
 
 
     init(data){
+        this.socket = io.connect('http://localhost:8080');
+
         if (data.switch){
+            console.log('should fire from Switch scene')
             switch(data.switch){
                 case "charizard": 
                     // this.switchPokemon(data.lead)
