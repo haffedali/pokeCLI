@@ -21,6 +21,9 @@ export default class Battle extends Phaser.Scene {
         this.moveX = 100
         this.socket;
 
+        // Must persist for user, grants access to document with unique string
+        this.docRef;
+
         this.field;
 
     }
@@ -37,9 +40,11 @@ export default class Battle extends Phaser.Scene {
         // this.field.user1.test();
         // this.field.user2.test();
 
-        this.socket.emit('battle',{
-            field: this.field
-        })
+        // this.socket.emit('battle',{
+        //     field: this.field
+        // })
+
+        
 
     }
 
@@ -71,6 +76,16 @@ export default class Battle extends Phaser.Scene {
         axios.get('/pokemon/' + a + '/team')
             .then((res)=>{
                 this.field = res.data
+
+                this.docRef.set({
+                    state:this.field
+                })
+                .then(()=>{
+
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
             })
             .catch((err)=>{
                 console.log(err)
@@ -152,6 +167,7 @@ export default class Battle extends Phaser.Scene {
 
     init(data){
         this.socket = io.connect('http://localhost:8080');
+        this.docRef = db.collection('gameRooms').doc();
 
         if (data.switch){
             console.log('should fire from Switch scene')
