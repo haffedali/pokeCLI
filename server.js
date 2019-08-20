@@ -71,7 +71,7 @@ app.get("/pokemon/:mon/team", function(req,res){
 
   field = new Field(team,teamB)
 
-  res.json(new Field(team,teamB))
+  res.json(field.state)
 })
 
 
@@ -112,13 +112,13 @@ app.get('/switch/:mon', function(req,res){
 
 // Route gets called when user picks move
 app.get('/turnChoice/:move', function(req,res){
-  field.user1Move = req.params.move
+  field.state.user1Move = req.params.move
   
 
   // Util.stateChange(field).then()
   field.turnStart()
     .then(()=>{
-      res.json(field)
+      res.json(field.state)
     });
   
 

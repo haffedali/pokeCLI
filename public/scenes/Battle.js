@@ -37,15 +37,16 @@ export default class Battle extends Phaser.Scene {
     //Different tests can be pasted here for quick testing
     // CURRENTLY: testing for firestore turnNum increment
     pokeTest(){
-        axios.post('/test')
-            .then((res)=>{
-                db.collection('gameRooms').doc(this.docRef.id).set({
-                    state:res.data
-                },{merge:true})
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
+        // axios.post('/test')
+        //     .then((res)=>{
+        //         db.collection('gameRooms').doc(this.docRef.id).set({
+        //             state:res.data
+        //         },{merge:true})
+        //     })
+        //     .catch((err)=>{
+        //         console.log(err)
+        //     })
+        console.log(this.field)
     }
 
 
@@ -58,7 +59,8 @@ export default class Battle extends Phaser.Scene {
      */
     turnReturn(res){
         // this.battleState = res
-        this.field = res;
+        console.log(res)
+        this.field = res.data;
 
         this.myHealthBar.updateHp(res.user1Mon.health);
         this.oppHealthBar.updateHp(res.user2Mon.health);
@@ -75,6 +77,7 @@ export default class Battle extends Phaser.Scene {
     getTeams(a,b){
         axios.get('/pokemon/' + a + '/team')
             .then((res)=>{
+                console.log(res.data)
                 this.field = res.data
 
                 this.docRef.set({
