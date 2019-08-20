@@ -71,7 +71,7 @@ app.get("/pokemon/:mon/team", function(req,res){
 
   field = new Field(team,teamB)
 
-  res.json(field)
+  res.json(new Field(team,teamB))
 })
 
 
@@ -81,8 +81,8 @@ app.get('/', function(req,res){
 
 
 //route to test if field change persists
-app.get('/test', function(req,res){
-  field.turnNum += 1
+app.post('/test', function(req,res){
+  field.turnNum += 1;
   res.json(field);
 })
 

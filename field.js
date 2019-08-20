@@ -63,11 +63,12 @@ module.exports = class Field {
         this.user2Mon = user2.team['first'];//them
         this.user1Team = user1.team;
         this.user2Team = user2.team;
-        this.user1Move;
-        this.user2Move;
         this.user1 = user1;
         this.user2 = user2;
         this.turnNum = 0;
+        this.active = user1.active
+
+        this.state = {}
     }
 
 

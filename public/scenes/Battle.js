@@ -35,17 +35,17 @@ export default class Battle extends Phaser.Scene {
 
 
     //Different tests can be pasted here for quick testing
-    // CURRENTLY: testing for socket
+    // CURRENTLY: testing for firestore turnNum increment
     pokeTest(){
-        // this.field.user1.test();
-        // this.field.user2.test();
-
-        // this.socket.emit('battle',{
-        //     field: this.field
-        // })
-
-        
-
+        axios.post('/test')
+            .then((res)=>{
+                db.collection('gameRooms').doc(this.docRef.id).set({
+                    state:res.data
+                },{merge:true})
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
     }
 
 
