@@ -46,7 +46,10 @@ export default class Battle extends Phaser.Scene {
         //     .catch((err)=>{
         //         console.log(err)
         //     })
-        console.log(this.field)
+        axios.post('test')
+            .then((res)=>{
+                
+            })
     }
 
 
@@ -78,11 +81,16 @@ export default class Battle extends Phaser.Scene {
         axios.get('/pokemon/' + a + '/team')
             .then((res)=>{
                 console.log(res.data)
-                this.field = res.data
+                this.field = res.data.state
 
                 this.docRef.set({
                     state:this.field
                 })
+
+                // res.docref.set({
+                //     state:this.field
+                // })
+
                 .then(()=>{
 
                 })

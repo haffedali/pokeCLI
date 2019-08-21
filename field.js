@@ -459,7 +459,12 @@ module.exports = class Field {
         }else {
 
         }
-    }   
+    }
+    
+    
+    async sync(docref){
+        
+    }
 }
 
 
