@@ -12,6 +12,9 @@ module.exports = class Team {
         let bTeam = (backup, last) => {
             this.team['second'] = new Pokemon(backup);
             this.team['third'] = new Pokemon(last);
+            this.team['second'].position='bench'
+            this.team['third'].position='bench'
+            this.team['first'].position='active'
         }
         let mon = this.team['first'].name;
         switch (mon) {
