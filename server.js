@@ -44,7 +44,6 @@ io.on('connection',(socket)=>{
 
 // First test route to get retrieve pokemon data from the db to the client
 app.get("/pokemon/:mon", function(req,res){
-  console.log(req.params.mon)
   let pokemon = new Pokemon(req.params.mon);
   res.json(pokemon);
 })
@@ -86,10 +85,15 @@ app.post('/test', function(req,res){
   res.json(field);
 })
 
+// route for switching active mon
+app.post('/switch/:mon', function(req,res){
+  let mon = req.params.mon;
+
+})
+
 // Test route for pokemon data
 app.get("/pokemon/choice/:mon", function(req,res){
-  console.log(req.body)
-  res.json("hi")
+  res.json("hi")  
 })
 
 // Test route for move data

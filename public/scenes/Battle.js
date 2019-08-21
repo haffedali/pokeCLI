@@ -18,7 +18,7 @@ export default class Battle extends Phaser.Scene {
         this.oppHealthBar;
         this.user1Sprite;
         this.user2Sprite;
-        this.moveX = 100
+        this.moveX = 100;
         this.socket;
 
         // Must persist for user, grants access to document with unique string
@@ -169,7 +169,6 @@ export default class Battle extends Phaser.Scene {
 
 
     init(data){
-        this.socket = io.connect('http://localhost:8080');
         this.docRef = db.collection('gameRooms').doc();
 
         if (data.switch){
