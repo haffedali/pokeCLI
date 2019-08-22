@@ -134,26 +134,21 @@ app.get("/pokemon/:mon/team", function(req,res){
   field = new Field(team,teamB)
   let battleRoom = new BattleRoom(team,teamB)
 
-  // battleRoom.initialize()
-  //   .then((response)=>{
-  //     req.session.docref = response.docID;
-  //     // console.log(response.fireState)
-  //     state = response.fireState
-  //     console.log(req.sessionID)
-  //     console.log(req.session)
-  //     req.session.save();
-  //     res.send(state)
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err)
-  //   })
-
-  battleRoom.test();
+  battleRoom.initialize()
+    .then((response)=>{
+      req.session.docref = response.docID;
+      state = response.state
+      req.session.save();
+      res.send(state)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
 
   // Leaving the reference on the state itself for testing purposes
   // field.ref = docref.id
   
-  res.send(field)
+  // res.send(field)
 })
 
 

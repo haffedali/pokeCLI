@@ -43,20 +43,8 @@ module.exports = class BattleRoom{
      */
     async initialize(){
         let fireState = Object.assign({},this);
-        // let newMon = Object.assign({},this.state.user1Mon)
-        let docref = db.collection('gameRooms').doc();
-        let docID = docref.id
-        let returnObj = {docID,fireState}
-        db.collection('gameRooms').doc(docref.id).set({
-            state:fireState
-        },{merge:true})
-            .then(()=>{
-
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
-        return returnObj
+        let payload = controller.syncState(fireState);
+        return payload
     }
 
 

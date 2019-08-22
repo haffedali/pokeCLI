@@ -19,6 +19,28 @@ var firebaseConfig = {
           db.collection('test').doc('megatest').set({
               state:"it worked"
           })
+      },
+
+      syncState: function(state){
+        let docRef = db.collection('gameRooms').doc();
+        let docID = docRef.id
+        var returnObj;
+
+        db.collection('gameRooms').doc(docID).set({
+            state:state
+        })
+        .then((res)=>{
+            returnObj = {docID, state}
+            
+        })
+
+        return {docID,state};
+      },
+
+      updateState: function(state,docref){
+        db.collection('gameRooms').doc(docref).set({
+            state:state
+        },merge)
       }
   }
 
