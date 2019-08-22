@@ -64,8 +64,6 @@ module.exports = class Field {
             user2Mon: user2.team['first'],//them
             user1Team: user1.team,
             user2Team: user2.team,
-            user1: user1,
-            user2: user2,
             turnNum: 0,
             active: user1.active
 
@@ -463,7 +461,7 @@ module.exports = class Field {
     
     
     async sync(docref){
-        
+
     }
 }
 
