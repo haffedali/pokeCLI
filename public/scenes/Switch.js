@@ -37,6 +37,10 @@ export default class Switch extends Phaser.Scene {
         let firstSprite = this.add.sprite(0,0, this.team.team['first'].name).setDepth(-2);
         let secondSprite = this.add.sprite(0,0, this.team.team['second'].name).setDepth(-2);
         let thirdSprite = this.add.sprite(0,0, this.team.team['third'].name).setDepth(-2);
+
+        firstSprite.name = this.team.team['first'].name
+        secondSprite.name = this.team.team['second'].name
+        thirdSprite.name = this.team.team['third'].name
         
         firstSprite.setOrigin(0.5);
         firstSprite.setX(first.getCenter().x)
@@ -51,16 +55,19 @@ export default class Switch extends Phaser.Scene {
         thirdSprite.setY(third.getCenter().y)
 
         firstSprite.setInteractive().on('pointerup',()=>{
+            console.log(firstSprite.name)
             this.scene.sleep('switch');
             this.scene.launch('battle',{launch:'charizard'})
         },this);
 
         secondSprite.setInteractive().on('pointerup',()=>{
+            console.log(secondSprite.name)
             this.scene.sleep('switch');
             this.scene.launch('battle'),{launch:'blastoise'}
         },this);
 
         thirdSprite.setInteractive().on('pointerup',()=>{
+            console.log(thirdSprite.name)
             this.scene.sleep('switch');
             this.scene.launch('battle'),{launch:'venusaur'}
         },this);

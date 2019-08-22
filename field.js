@@ -59,15 +59,17 @@ const {moves} = require("./db");
  */
 module.exports = class Field {
     constructor(user1, user2) {
-        this.user1Mon = user1.team['first'];//you
-        this.user2Mon = user2.team['first'];//them
-        this.user1Team = user1.team;
-        this.user2Team = user2.team;
-        this.user1Move;
-        this.user2Move;
-        this.user1 = user1;
-        this.user2 = user2;
-        this.turnNum = 0;
+        this.state = {
+            user1Mon: user1.team['first'],//you
+            user2Mon: user2.team['first'],//them
+            user1Team: user1.team,
+            user2Team: user2.team,
+            user1: user1,
+            user2: user2,
+            turnNum: 0,
+            active: user1.active
+
+        }
     }
 
 
@@ -356,19 +358,19 @@ module.exports = class Field {
     async eachTurn(arr){
         arr.forEach((mon)=>{
             if (mon == "user1Mon"){
-                if (this.user1Mon.health > 0){
-                    damageCalc(this.user1Mon,this.user2Mon,this.user1Move)
+                if (this.state.user1Mon.health > 0){
+                    damageCalc(this.state.user1Mon,this.state.user2Mon,this.state.user1Move)
                     .then((res)=>{
                         // this.user2Mon.takeDamage(res[0])
-                        this.damageCalcSettle(res, this.user2Mon)
+                        this.damageCalcSettle(res, this.state.user2Mon)
                     })
                 }
             }
             else {
-                if (this.user2Mon.health > 0){
-                    damageCalc(this.user2Mon,this.user1Mon,this.user2Move)
+                if (this.state.user2Mon.health > 0){
+                    damageCalc(this.state.user2Mon,this.state.user1Mon,this.state.user2Move)
                     .then((res)=>{
-                        this.damageCalcSettle(res, this.user1Mon)
+                        this.damageCalcSettle(res, this.state.user1Mon)
                     })
                 }
             }
@@ -385,9 +387,9 @@ module.exports = class Field {
      */
     async turnStart(move){
         // console.log("field before transform", this)
-        await decision(this.user1Mon,this.user2Mon)
+        await decision(this.state.user1Mon,this.state.user2Mon)
             .then((AiMove)=>{
-                this.user2Move = AiMove
+                this.state.user2Move = AiMove
                 // console.log(AiMove)
             })
             .then(()=>{
@@ -403,11 +405,11 @@ module.exports = class Field {
     }
 
     async switchMon(newMon){
-        this.user1Mon.statusCount = 0;
-        this.user1Mon.secStatusCount = 0;
-        this.user1Mon.removeSecStatus();
-        this.user1Mon.endProtect();
-        this.user1Mon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0};
+        this.state.user1Mon.statusCount = 0;
+        this.state.user1Mon.secStatusCount = 0;
+        this.state.user1Mon.removeSecStatus();
+        this.state.user1Mon.endProtect();
+        this.state.user1Mon.boosts = {atk:0,def:0,spa:0,spd:0,spe:0};
 
 
 
@@ -436,9 +438,9 @@ module.exports = class Field {
     }
 
     speedCheck(){
-        if (this.user1Mon.stats.spe > this.user2Mon.stats.spe){
+        if (this.state.user1Mon.stats.spe > this.state.user2Mon.stats.spe){
             return ["user1Mon","user2Mon"]
-        }else if (this.user1Mon.stats.spe === this.user2Mon.stats.spe){
+        }else if (this.state.user1Mon.stats.spe === this.state.user2Mon.stats.spe){
             return "tie"
         }else {
             return ["user2Mon","user1Mon"]
@@ -452,12 +454,17 @@ module.exports = class Field {
      */
     KoSwitch(team){
         // First if check lets know which user to force a switch on
-        if (team === this.user1){
+        if (team === this.state.user1){
 
         }else {
 
         }
-    }   
+    }
+    
+    
+    async sync(docref){
+        
+    }
 }
 
 
