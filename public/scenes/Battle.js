@@ -178,14 +178,42 @@ export default class Battle extends Phaser.Scene {
                     // this.switchPokemon(data.lead)
                     // SwitchMon method here
                     console.log('My main man BLAST')
+
+                    axios.post('switch/' + data.launch,{
+                        state:this.field
+                    })
+                    .then((res)=>{
+                        console.log(res)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
                 break;
             case "Flareon":
                     // switch pokemon function use here
                     console.log('The sensous FLARE')
+                    axios.post('switch/' + data.launch,{
+                        state:this.field
+                    })
+                    .then((res)=>{
+                        console.log(res)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
                 break;
             case "Pidgeot":
                     // switch pokemon function use here
                     console.log('god.bird.')
+                    axios.post('switch/' + data.launch,{
+                        state:this.field
+                    })
+                    .then((res)=>{
+                        console.log(res)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
                 break;
 
             }

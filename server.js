@@ -169,7 +169,8 @@ app.post('/test', function(req,res){
 // route for switching active mon
 app.post('/switch/:mon', function(req,res){
   let mon = req.params.mon;
-
+  console.log(req.body.state)
+  res.send("here have " + mon)
 })
 
 // Test route for pokemon data
@@ -187,6 +188,7 @@ app.get("/moves/:move", function(req,res){
 // Switch route, fires from Switch Scene and modifies field state
 app.get('/switch/:mon', function(req,res){
   let newMon = req.params.mon;
+  
   
 })
 
