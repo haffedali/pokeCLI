@@ -164,7 +164,7 @@ class Pokemon {
 
     // Function can change depending on tests I want to run... overloading would be useful here
     test(){
-        console.log(this.name);
+        console.log(db);
     }
 }
 

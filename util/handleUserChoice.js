@@ -1,5 +1,4 @@
-const fireBase = require('firebase');
-const db = firebase.firestore;
+const db = require('../server.js')
 
 const handleUserChoice= {
     switch: function(state,newMon,dbRef,userID){
@@ -20,6 +19,10 @@ const handleUserChoice= {
     attack: function(){
 
     },
+
+    test: function(phrase){
+        console.log(db)
+    }
 }
 
 module.exports = handleUserChoice
