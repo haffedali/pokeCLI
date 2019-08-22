@@ -28,8 +28,8 @@ module.exports = class BattleRoom{
 
         this.user1Mon = Object.assign({},teamA.team['first'])
         this.user2Mon = Object.assign({},teamB.team['first'])
-        this.user1Team = [Object.assign({},teamA.team['second']),Object.assign({},teamA.team['third'])]
-        this.user2Team = [Object.assign({},teamB.team['second']),Object.assign({},teamB.team['third'])]        // this.user1Mon = Object.assign({},)
+        this.user1Team = [Object.assign({},teamA.team['first']),Object.assign({},teamA.team['second']),Object.assign({},teamA.team['third'])]
+        this.user2Team = [Object.assign({},teamB.team['first']),Object.assign({},teamB.team['second']),Object.assign({},teamB.team['third'])]        // this.user1Mon = Object.assign({},)
         this.turnNum = 0
     }
 
@@ -44,6 +44,8 @@ module.exports = class BattleRoom{
         let fireState = Object.assign({},this);
         // let newMon = Object.assign({},this.state.user1Mon)
         let docref = db.collection('gameRooms').doc();
+        let docID = docref.id
+        let returnObj = {docID,fireState}
         db.collection('gameRooms').doc(docref.id).set({
             state:fireState
         },{merge:true})
@@ -53,7 +55,7 @@ module.exports = class BattleRoom{
             .catch((err)=>{
                 console.log(err)
             })
-        return docref.id
+        return returnObj
     }
 
 
