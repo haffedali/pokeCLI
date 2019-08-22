@@ -15,21 +15,24 @@ var PORT = process.env.PORT || 8080;
 var app = express();
 
 
-// db config data
-var firebaseConfig = {
-  apiKey: "AIzaSyBNueBWgUVIZHZTW6Qdutb3hLoKAk8RQ3E",
-  authDomain: "pokeschool-720e3.firebaseapp.com",
-  databaseURL: "https://pokeschool-720e3.firebaseio.com",
-  projectId: "pokeschool-720e3",
-  storageBucket: "",
-  messagingSenderId: "858353794996",
-  appId: "1:858353794996:web:5a6c4fcdcb002ac4"
-}
+// // db config data
+// var firebaseConfig = {
+//   apiKey: "AIzaSyBNueBWgUVIZHZTW6Qdutb3hLoKAk8RQ3E",
+//   authDomain: "pokeschool-720e3.firebaseapp.com",
+//   databaseURL: "https://pokeschool-720e3.firebaseio.com",
+//   projectId: "pokeschool-720e3",
+//   storageBucket: "",
+//   messagingSenderId: "858353794996",
+//   appId: "1:858353794996:web:5a6c4fcdcb002ac4"
+// }
 
-// Set up db connection
+// // Set up db connection
 // const firebase = require('firebase')
 // const fireApp = firebase.initializeApp(firebaseConfig)
 // const db = firebase.firestore()
+
+// // Exporting db for use in service objects
+// module.exports = db
 
 // Setting up express session for users
 app.use(session({
@@ -130,24 +133,27 @@ app.get("/pokemon/:mon/team", function(req,res){
 
   field = new Field(team,teamB)
   let battleRoom = new BattleRoom(team,teamB)
-  battleRoom.initialize()
-    .then((response)=>{
-      req.session.docref = response.docID;
-      // console.log(response.fireState)
-      state = response.fireState
-      console.log(req.sessionID)
-      console.log(req.session)
-      req.session.save();
-      res.send(state)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+
+  // battleRoom.initialize()
+  //   .then((response)=>{
+  //     req.session.docref = response.docID;
+  //     // console.log(response.fireState)
+  //     state = response.fireState
+  //     console.log(req.sessionID)
+  //     console.log(req.session)
+  //     req.session.save();
+  //     res.send(state)
+  //   })
+  //   .catch((err)=>{
+  //     console.log(err)
+  //   })
+
+  battleRoom.test();
 
   // Leaving the reference on the state itself for testing purposes
   // field.ref = docref.id
   
-  // res.send(field)
+  res.send(field)
 })
 
 
@@ -169,7 +175,7 @@ app.post('/test', function(req,res){
 // route for switching active mon
 app.post('/switch/:mon', function(req,res){
   let mon = req.params.mon;
-  console.log(req.body.state)
+  Util.handleUserChoice.switch(req.body.state,mon,req.session.docref)
   res.send("here have " + mon)
 })
 
@@ -189,7 +195,7 @@ app.get("/moves/:move", function(req,res){
 app.get('/switch/:mon', function(req,res){
   let newMon = req.params.mon;
   
-  
+  Util.handleUserChoice.switch(req.body.state,newMon,req.session.docref)
 })
 
 
