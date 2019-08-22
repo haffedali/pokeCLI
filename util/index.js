@@ -10,5 +10,7 @@ module.exports= {
     
     typeMatrix: require("./typeMatrix"),
 
-    stateChange: require("./stateChange")
+    stateChange: require("./stateChange"),
+
+    handleUserChoice: require('./handleUserChoice')
 }

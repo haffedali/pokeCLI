@@ -6,6 +6,7 @@ const {Pokemon, Team, Status} = require("./classes")
 const moveList = require("./db/moves")
 const Util = require('./util')
 const Field = require('./field.js')
+const BattleRoom = require('./classes/BattleRoom.js')
 const socket = require('socket.io')
 var router = express.Router()
 
@@ -26,9 +27,9 @@ var firebaseConfig = {
 }
 
 // Set up db connection
-const firebase = require('firebase')
-const fireApp = firebase.initializeApp(firebaseConfig)
-const db = firebase.firestore()
+// const firebase = require('firebase')
+// const fireApp = firebase.initializeApp(firebaseConfig)
+// const db = firebase.firestore()
 
 // Setting up express session for users
 app.use(session({
@@ -106,9 +107,10 @@ app.get("/pokemon/:mon", function(req,res){
 // Route gets called to build teams then build Field
 app.get("/pokemon/:mon/team", function(req,res){
   console.log(req.sessionID)
-  let docref = db.collection('gameRooms').doc();
-  req.session.docref = docref.id
-  
+  // let docref = db.collection('gameRooms').doc();
+  // req.session.docref = docref.id
+  var docrefID;
+  var state;
   let team = new Team(req.params.mon)
   team.build()
   switch (req.params.mon){
@@ -127,11 +129,25 @@ app.get("/pokemon/:mon/team", function(req,res){
   }
 
   field = new Field(team,teamB)
+  let battleRoom = new BattleRoom(team,teamB)
+  battleRoom.initialize()
+    .then((response)=>{
+      req.session.docref = response.docID;
+      // console.log(response.fireState)
+      state = response.fireState
+      console.log(req.sessionID)
+      console.log(req.session)
+      req.session.save();
+      res.send(state)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
 
   // Leaving the reference on the state itself for testing purposes
-  field.ref = docref.id
-
-  res.json(field)
+  // field.ref = docref.id
+  
+  // res.send(field)
 })
 
 
@@ -144,13 +160,17 @@ app.get('/', function(req,res){
 
 //route to test if field change persists
 app.post('/test', function(req,res){
+  console.log(req.sessionID)
+  console.log(req.session)
+  req.session.save();
   res.json("test");
 })
 
 // route for switching active mon
 app.post('/switch/:mon', function(req,res){
   let mon = req.params.mon;
-
+  console.log(req.body.state)
+  res.send("here have " + mon)
 })
 
 // Test route for pokemon data
@@ -169,6 +189,7 @@ app.get("/moves/:move", function(req,res){
 app.get('/switch/:mon', function(req,res){
   let newMon = req.params.mon;
   
+  
 })
 
 
@@ -180,7 +201,7 @@ app.get('/switch/:mon', function(req,res){
 app.get('/turnChoice/:move', function(req,res){
   console.log(req.session.docref)
   console.log(req.sessionID)
-  
+
   field.state.user1Move = req.params.move
   
 

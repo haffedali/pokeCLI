@@ -25,7 +25,7 @@ export default class Switch extends Phaser.Scene {
     }
 
     init(){
-        this.team = this.game.scene.scenes[2].field.user1
+        this.team = this.game.scene.scenes[2].field.user1Team
         console.log(this.team)
     }
 
@@ -34,43 +34,71 @@ export default class Switch extends Phaser.Scene {
         let second = this.add.sprite(100,325, 'switchBall').setDepth(-3);
         let third = this.add.sprite(100,525, 'switchBall').setDepth(-3)
 
-        let firstSprite = this.add.sprite(0,0, this.team.team['first'].name).setDepth(-2);
-        let secondSprite = this.add.sprite(0,0, this.team.team['second'].name).setDepth(-2);
-        let thirdSprite = this.add.sprite(0,0, this.team.team['third'].name).setDepth(-2);
+        // let firstSprite = this.add.sprite(0,0, this.team.team['first'].name).setDepth(-2);
+        // let secondSprite = this.add.sprite(0,0, this.team.team['second'].name).setDepth(-2);
+        // let thirdSprite = this.add.sprite(0,0, this.team.team['third'].name).setDepth(-2);
 
-        firstSprite.name = this.team.team['first'].name
-        secondSprite.name = this.team.team['second'].name
-        thirdSprite.name = this.team.team['third'].name
+
+        for (let i=0;i<this.team.length;i++){
+            let sprite = this.add.sprite(0,0, this.team[i].name);
+            sprite.name = this.team[i].name;
+            switch(i){
+                case 0:
+                    sprite.setOrigin(0.5);
+                    sprite.setX(first.getCenter().x)
+                    sprite.setY(first.getCenter().y)
+                    break;
+                case 1:
+                        sprite.setOrigin(0.5);
+                        sprite.setX(second.getCenter().x)
+                        sprite.setY(second.getCenter().y)
+                    break;
+                case 2:
+                        sprite.setOrigin(0.5);
+                        sprite.setX(third.getCenter().x)
+                        sprite.setY(third.getCenter().y)
+                    break;
+            }
+
+            sprite.setInteractive().on('pointerup',()=>{
+                console.log(sprite.name)
+                this.scene.sleep('switch');
+                this.scene.launch('battle',{launch:sprite.name})
+            },this)
+        }
+        // firstSprite.name = this.team.team['first'].name
+        // secondSprite.name = this.team.team['second'].name
+        // thirdSprite.name = this.team.team['third'].name
         
-        firstSprite.setOrigin(0.5);
-        firstSprite.setX(first.getCenter().x)
-        firstSprite.setY(first.getCenter().y)
+        // firstSprite.setOrigin(0.5);
+        // firstSprite.setX(first.getCenter().x)
+        // firstSprite.setY(first.getCenter().y)
 
-        secondSprite.setOrigin(0.5);
-        secondSprite.setX(second.getCenter().x)
-        secondSprite.setY(second.getCenter().y)
+        // secondSprite.setOrigin(0.5);
+        // secondSprite.setX(second.getCenter().x)
+        // secondSprite.setY(second.getCenter().y)
 
-        thirdSprite.setOrigin(0.5);
-        thirdSprite.setX(third.getCenter().x)
-        thirdSprite.setY(third.getCenter().y)
+        // thirdSprite.setOrigin(0.5);
+        // thirdSprite.setX(third.getCenter().x)
+        // thirdSprite.setY(third.getCenter().y)
 
-        firstSprite.setInteractive().on('pointerup',()=>{
-            console.log(firstSprite.name)
-            this.scene.sleep('switch');
-            this.scene.launch('battle',{launch:'charizard'})
-        },this);
+        // firstSprite.setInteractive().on('pointerup',()=>{
+        //     console.log(firstSprite.name)
+        //     this.scene.sleep('switch');
+        //     this.scene.launch('battle',{launch:'charizard'})
+        // },this);
 
-        secondSprite.setInteractive().on('pointerup',()=>{
-            console.log(secondSprite.name)
-            this.scene.sleep('switch');
-            this.scene.launch('battle'),{launch:'blastoise'}
-        },this);
+        // secondSprite.setInteractive().on('pointerup',()=>{
+        //     console.log(secondSprite.name)
+        //     this.scene.sleep('switch');
+        //     this.scene.launch('battle'),{launch:'blastoise'}
+        // },this);
 
-        thirdSprite.setInteractive().on('pointerup',()=>{
-            console.log(thirdSprite.name)
-            this.scene.sleep('switch');
-            this.scene.launch('battle'),{launch:'venusaur'}
-        },this);
+        // thirdSprite.setInteractive().on('pointerup',()=>{
+        //     console.log(thirdSprite.name)
+        //     this.scene.sleep('switch');
+        //     this.scene.launch('battle'),{launch:'venusaur'}
+        // },this);
 
     }
 }

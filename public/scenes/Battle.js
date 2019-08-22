@@ -37,19 +37,12 @@ export default class Battle extends Phaser.Scene {
     //Different tests can be pasted here for quick testing
     // CURRENTLY: testing for firestore turnNum increment
     pokeTest(){
-        // axios.post('/test')
+        // axios.post('test')
         //     .then((res)=>{
-        //         db.collection('gameRooms').doc(this.docRef.id).set({
-        //             state:res.data
-        //         },{merge:true})
-        //     })
-        //     .catch((err)=>{
-        //         console.log(err)
-        //     })
-        axios.post('test')
-            .then((res)=>{
                 
-            })
+        //     })
+
+        console.log(this.field)
     }
 
 
@@ -80,23 +73,22 @@ export default class Battle extends Phaser.Scene {
     getTeams(a,b){
         axios.get('/pokemon/' + a + '/team')
             .then((res)=>{
-                console.log(res.data)
-                this.field = res.data.state
+                this.field = res.data
 
-                this.docRef.set({
-                    state:this.field
-                })
+                // this.docRef.set({
+                //     state:this.field
+                // })
 
                 // res.docref.set({
                 //     state:this.field
                 // })
 
-                .then(()=>{
+                // .then(()=>{
 
-                })
-                .catch((err)=>{
-                    console.log(err)
-                })
+                // })
+                // .catch((err)=>{
+                //     console.log(err)
+                // })
             })
             .catch((err)=>{
                 console.log(err)
@@ -177,20 +169,51 @@ export default class Battle extends Phaser.Scene {
 
 
     init(data){
-        this.docRef = db.collection('gameRooms').doc();
+        // this.docRef = db.collection('gameRooms').doc();
 
-        if (data.switch){
+        if (data.launch){
             console.log('should fire from Switch scene')
-            switch(data.switch){
-                case "charizard": 
+            switch(data.launch){
+                case "Blastoise": 
                     // this.switchPokemon(data.lead)
                     // SwitchMon method here
+                    console.log('My main man BLAST')
+
+                    axios.post('switch/' + data.launch,{
+                        state:this.field
+                    })
+                    .then((res)=>{
+                        console.log(res)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
                 break;
-            case "blastoise":
+            case "Flareon":
                     // switch pokemon function use here
+                    console.log('The sensous FLARE')
+                    axios.post('switch/' + data.launch,{
+                        state:this.field
+                    })
+                    .then((res)=>{
+                        console.log(res)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
                 break;
-            case "venusaur":
+            case "Pidgeot":
                     // switch pokemon function use here
+                    console.log('god.bird.')
+                    axios.post('switch/' + data.launch,{
+                        state:this.field
+                    })
+                    .then((res)=>{
+                        console.log(res)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
                 break;
 
             }
