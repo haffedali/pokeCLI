@@ -12,5 +12,9 @@ module.exports= {
 
     stateChange: require("./stateChange"),
 
-    handleUserChoice: require('./handleUserChoice')
+    handleUserChoice: require('./handleUserChoice'),
+
+    controller: require('./controller'),
+
+    battleRoomHelper: require('./battleRoomHelper')
 }

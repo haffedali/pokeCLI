@@ -43,7 +43,7 @@ module.exports = class BattleRoom{
      */
     async initialize(){
         let fireState = Object.assign({},this);
-        let payload = controller.syncState(fireState);
+        let payload = controller.initState(fireState);
         return payload
     }
 

@@ -158,6 +158,15 @@ app.get('/', function(req,res){
   res.sendFile(path.join(__dirname, 'index.html'))
 })
 
+app.get('/pullGame/',function(req,res){
+  Util.battleRoomHelper.pullClientState(req.session.docref)
+    .then((result)=>{
+      console.log(result.state)
+      res.send(result.state)
+    })
+    .catch(err=>console.log(err))
+})
+
 
 //route to test if field change persists
 app.post('/test', function(req,res){
@@ -171,7 +180,10 @@ app.post('/test', function(req,res){
 app.post('/switch/:mon', function(req,res){
   let mon = req.params.mon;
   Util.handleUserChoice.switch(req.body.state,mon,req.session.docref)
-  res.send("here have " + mon)
+    .then(()=>{
+      res.sendStatus(200);
+    })
+    .catch(err=>{console.log(err)})
 })
 
 // Test route for pokemon data

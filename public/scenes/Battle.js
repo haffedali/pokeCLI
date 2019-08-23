@@ -33,6 +33,19 @@ export default class Battle extends Phaser.Scene {
             this.buildTeamBoxes();
     }
 
+    updateState(){
+        axios.get('/pullGame')
+            .then((res)=>{
+                this.field = res.data
+                // this.create()
+            })
+    }
+
+    updateClientUi(){
+        this.user1Sprite.setTexture(this.field.user1Mon.name)
+        
+    }
+
 
     //Different tests can be pasted here for quick testing
     // CURRENTLY: testing for firestore turnNum increment
@@ -41,7 +54,7 @@ export default class Battle extends Phaser.Scene {
         //     .then((res)=>{
                 
         //     })
-
+        this.create();
         console.log(this.field)
     }
 
@@ -142,8 +155,8 @@ export default class Battle extends Phaser.Scene {
     buildTeamBoxes(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
-               this.scene.sleep('battle')
-               this.scene.launch('switch')
+            //    this.scene.sleep('battle')
+               this.scene.start('switch')
             },this);
          new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
@@ -183,7 +196,7 @@ export default class Battle extends Phaser.Scene {
                         state:this.field
                     })
                     .then((res)=>{
-                        console.log(res)
+                        this.updateState();
                     })
                     .catch((err)=>{
                         console.log(err)
@@ -196,7 +209,7 @@ export default class Battle extends Phaser.Scene {
                         state:this.field
                     })
                     .then((res)=>{
-                        console.log(res)
+                        this.updateState();
                     })
                     .catch((err)=>{
                         console.log(err)
@@ -209,7 +222,7 @@ export default class Battle extends Phaser.Scene {
                         state:this.field
                     })
                     .then((res)=>{
-                        console.log(res)
+                        this.updateState();
                     })
                     .catch((err)=>{
                         console.log(err)

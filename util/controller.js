@@ -21,7 +21,8 @@ var firebaseConfig = {
           })
       },
 
-      syncState: function(state){
+      //change name to initState
+      initState: function(state){
         let docRef = db.collection('gameRooms').doc();
         let docID = docRef.id
         var returnObj;
@@ -37,10 +38,24 @@ var firebaseConfig = {
         return {docID,state};
       },
 
-      updateState: function(state,docref){
+
+      syncState: async function(state,docref){
         db.collection('gameRooms').doc(docref).set({
             state:state
-        },merge)
+        },{merge:true})
+        .catch(err=>console.log(err))
+
+      },
+
+      pullState: async function(docref){
+          // Use await to be sure we got the document from firestore written to our variable
+          let document = await db.collection('gameRooms').doc(docref).get();
+          
+
+          // Returns the result of data() function on the object we got back from firestore
+          return document.data();
+
+
       }
   }
 

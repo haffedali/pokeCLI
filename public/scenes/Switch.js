@@ -62,7 +62,7 @@ export default class Switch extends Phaser.Scene {
 
             sprite.setInteractive().on('pointerup',()=>{
                 console.log(sprite.name)
-                this.scene.sleep('switch');
+                // this.scene.sleep('switch');
                 this.scene.launch('battle',{launch:sprite.name})
             },this)
         }

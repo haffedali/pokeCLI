@@ -1,7 +1,8 @@
 const db = require('../server.js')
+const controller = require('./controller')
 
 const handleUserChoice= {
-    switch: function(state,newMon,dbRef,userID){
+    switch: async function(state,newMon,dbRef,userID){
         state.user1Team.push(state.user1Mon)
         for (let i=0;i<state.user1Team.length;i++){
             if (state.user1Team[i].name === newMon){
@@ -9,11 +10,16 @@ const handleUserChoice= {
                 state.user1Team.splice(i,1);
             }
         }
-        db.collection('gameRooms').doc(dbRef).set({
-            state: state
-        })
-        .then(()=>{})
-        .catch(err=>console.log(err))
+
+        controller.syncState(state,dbRef)
+
+        // console.log(state)
+
+        // db.collection('gameRooms').doc(dbRef).set({
+        //     state: state
+        // })
+        // .then(()=>{})
+        // .catch(err=>console.log(err))
     },
 
     attack: function(){
