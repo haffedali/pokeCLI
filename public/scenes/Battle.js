@@ -18,6 +18,7 @@ export default class Battle extends Phaser.Scene {
         this.oppHealthBar;
         this.user1Sprite;
         this.user2Sprite;
+        this.moves = [];
         this.moveX = 100;
         this.socket;
 
@@ -37,12 +38,23 @@ export default class Battle extends Phaser.Scene {
         axios.get('/pullGame')
             .then((res)=>{
                 this.field = res.data
-                // this.create()
+                this.updateClientUi();
             })
     }
 
     updateClientUi(){
-        this.user1Sprite.setTexture(this.field.user1Mon.name)
+        // Update pokemonSprite
+        this.user1Sprite.updateSprite(this.field.user1Mon.name);
+        // Destroy move boxes using array
+        this.moves.forEach((moveSpriteBox)=>{
+            moveSpriteBox.text.destroy();
+            moveSpriteBox.destroy();
+        })
+        // Update move boxes and push to moves array
+        this.buildMoves();
+        // Update health box
+        this.myHealthBar.updateHp();
+
         
     }
 
@@ -54,8 +66,12 @@ export default class Battle extends Phaser.Scene {
         //     .then((res)=>{
                 
         //     })
-        this.create();
-        console.log(this.field)
+        console.log(this.field);    
+        axios.get('pullGame')
+            .then((res)=>{
+                console.log(res.data)
+            })    
+        // this.updateClientUi();
     }
 
 
@@ -144,10 +160,14 @@ export default class Battle extends Phaser.Scene {
 
     // UI Builds move boxes
     buildMoves(){
-        let xBuild = 100
         this.field.user1Mon.moves.forEach((move)=>{
-            new Move(this, move, xBuild, 550).create()
-            xBuild += 135;
+            let tempMove = this.add.existing(new Move(this,move,this.moveX,550))
+            if (this.moveX + 135 < 506){
+                this.moveX += 135
+            }else{
+                this.moveX = 100
+            }
+            this.moves.push(tempMove);
         })
     }
 
@@ -155,8 +175,8 @@ export default class Battle extends Phaser.Scene {
     buildTeamBoxes(){
          new TeamBox(this, "team goes here", 80, 70).create()
             .setInteractive().on('pointerup', ()=>{
-            //    this.scene.sleep('battle')
-               this.scene.start('switch')
+               this.scene.sleep('battle')
+               this.scene.launch('switch')
             },this);
          new TeamBox(this, "enemy team goes here", 530, 70).create();
     }
@@ -185,13 +205,13 @@ export default class Battle extends Phaser.Scene {
         // this.docRef = db.collection('gameRooms').doc();
 
         if (data.launch){
-            console.log('should fire from Switch scene')
+
             switch(data.launch){
                 case "Blastoise": 
                     // this.switchPokemon(data.lead)
                     // SwitchMon method here
-                    console.log('My main man BLAST')
 
+                    // Instead of post requests to handle business logic, we should build client side code to run turn logic and only send the modified state
                     axios.post('switch/' + data.launch,{
                         state:this.field
                     })
@@ -204,7 +224,6 @@ export default class Battle extends Phaser.Scene {
                 break;
             case "Flareon":
                     // switch pokemon function use here
-                    console.log('The sensous FLARE')
                     axios.post('switch/' + data.launch,{
                         state:this.field
                     })
@@ -217,7 +236,6 @@ export default class Battle extends Phaser.Scene {
                 break;
             case "Pidgeot":
                     // switch pokemon function use here
-                    console.log('god.bird.')
                     axios.post('switch/' + data.launch,{
                         state:this.field
                     })
@@ -296,16 +314,12 @@ export default class Battle extends Phaser.Scene {
         this.myHealthBar =this.add.existing(new HealthBox(this,this.field.user1Mon,220,70));
         this.oppHealthBar = this.add.existing(new HealthBox(this,this.field.user2Mon,380,70));
         
-        this.field.user1Mon.moves.forEach((move)=>{
-            this.add.existing(new Move(this,move,this.moveX,550))
-            if (this.moveX + 135 < 506){
-                this.moveX += 135
-            }else{
-                this.moveX = 100
-            }
-        })
+
+
+        this.buildMoves()
         
         this.user1Sprite = this.add.existing(new PokemonSprite(this,this.field.user1Mon,150,420))
+        this.user1Sprite.flipX = true;
         this.user2Sprite = this.add.existing(new PokemonSprite(this,this.field.user2Mon,450,420))
 
 

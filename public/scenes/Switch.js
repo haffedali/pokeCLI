@@ -26,7 +26,7 @@ export default class Switch extends Phaser.Scene {
 
     init(){
         this.team = this.game.scene.scenes[2].field.user1Team
-        console.log(this.team)
+        // console.log(this.team)
     }
 
     create(){
@@ -61,9 +61,8 @@ export default class Switch extends Phaser.Scene {
             }
 
             sprite.setInteractive().on('pointerup',()=>{
-                console.log(sprite.name)
-                // this.scene.sleep('switch');
-                this.scene.launch('battle',{launch:sprite.name})
+                this.scene.sleep('switch');
+                this.scene.start('battle',{launch:sprite.name})
             },this)
         }
         // firstSprite.name = this.team.team['first'].name
