@@ -177,7 +177,7 @@ app.post('/test', function(req,res){
 })
 
 // route for switching active mon
-app.post('/switch/:mon', function(req,res){
+app.post('turnChoice/switch/:mon', function(req,res){
   let mon = req.params.mon;
   Util.handleUserChoice.switch(req.body.state,mon,req.session.docref)
     .then(()=>{

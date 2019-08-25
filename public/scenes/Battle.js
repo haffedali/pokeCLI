@@ -212,7 +212,7 @@ export default class Battle extends Phaser.Scene {
                     // SwitchMon method here
 
                     // Instead of post requests to handle business logic, we should build client side code to run turn logic and only send the modified state
-                    axios.post('switch/' + data.launch,{
+                    axios.post('turnChoice/switch/' + data.launch,{
                         state:this.field
                     })
                     .then((res)=>{
@@ -224,7 +224,7 @@ export default class Battle extends Phaser.Scene {
                 break;
             case "Flareon":
                     // switch pokemon function use here
-                    axios.post('switch/' + data.launch,{
+                    axios.post('turnChoice/switch/' + data.launch,{
                         state:this.field
                     })
                     .then((res)=>{
@@ -236,7 +236,7 @@ export default class Battle extends Phaser.Scene {
                 break;
             case "Pidgeot":
                     // switch pokemon function use here
-                    axios.post('switch/' + data.launch,{
+                    axios.post('turnChoice/switch/' + data.launch,{
                         state:this.field
                     })
                     .then((res)=>{
