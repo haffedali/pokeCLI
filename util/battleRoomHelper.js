@@ -1,7 +1,7 @@
 const controller = require('./controller');
 
 const battleRoomHelper={
-    pullClientState: async function(dbRef,userID){
+    pullClientState: async (dbRef,userID) => {
         // let payload = controller.pullState(dbRef)
 
         // console.log("from battleRoomHelper line 10  "+ payload)

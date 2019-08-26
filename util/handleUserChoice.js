@@ -2,7 +2,17 @@ const db = require('../server.js')
 const controller = require('./controller')
 
 const handleUserChoice= {
-    switch: async function(state,newMon,dbRef,userID){
+    /**
+     * Takes a copy of state and augment's it to reflect gameState POST switching. Then the method uses our controller to sync the game
+     * state with the newly augmented state.
+     * 
+     * 
+     * @param {Object} state ~ Game state object
+     * @param {Object} newMon ~ Pokemon object
+     * @param {string} dbRef ~ Firestore document reference
+     * @param {string} userID ~ User session reference
+     */
+    switch: async (state,newMon,dbRef,userID)=>{
         state.user1Team.push(state.user1Mon)
         for (let i=0;i<state.user1Team.length;i++){
             if (state.user1Team[i].name === newMon){
@@ -22,11 +32,11 @@ const handleUserChoice= {
         // .catch(err=>console.log(err))
     },
 
-    attack: function(){
+    attack: (state,move,dbRef,userID)=>{
 
     },
 
-    test: function(phrase){
+    test: (phrase) => {
         console.log(db)
     }
 }

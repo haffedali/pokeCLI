@@ -21,7 +21,13 @@ var firebaseConfig = {
           })
       },
 
-      //change name to initState
+      /**
+       * Initializes the firestore Doc for a brand new game
+       * 
+       * @param {Object} state GameState object
+       * @returns {Object.docID} Document refere and state 
+       * @returns {Object.state} GameState Object
+       */
       initState: function(state){
         let docRef = db.collection('gameRooms').doc();
         let docID = docRef.id
@@ -39,6 +45,12 @@ var firebaseConfig = {
       },
 
 
+      /**
+       * Takes a docref as an indentifier for a specific state and uses it's state parameter to update firestore's gameState
+       * 
+       * @param {Object} state GameState Object
+       * @param {String} docref Reference for firestore doc 
+       */
       syncState: async function(state,docref){
         db.collection('gameRooms').doc(docref).set({
             state:state
@@ -47,6 +59,13 @@ var firebaseConfig = {
 
       },
 
+
+      /**
+       * Takes a document reference and uses that to return the corresponding gameState
+       * 
+       * @param {String} docref Reference for firestore doc
+       * @returns {Object} GameState data
+       */
       pullState: async function(docref){
           // Use await to be sure we got the document from firestore written to our variable
           let document = await db.collection('gameRooms').doc(docref).get();
