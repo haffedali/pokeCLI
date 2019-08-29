@@ -7,9 +7,10 @@ const battleRoomHelper={
         // console.log("from battleRoomHelper line 10  "+ payload)
         // return payload
 
-        let test = await controller.pullState(dbRef);
+        let state = await controller.pullState(dbRef);
 
-        return test;
+        //returns as {state:state}
+        return state;
     }
 }
 

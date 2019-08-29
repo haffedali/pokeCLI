@@ -31,7 +31,7 @@ export default class Move extends Phaser.GameObjects.Sprite {
 
     // Click has access to field, just making sure with the console log here
     click(){
-        axios.get('/turnChoice/' + this.move)
+        axios.post('/turnchoice/',{move:this.move})
             .then((res)=>{
                 this.scene.field = res.data;
                 // console.log("Response from api call", res.data);

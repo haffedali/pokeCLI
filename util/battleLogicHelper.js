@@ -3,9 +3,10 @@ const controller = require('./controller');
 
 /**
  * 
- * @method speedCheck 
+ * 
  */
 const battleLogicHelper={
+    // Exectutive
     speedCheck: (mon1,mon2)=>{
         if (mon1.stats.spe > mon2.stats.spe){
             return [mon1,mon2]
@@ -16,23 +17,33 @@ const battleLogicHelper={
         }
     },
 
-    damageCalcSettle: ()=>{
-
-    },
-
+    // Exectutive
     eachTurn: ([fasterMon,slowerMon])=>{
 
     },
 
+
+    // Exectutive
     turnEnd: ()=>{
 
     },
 
+    // Functional
+    damageCalcSettle: ()=>{
+
+    },
+
     /**
+     * First function to be fired off. Takes game state and returns it mutated according to the turn logic.
+     * Sort of brain of battleLogicHelper; uses other 'executive' functions to run the correct logic on the correct parts
+     * of state at the correct times.
      * 
+     * @see eachTurn()
+     * @see turnEnd()
+     * @see speedCheck()
      */
     runAttack:(state, move)=>{
-
+        return state;
     }
 }
 

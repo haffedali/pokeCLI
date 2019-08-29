@@ -177,7 +177,7 @@ app.post('/test', function(req,res){
 })
 
 // route for switching active mon
-app.post('turnChoice/switch/:mon', function(req,res){
+app.post('/turnChoice/switch/:mon', function(req,res){
   let mon = req.params.mon;
   Util.handleUserChoice.switch(req.body.state,mon,req.session.docref)
     .then(()=>{
@@ -209,11 +209,10 @@ app.get('/switch/:mon', function(req,res){
 
 
 
-
+// Should be post route
 // Route gets called when user picks move
 app.get('/turnChoice/:move', function(req,res){
   console.log(req.session.docref)
-  console.log(req.sessionID)
 
   field.state.user1Move = req.params.move
   
@@ -239,6 +238,15 @@ app.get('/turnChoice/:move', function(req,res){
   // to the user.
   //
   // The data will be formatted as follows
+})
+
+app.post('/turnchoice', (req,res)=>{
+  let move = req.body.move;
+  Util.battleRoomHelper.pullClientState(req.session.docref)
+    .then((state)=>{
+      console.log(state)
+      res.send(state)
+    })
 })
 
 
