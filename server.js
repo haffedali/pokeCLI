@@ -244,8 +244,8 @@ app.post('/turnchoice', (req,res)=>{
   let move = req.body.move;
   Util.battleRoomHelper.pullClientState(req.session.docref)
     .then((state)=>{
-      console.log(state)
-      res.send(state)
+      Util.battleTurnHelper.runAttack(state,move)
+      res.send('works')
     })
 })
 

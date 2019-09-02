@@ -126,18 +126,18 @@ export default class Battle extends Phaser.Scene {
 
 
     // Function choosing move and POST request to server to take that info (as well as all battle info) and return the result of the turn.
-    pickMove(move){
-        axios.post('/turnChoice/' + move)
-        .then((res)=>{
-            console.log(res.data)
-            // console.log(this.battleState)
+    // pickMove(move){
+    //     axios.post('/turnChoice/' + move)
+    //     .then((res)=>{
+    //         console.log(res.data)
+    //         // console.log(this.battleState)
     
-            this.turnReturn(res.data)
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
-    }
+    //         this.turnReturn(res.data)
+    //     })
+    //     .catch((err)=>{
+    //         console.log(err)
+    //     })
+    // }
 
 
 

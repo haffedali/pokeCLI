@@ -16,5 +16,9 @@ module.exports= {
 
     controller: require('./controller'),
 
-    battleRoomHelper: require('./battleRoomHelper')
+    battleRoomHelper: require('./battleRoomHelper'),
+
+    battleTurnHelper: require('./battleTurnHelper'),
+
+    battleFunctions: require('./battleFunctions')
 }
