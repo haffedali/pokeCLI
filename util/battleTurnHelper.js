@@ -23,7 +23,7 @@ const battleLogicHelper = {
     // Exectutive
     eachTurn: async (speedArr)=>{
         // Runs turns for user mon and computer mon
-        let test = await battleFunction.DamageCalc(speedArr[0],speedArr[1],'Icebeam')
+        let test = await battleFunction.DamageCalc(speedArr[1],speedArr[0],'Icebeam')
         console.log(test)
         // console.log(damageCalc(slowerMon,fasterMon,'Icebeam'))
     },

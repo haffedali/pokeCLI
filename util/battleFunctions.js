@@ -28,8 +28,9 @@ module.exports = {
     DamageCalc: (mon1,mon2,move)=>{
         // For now we use JSON move lost, until we host moves on cloud
         move = moveList[move];
+        let moveType = move.type;
 
-        let stabUser,moveTypeUser,damageToOpp;
+        let stabUser,damageToOpp;
         let typeModUser = 1;
 
         // We use boosthelper to provide accurate calcs taking boosts into account
@@ -50,7 +51,7 @@ module.exports = {
         damageToOpp += 2
 
         // This is a STAB check, if it is stab,then the stab modifier goes to 1.5 instead of one
-        if (moveTypeUser== mon1.type[0] || moveTypeUser== mon1.type[1]){
+        if (moveType== mon1.type[0] || moveType== mon1.type[1]){
             stabUser = 1.5
         } else{
             stabUser = 1
@@ -62,17 +63,18 @@ module.exports = {
 
         // Next is type modifier
         // // Loop through opponent pokemons types, and add the corresponding modifier
-        // for (let j=0;j<mon2.type.length;j++){
-        //     if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 0){
-        //         // 0 is neutral, therefore do nothing to the modifier
-        //     }
-        //     else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === 1){
-        //         typeModUser *= 2
-        //     }
-        //     else if (typeMatrix[typeDict[moveTypeUser]][typeDict[mon2.type[j]]] === -1){
-        //         typeModUser *= .5
-        //     }
-        // }
+        for (let j=0;j<mon2.type.length;j++){
+            if (typeMatrix[typeDict[moveType]][typeDict[mon2.type[j]]] === 0){
+                // 0 is neutral, therefore do nothing to the modifier
+            }
+            else if (typeMatrix[typeDict[moveType]][typeDict[mon2.type[j]]] === 1){
+                typeModUser *= 2
+            }
+            else if (typeMatrix[typeDict[moveType]][typeDict[mon2.type[j]]] === -1){
+                typeModUser *= .5
+            }
+        }
+
 
         // Making use of the typeMod here
         damageToOpp = damageToOpp * typeModUser 
