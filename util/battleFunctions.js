@@ -13,7 +13,7 @@ module.exports = {
      * @returns {String} Name/Title of the move AI decided on
      */
     decide: (mon1,mon2)=>{
-
+        
     },
 
     /**
@@ -25,7 +25,7 @@ module.exports = {
      * @param {String} move Name/Title of the move mon1 is using
      * @returns {Int} Resulting damage to be applied to mon2 
      */ 
-    DamageCalc: (mon1,mon2,move)=>{
+    damageCalc: (mon1,mon2,move)=>{
         // For now we use JSON move lost, until we host moves on cloud
         move = moveList[move];
         let moveType = move.type;
@@ -101,21 +101,21 @@ module.exports = {
     /**
      * @param {}
      */
-    StatusCalc: (move)=>{
+    statusCalc: (move)=>{
 
     },
 
     /**
      * 
      */
-    EffectCalc: (move)=>{
+    effectCalc: (move)=>{
 
     },
 
-    StatusTic: ()=>{
+    statusTic: ()=>{
 
     },
-    EffectTic: ()=>{
+    effectTic: ()=>{
 
     },
     turnTic: ()=>{

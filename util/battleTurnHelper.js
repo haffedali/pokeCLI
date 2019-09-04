@@ -8,23 +8,35 @@ const battleFunction = require('./battleFunctions');
 const battleLogicHelper = {
     // Exectutive
     speedCheck: async (state)=>{
-        let load = [];
+        let payLoad = [];
         if (state.user1Mon.stats.spe > state.user2Mon.stats.spe){
-            load = [state.user1Mon,state.user2Mon]
+            payLoad = [state.user1Mon,state.user2Mon]
             //this.eachTurn()
         }else if (state.user2Mon.stats.spe > state.user1Mon.stats.spe){
-            load = [state.user2Mon,state.user1Mon]
+            payLoad = [state.user2Mon,state.user1Mon]
         }else{
-            load = ['tie','tie']
+            payLoad = ['tie','tie']
         }
-        return load;
+        return payLoad;
     },
 
     // Exectutive
-    eachTurn: async (speedArr)=>{
-        // Runs turns for user mon and computer mon
-        let test = await battleFunction.DamageCalc(speedArr[1],speedArr[0],'Icebeam')
-        console.log(test)
+    eachTurn: async (speedArr,move)=>{
+        // let test = await battleFunction.DamageCalc(speedArr[1],speedArr[0],'Icebeam')
+        // Using round as a flag to help pass the correct parameters to damageCalc
+        let round = 'first';
+        for (let i=0;i<speedArr.length;i++){
+            let dmg;
+            if (round === 'first'){
+                dmg = await battleFunction.damageCalc(speedArr[i],speedArr[i+1],'Gigadrain')
+                round = 'second'
+                console.log(dmg)
+            }else{
+                dmg = await battleFunction.damageCalc(speedArr[i],speedArr[i-1],move)
+                console.log(dmg)
+            }
+            
+        }
         // console.log(damageCalc(slowerMon,fasterMon,'Icebeam'))
     },
 
@@ -52,7 +64,7 @@ const battleLogicHelper = {
         // return state;
         // console.log(state,move);
         let turns = await battleLogicHelper.speedCheck(state.state)
-        battleLogicHelper.eachTurn(turns)
+        battleLogicHelper.eachTurn(turns,move)
 
     }
 }
